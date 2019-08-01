@@ -32,6 +32,12 @@ def parse_doc(doc):
     servings = doc.pop('recipeYield', 1)
     time = doc.pop('cookTime', None)
 
+    if image and 'static.thepioneerwoman.com' in image:
+        image = image.replace(
+            'static.thepioneerwoman.com/cooking/files',
+            'www.thepioneerwoman.com/wp-content/uploads'
+        )
+
     if time:
         time = isodate.parse_duration(time)
         time = int(time.total_seconds() / 60)
