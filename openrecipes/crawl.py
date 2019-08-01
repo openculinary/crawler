@@ -26,7 +26,7 @@ def parse_ingredients(text):
 
 def parse_doc(doc):
     title = doc.pop('name')
-    url = doc.pop('url')
+    src = doc.pop('url')
     ingredients = doc.pop('ingredients')
     image = doc.pop('image', None)
     servings = doc.pop('recipeYield', 1)
@@ -37,7 +37,7 @@ def parse_doc(doc):
         time = int(time.total_seconds() / 60)
 
     if image and not image.startswith('http'):
-        domain = '/'.join(url.split('/')[0:3])
+        domain = '/'.join(src.split('/')[0:3])
         image = domain + image
 
     servings = str(servings)
@@ -53,7 +53,7 @@ def parse_doc(doc):
 
     return {
         'title': title,
-        'url': url,
+        'src': src,
         'ingredients': ingredients,
         'image': image,
         'servings': servings,
@@ -70,10 +70,7 @@ with open('recipes.json', 'r') as f:
 
         ingest_uri = 'http://localhost:8080/api/recipes/ingest'
         try:
-            requests.post(
-                url=ingest_uri,
-                json=doc
-            )
+            requests.post(url=ingest_uri, json=doc)
             print('* Ingested {}'.format(doc['title']))
         except Exception:
             pass
