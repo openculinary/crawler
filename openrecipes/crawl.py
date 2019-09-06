@@ -20,7 +20,7 @@ def parse_ingredients(text):
                 if verb_phrase in token:
                     token = token.replace(verb_phrase, '')
                     break
-        results.append({'ingredient': token, 'verb': verb})
+        results.append({'description': token, 'verb': verb})
     return results
 
 
@@ -76,7 +76,8 @@ with open('recipes.json', 'r') as f:
 
         ingest_uri = 'http://localhost:8080/api/recipes/ingest'
         try:
-            requests.post(url=ingest_uri, json=doc)
+            resp = requests.post(url=ingest_uri, json=doc)
+            resp.raise_for_status()
             print('* Ingested {}'.format(doc['title']))
-        except Exception:
-            pass
+        except Exception as e:
+            print(e)
