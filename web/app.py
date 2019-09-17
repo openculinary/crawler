@@ -7,8 +7,13 @@ from urllib.parse import urljoin
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
 def request_patch(self, *args, **kwargs):
-    timeout = kwargs.pop('timeout', 5)
-    return self.request_orig(*args, **kwargs, timeout=timeout)
+    kwargs['proxies'] = {
+        'http': 'http://localhost:3128',
+        'https': 'http://localhost:3128',
+    }
+    kwargs['timeout'] = kwargs.pop('timeout', 5)
+    kwargs['verify'] = '/etc/squid/certificates/ca.crt'
+    return self.request_orig(*args, **kwargs)
 setattr(requests.sessions.Session, 'request_orig', requests.sessions.Session.request)
 requests.sessions.Session.request = request_patch
 
