@@ -73,19 +73,26 @@ def root():
         return abort(501)
 
     try:
-        scraped_image = urljoin(url, scrape.image())
+        scraped_image = scrape.image()
     except NotImplementedError:
         return abort(501)
 
+    if not scraped_image:
+        return abort(404)
+
     ingredients = parse_ingredients(scrape.ingredients())
+    if not ingredients:
+        return abort(404)
+
+    time = scrape.total_time()
+    if not time:
+        return abort(404)
+
     directions = [
         {'description': d.strip()}
         for d in scrape.instructions().split('\n')
     ]
     servings = int(scrape.yields().split(' ')[0] or '1')
-
-    if not ingredients and not scrape.total_time():
-        return abort(404)
 
     return jsonify({
         'title': scrape.title(),
@@ -93,7 +100,7 @@ def root():
         'domain': domain,
         'ingredients': ingredients,
         'directions': directions,
-        'image': scraped_image,
+        'image': urljoin(url, scraped_image),
         'servings': servings,
-        'time': scrape.total_time(),
+        'time': time,
     })
