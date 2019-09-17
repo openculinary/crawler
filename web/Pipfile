@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+Flask = "*"
+requests = "*"
+gunicorn = "*"
+tldextract = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
+
+[packages.recipe-scrapers]
+git = "git://github.com/hhursev/recipe-scrapers.git"

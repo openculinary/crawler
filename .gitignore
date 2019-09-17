@@ -1,1 +1,4 @@
-recipes.json
+*.pyc
+*.swp
+*.lock
+openrecipes/recipes.json
