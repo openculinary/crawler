@@ -100,7 +100,7 @@ def root():
         'domain': domain,
         'ingredients': ingredients,
         'directions': directions,
-        'image': urljoin(url, scraped_image),
+        'image_src': urljoin(url, scraped_image),
         'servings': servings,
         'time': time,
     })
