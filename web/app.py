@@ -8,11 +8,11 @@ import requests
 from requests.exceptions import ConnectionError, ReadTimeout
 def request_patch(self, *args, **kwargs):
     kwargs['proxies'] = {
-        'http': 'http://localhost:3128',
-        'https': 'http://localhost:3128',
+        'http': 'http://proxy:3128',
+        'https': 'http://proxy:3443',
     }
     kwargs['timeout'] = kwargs.pop('timeout', 5)
-    kwargs['verify'] = '/etc/squid/certificates/ca.crt'
+    kwargs['verify'] = '/etc/ssl/k8s/proxy-cert/ca.crt'
     return self.request_orig(*args, **kwargs)
 setattr(requests.sessions.Session, 'request_orig', requests.sessions.Session.request)
 requests.sessions.Session.request = request_patch
@@ -28,10 +28,11 @@ app = Flask(__name__)
 
 
 def parse_ingredients(ingredients):
-    url = 'http://localhost:5000'
-    qs = {'ingredients[]': ingredients}
-    response = requests.get(url=url, params=qs).json()
-    return list(response.values())
+    response = requests.get(
+        url='http://ingredient-parser-service',
+        params={'ingredients[]': ingredients}
+    )
+    return list(response.json().values())
 
 
 domain_backoffs = {}

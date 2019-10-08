@@ -7,12 +7,10 @@ name = "pypi"
 Flask = "*"
 requests = "*"
 gunicorn = "*"
+recipe-scrapers = "*"
 tldextract = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.7"
-
-[packages.recipe-scrapers]
-git = "git://github.com/hhursev/recipe-scrapers.git"
