@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: crawler
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - image: registry.gitlab.com/openculinary/crawler
+        imagePullPolicy: IfNotPresent
+        name: crawler
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: proxy-cert
+          mountPath: /etc/ssl/k8s/proxy-cert
+      volumes:
+      - name: proxy-cert
+        secret:
+          secretName: proxy-cert
+  replicas: 3
+  selector:
+    matchLabels:
+      app: crawler
