@@ -1,11 +1,17 @@
 from datetime import datetime, timedelta
 from flask import Flask, abort, jsonify, request
 import tldextract
+import requests
+from requests.exceptions import ConnectionError, ReadTimeout
 from time import sleep
 from urllib.parse import urljoin
 
-import requests
-from requests.exceptions import ConnectionError, ReadTimeout
+from recipe_scrapers import (
+    scrape_me as scrape_recipe,
+    WebsiteNotImplementedError,
+)
+
+
 def request_patch(self, *args, **kwargs):
     kwargs['proxies'] = {
         'http': 'http://proxy:3128',
@@ -14,15 +20,13 @@ def request_patch(self, *args, **kwargs):
     kwargs['timeout'] = kwargs.pop('timeout', 5)
     kwargs['verify'] = '/etc/ssl/k8s/proxy-cert/ca.crt'
     return self.request_orig(*args, **kwargs)
-setattr(requests.sessions.Session, 'request_orig', requests.sessions.Session.request)
-requests.sessions.Session.request = request_patch
 
 
-from recipe_scrapers import (
-    SCRAPERS,
-    scrape_me as scrape_recipe,
-    WebsiteNotImplementedError,
+setattr(
+    requests.sessions.Session, 'request_orig',
+    requests.sessions.Session.request
 )
+requests.sessions.Session.request = request_patch
 
 app = Flask(__name__)
 
@@ -36,7 +40,6 @@ def parse_ingredients(ingredients):
 
 
 domain_backoffs = {}
-
 
 
 @app.route('/', methods=['POST'])
