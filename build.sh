@@ -16,8 +16,8 @@ if [ -n "${GITLAB_USER_ID}" ]; then
 fi
 
 container=$(buildah from docker.io/library/python:3.7-alpine)
-buildah copy ${container} 'web/app.py' 'web/app.py'
-buildah copy ${container} 'web/Pipfile'
+buildah copy ${container} 'web' 'web'
+buildah copy ${container} 'Pipfile'
 buildah run ${container} -- pip install pipenv
 buildah run ${container} -- pipenv install
 buildah config --port 80 --entrypoint 'pipenv run gunicorn web.app:app --bind :80' ${container}
