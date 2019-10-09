@@ -13,12 +13,12 @@ from recipe_scrapers import (
 
 
 def request_patch(self, *args, **kwargs):
-    kwargs['proxies'] = {
+    kwargs['proxies'] = kwargs.pop('proxies', {
         'http': 'http://proxy:3128',
         'https': 'http://proxy:3443',
-    }
+    })
     kwargs['timeout'] = kwargs.pop('timeout', 5)
-    kwargs['verify'] = '/etc/ssl/k8s/proxy-cert/ca.crt'
+    kwargs['verify'] = kwargs.pop('verify', '/etc/ssl/k8s/proxy-cert/ca.crt')
     return self.request_orig(*args, **kwargs)
 
 
@@ -34,7 +34,8 @@ app = Flask(__name__)
 def parse_ingredients(ingredients):
     response = requests.get(
         url='http://ingredient-parser-service',
-        params={'ingredients[]': ingredients}
+        params={'ingredients[]': ingredients},
+        proxies={}
     )
     return list(response.json().values())
 
