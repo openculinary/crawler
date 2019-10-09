@@ -10,6 +10,9 @@ if [ -n "${GITLAB_USER_ID}" ]; then
 
     # Workaround from https://major.io for 'overlay.mountopt' option conflict
     sed -i '/^mountopt =.*/d' /etc/containers/storage.conf
+
+    # Authenticate for any privileged operations
+    REGISTRY_AUTH_FILE=${HOME}/auth.json echo "${CI_REGISTRY_PASSWORD}" | buildah login -u "${CI_REGISTRY_USER}" --password-stdin ${CI_REGISTRY}
 fi
 
 container=$(buildah from docker.io/library/python:3.7-alpine)
