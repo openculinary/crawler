@@ -5,7 +5,11 @@ import requests
 def ingest_url(url):
     data = {'url': url}
     try:
-        resp = requests.post('http://localhost:8080/api/recipes/crawl', data)
+        resp = requests.post(
+            url='http://localhost:30080/api/recipes/crawl',
+            headers={'Host': 'api'},
+            data=data
+        )
         resp.raise_for_status()
     except Exception as e:
         print(e)
