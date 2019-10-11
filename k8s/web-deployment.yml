@@ -2,11 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: crawler-deployment
+  labels:
+    app: crawler
 spec:
+  selector:
+    matchLabels:
+      app: crawler
+      role: web
   template:
     metadata:
       labels:
         app: crawler
+        role: web
     spec:
       imagePullSecrets:
       - name: gitlab-registry
@@ -24,6 +31,3 @@ spec:
         secret:
           secretName: proxy-cert
   replicas: 3
-  selector:
-    matchLabels:
-      app: crawler
