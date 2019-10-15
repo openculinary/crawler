@@ -18,8 +18,19 @@ def ingest_url(url):
 
 
 db = pg8000.connect(host='192.168.100.1', user='api', database='api')
-results = db.cursor().execute('select src, title from recipes where indexed_at is not null')
-for result in results.fetchall():
-    url, title = result
-    ingest_url(url)
-    print('* Ingested {}'.format(title))
+cursor = db.cursor()
+
+try:
+    results = cursor.execute('''
+        select src, title
+        from recipes
+        where indexed_at is not null
+    ''')
+    for result in results.fetchall():
+        url, title = result
+        ingest_url(url)
+        print('* Ingested {}'.format(title))
+except Exception:
+    pass
+finally:
+    cursor.close()
