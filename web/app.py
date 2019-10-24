@@ -99,6 +99,12 @@ def root():
     ]
     servings = int(scrape.yields().split(' ')[0] or '1')
 
+    try:
+        rating = float(scrape.ratings())
+    except NotImplementedError:
+        rating = 4.0
+    rating = 4.75 if rating == 5.0 else rating
+
     return jsonify({
         'title': scrape.title(),
         'src': url,
@@ -108,4 +114,5 @@ def root():
         'image_src': urljoin(url, scraped_image),
         'servings': servings,
         'time': time,
+        'rating': rating,
     })

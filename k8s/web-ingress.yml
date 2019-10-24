@@ -4,7 +4,7 @@ metadata:
   name: crawler-ingress
 spec:
   rules:
-  - host: 'crawler'
+  - host: crawler
     http:
       paths:
       - backend:
