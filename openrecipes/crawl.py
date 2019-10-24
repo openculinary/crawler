@@ -1,4 +1,5 @@
 import json
+from random import shuffle
 import requests
 
 
@@ -16,7 +17,11 @@ def ingest_url(url):
 
 
 with open('recipes.json', 'r') as f:
+    docs = []
     for line in f:
-        doc = json.loads(line)
+        docs.append(json.loads(line))
+
+    shuffle(docs)
+    for doc in docs:
         ingest_url(doc['url'])
         print('* Ingested {}'.format(doc['name']))
