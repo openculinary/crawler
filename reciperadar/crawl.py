@@ -5,10 +5,10 @@ DB_URI = f'postgresql+pg8000://api@192.168.100.1/api'
 
 
 def ingest_url(url):
-    data = {'url': url}
+    data = {'recipe_id': url}
     try:
         resp = requests.post(
-            url='http://localhost:30080/api/recipes/crawl',
+            url='http://localhost:30080/api/recipes/index',
             headers={'Host': 'api'},
             data=data
         )
@@ -22,9 +22,8 @@ cursor = db.cursor()
 
 try:
     results = cursor.execute('''
-        select src, title
+        select id, title
         from recipes
-        where indexed_at is not null
     ''')
     for result in results.fetchall():
         url, title = result
