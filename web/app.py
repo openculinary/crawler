@@ -32,10 +32,11 @@ app = Flask(__name__)
 
 
 def parse_directions(descriptions):
-    directions = [
-        {'description': description.strip()}
-        for description in descriptions.split('\n')
-    ]
+    directions = requests.post(
+        url='http://direction-parser-service',
+        data={'descriptions[]': descriptions},
+        proxies={}
+    ).json()
     return [
         {**{'index': index}, **direction}
         for index, direction in enumerate(directions)
