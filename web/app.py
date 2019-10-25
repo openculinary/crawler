@@ -32,10 +32,11 @@ app = Flask(__name__)
 
 
 def parse_directions(descriptions):
-    directions = [
-        {'description': description.strip()}
-        for description in descriptions.split('\n')
-    ]
+    directions = requests.post(
+        url='http://direction-parser-service',
+        data={'descriptions[]': descriptions},
+        proxies={}
+    ).json()
     return [
         {**{'index': index}, **direction}
         for index, direction in enumerate(directions)
@@ -43,9 +44,9 @@ def parse_directions(descriptions):
 
 
 def parse_ingredients(descriptions):
-    ingredients = requests.get(
+    ingredients = requests.post(
         url='http://ingredient-parser-service',
-        params={'descriptions[]': descriptions},
+        data={'descriptions[]': descriptions},
         proxies={}
     ).json()
     return [
@@ -99,7 +100,7 @@ def root():
     if not scraped_image:
         return abort(404)
 
-    directions = parse_directions(scrape.instructions())
+    directions = parse_directions(scrape.instructions().split('\n'))
     ingredients = parse_ingredients(scrape.ingredients())
 
     if not ingredients:
