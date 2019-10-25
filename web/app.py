@@ -100,7 +100,7 @@ def root():
     if not scraped_image:
         return abort(404)
 
-    directions = parse_directions(scrape.instructions())
+    directions = parse_directions(scrape.instructions().split('\n'))
     ingredients = parse_ingredients(scrape.ingredients())
 
     if not ingredients:
