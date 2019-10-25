@@ -31,13 +31,27 @@ requests.sessions.Session.request = request_patch
 app = Flask(__name__)
 
 
-def parse_ingredients(ingredients):
-    response = requests.get(
+def parse_directions(descriptions):
+    directions = [
+        {'description': description.strip()}
+        for description in descriptions.split('\n')
+    ]
+    return [
+        {**{'index': index}, **direction}
+        for index, direction in enumerate(directions)
+    ]
+
+
+def parse_ingredients(descriptions):
+    ingredients = requests.get(
         url='http://ingredient-parser-service',
-        params={'ingredients[]': ingredients},
+        params={'descriptions[]': descriptions},
         proxies={}
-    )
-    return list(response.json().values())
+    ).json()
+    return [
+        {**{'index': index}, **ingredient}
+        for index, ingredient in enumerate(ingredients)
+    ]
 
 
 domain_backoffs = {}
@@ -85,7 +99,9 @@ def root():
     if not scraped_image:
         return abort(404)
 
+    directions = parse_directions(scrape.instructions())
     ingredients = parse_ingredients(scrape.ingredients())
+
     if not ingredients:
         return abort(404)
 
@@ -93,10 +109,6 @@ def root():
     if not time:
         return abort(404)
 
-    directions = [
-        {'description': d.strip()}
-        for d in scrape.instructions().split('\n')
-    ]
     servings = int(scrape.yields().split(' ')[0] or '1')
 
     try:
