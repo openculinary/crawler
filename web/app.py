@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from flask import Flask, abort, jsonify, request
-import tldextract
+from tldextract import TLDExtract
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
 from time import sleep
@@ -55,7 +55,13 @@ def parse_ingredients(descriptions):
     ]
 
 
+tldextract = TLDExtract(suffix_list_urls=None)
 domain_backoffs = {}
+
+
+def get_domain(url):
+    url_info = tldextract(url)
+    return f'{url_info.domain}.{url_info.suffix}'
 
 
 @app.route('/', methods=['POST'])
@@ -64,9 +70,7 @@ def root():
     if not url:
         return abort(400)
 
-    url_info = tldextract.extract(url)
-    domain = f'{url_info.domain}.{url_info.suffix}'
-
+    domain = get_domain(url)
     if domain in domain_backoffs:
         start = domain_backoffs[domain]['timestamp']
         duration = domain_backoffs[domain]['duration']
