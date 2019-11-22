@@ -28,4 +28,3 @@ spec:
       - name: proxy-cert
         secret:
           secretName: proxy-cert
-  replicas: 3
