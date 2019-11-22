@@ -15,7 +15,7 @@ Outbound requests are routed via [squid](https://www.squid-cache.org) to avoid b
 
 ## Install dependencies
 
-Make sure to follow the RecipeRadar [infrastructure](../infrastructure) setup to ensure all cluster dependencies are available in your environment.
+Make sure to follow the RecipeRadar [infrastructure](https://www.github.com/openculinary/infrastructure) setup to ensure all cluster dependencies are available in your environment.
 
 ## Development
 
