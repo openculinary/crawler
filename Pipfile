@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-Flask = "*"
-requests = "*"
-gunicorn = "*"
-recipe-scrapers = "*"
-tldextract = "*"
+Flask = "==1.1.1"
+requests = "==2.22.0"
+gunicorn = "==19.9.0"
+recipe-scrapers = "==5.2.1"
+tldextract = "==2.2.2"
 
 [dev-packages]
 pytest = "*"
