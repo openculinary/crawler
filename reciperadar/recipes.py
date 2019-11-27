@@ -8,9 +8,9 @@ from actions import recrawl, reindex
 def query_recipes(where):
     where = where or 'true'
     query = (
-        f'select id, src, title'
-        f'from recipes'
-        f'where {where}'
+        f'select id, src, title '
+        f'from recipes '
+        f'where {where} '
         f'order by random()'
     )
 

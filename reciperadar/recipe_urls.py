@@ -8,9 +8,9 @@ from actions import recrawl
 def query_recipe_urls(where):
     where = where or 'true'
     query = (
-        f'select url'
-        f'from recipe_urls'
-        f'where {where}'
+        f'select url '
+        f'from recipe_urls '
+        f'where {where} '
         f'order by random()'
     )
 
