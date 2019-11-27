@@ -7,7 +7,12 @@ from actions import recrawl
 
 def query_recipe_urls(where):
     where = where or 'true'
-    query = f'select url from recipe_urls where {where}'
+    query = (
+        f'select url'
+        f'from recipe_urls'
+        f'where {where}'
+        f'order by random()'
+    )
 
     db = pg8000.connect(host='192.168.100.1', user='api', database='api')
     cursor = db.cursor()
