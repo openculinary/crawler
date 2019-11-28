@@ -56,7 +56,7 @@ To recrawl and reindex the entire known `reciperadar` recipe set, execute the fo
 ```
 cd reciperadar
 pipenv install
-pipenv run python recipe_urls.py --recrawl
+pipenv run python crawl_urls.py --recrawl
 ```
 
 To reindex `reciperadar` recipes containing products named `tofu`, execute the following command:

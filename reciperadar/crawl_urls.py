@@ -5,11 +5,11 @@ import pg8000
 from actions import recrawl
 
 
-def query_recipe_urls(where):
+def query_crawl_urls(where):
     where = where or 'true'
     query = (
         f'select url '
-        f'from recipe_urls '
+        f'from crawl_urls '
         f'where {where} '
         f'order by random()'
     )
@@ -23,11 +23,11 @@ def query_recipe_urls(where):
 
 
 parser = argparse.ArgumentParser(description='Recrawl recipes')
-parser.add_argument('--where', help='SQL WHERE clause to select recipe_urls')
+parser.add_argument('--where', help='SQL WHERE clause to select crawl_urls')
 parser.add_argument('--recrawl', action='store_true', help='Invoke recrawling')
 args = parser.parse_args()
 
-for url in query_recipe_urls(args.where):
+for url in query_crawl_urls(args.where):
     if args.recrawl:
         recrawl(url)
         print(f'* Queued URL {url} for recrawling')
