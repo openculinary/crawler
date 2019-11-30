@@ -7,6 +7,7 @@ name = "pypi"
 Flask = "==1.1.1"
 requests = "==2.22.0"
 gunicorn = "==19.9.0"
+recipe-scrapers = { git = "https://github.com/openculinary/recipe-scrapers.git", ref = "partial-image-change-revert" }
 tldextract = "==2.2.2"
 
 [dev-packages]
@@ -15,7 +16,3 @@ flake8 = "*"
 
 [requires]
 python_version = "3.7"
-
-[packages.recipe-scrapers]
-git = "https://github.com/openculinary/recipe-scrapers.git"
-ref = "partial-image-change-revert"
