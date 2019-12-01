@@ -97,7 +97,7 @@ def root():
         return abort(501)
 
     try:
-        scraped_image = scrape.image()
+        scraped_image = scrape.image() or super(type(scrape), scrape).image()
     except NotImplementedError:
         return abort(501)
 
