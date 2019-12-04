@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 Flask = "==1.1.1"
-requests = "==2.22.0"
-gunicorn = "==19.9.0"
+gunicorn = "==20.0.4"
 recipe-scrapers = "==5.3.0"
+requests = "==2.22.0"
 tldextract = "==2.2.2"
 
 [dev-packages]
