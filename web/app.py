@@ -64,8 +64,20 @@ def get_domain(url):
     return f'{url_info.domain}.{url_info.suffix}'
 
 
-@app.route('/', methods=['POST'])
-def root():
+@app.route('/resolve', methods=['POST'])
+def resolve():
+    url = request.form.get('url')
+    if not url:
+        return abort(400)
+
+    response = requests.get(url)
+    return jsonify({
+        'resolves_to': response.url
+    })
+
+
+@app.route('/crawl', methods=['POST'])
+def crawl():
     url = request.form.get('url')
     if not url:
         return abort(400)
