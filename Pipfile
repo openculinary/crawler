@@ -16,3 +16,4 @@ tldextract = "==2.2.2"
 [dev-packages]
 flake8 = "*"
 pytest = "*"
+responses = "*"
