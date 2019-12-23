@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from flask import Flask, abort, jsonify, request
 from tldextract import TLDExtract
+from recipe_scrapers._abstract import HEADERS
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
 from time import sleep
@@ -70,7 +71,7 @@ def resolve():
     if not url:
         return abort(400)
 
-    response = requests.get(url)
+    response = requests.get(url, headers=HEADERS)
     return jsonify({
         'resolves_to': response.url
     })
