@@ -9,7 +9,7 @@ python_version = "3.7"
 [packages]
 flask = "==1.1.1"
 gunicorn = "==20.0.4"
-recipe-scrapers = "==5.16.0"
+recipe-scrapers = "==5.18.0"
 requests = "==2.22.0"
 tldextract = "==2.2.2"
 
