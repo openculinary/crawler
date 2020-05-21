@@ -21,18 +21,18 @@ Make sure to follow the RecipeRadar [infrastructure](https://www.github.com/open
 
 To install development tools and run linting and tests locally, execute the following commands:
 
-```
-pipenv install --dev
-pipenv run make
+```sh
+$ pipenv install --dev
+$ make lint tests
 ```
 
 ## Local Deployment
 
 To deploy the service to the local infrastructure environment, execute the following commands:
 
-```
-sudo sh -x ./build.sh
-sh -x ./deploy.sh
+```sh
+$ make
+$ make deploy
 ```
 
 ## Operations
@@ -41,10 +41,10 @@ sh -x ./deploy.sh
 
 To crawl and index `openrecipes` from scrath, execute the following commands:
 
-```
-cd openrecipes
-pipenv install
-pipenv run python crawl.py
+```sh
+$ cd openrecipes
+$ pipenv install
+$ pipenv run python crawl.py
 ```
 
 NB: This requires you to download the [openrecipes](https://github.com/fictivekin/openrecipes) dataset and extract it to a file named 'recipes.json'
@@ -53,18 +53,18 @@ NB: This requires you to download the [openrecipes](https://github.com/fictiveki
 
 To recrawl and reindex the entire known `reciperadar` recipe set, execute the following commands:
 
-```
-cd reciperadar
-pipenv install
-pipenv run python crawl_urls.py --recrawl
+```sh
+$ cd reciperadar
+$ pipenv install
+$ pipenv run python crawl_urls.py --recrawl
 ```
 
 To reindex `reciperadar` recipes containing products named `tofu`, execute the following command:
 
-```
-cd reciperadar
-pipenv install
-pipenv run python recipes.py --reindex --where "exists (select * from recipe_ingredients as ri join ingredient_products as ip on ip.ingredient_id = ri.id where ri.recipe_id = recipes.id and ip.product = 'tofu')"
+```sh
+$ cd reciperadar
+$ pipenv install
+$ pipenv run python recipes.py --reindex --where "exists (select * from recipe_ingredients as ri join ingredient_products as ip on ip.ingredient_id = ri.id where ri.recipe_id = recipes.id and ip.product = 'tofu')"
 ```
 
 NB: Running either of these commands without the `--reindex` / `--recrawl` argument will run in a 'safe mode' and tell you about the entities which match your query, without performing any actions on them.
