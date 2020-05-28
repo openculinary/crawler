@@ -8,7 +8,7 @@ def ingest_url(url):
     try:
         resp = requests.post(
             url='http://localhost:30080/api/recipes/crawl',
-            headers={'Host': 'api'},
+            headers={'Host': 'backend'},
             data=data
         )
         resp.raise_for_status()

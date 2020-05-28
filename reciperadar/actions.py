@@ -6,7 +6,7 @@ def recrawl(url):
     try:
         resp = requests.post(
             url='http://localhost:30080/api/recipes/crawl',
-            headers={'Host': 'api'},
+            headers={'Host': 'backend'},
             data=data
         )
         resp.raise_for_status()
@@ -19,7 +19,7 @@ def reindex(recipe_id):
     try:
         resp = requests.post(
             url='http://localhost:30080/api/recipes/index',
-            headers={'Host': 'api'},
+            headers={'Host': 'backend'},
             data=data
         )
         resp.raise_for_status()
