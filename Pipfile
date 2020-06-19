@@ -7,7 +7,7 @@ name = "pypi"
 python_version = "3.8"
 
 [packages]
-flask = "==1.1.1"
+flask = "==1.1.2"
 gunicorn = "==20.0.4"
 recipe-scrapers = "==7.2.0"
 requests = "==2.22.0"
