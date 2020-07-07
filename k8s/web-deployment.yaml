@@ -15,6 +15,7 @@ spec:
         app: crawler
         role: web
     spec:
+      serviceAccountName: crawler-serviceaccount
       containers:
       - image: registry.openculinary.org/reciperadar/crawler
         imagePullPolicy: IfNotPresent
