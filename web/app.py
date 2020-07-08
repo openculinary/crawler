@@ -68,13 +68,17 @@ def get_domain(url):
 
 
 @app.before_first_request
+def before_first_request():
+    app.image_version = determine_image_version()
+
+
 def determine_image_version():
     kubernetes.config.load_incluster_config()
     client = kubernetes.client.CoreV1Api()
     pod = client.read_namespaced_pod(namespace='default', name=gethostname())
     app = pod.metadata.labels['app']
     container = next(filter(lambda c: c.name == app, pod.spec.containers))
-    app.image_version = container.image.split(':')[-1] if container else None
+    return container.image.split(':')[-1] if container else None
 
 
 @app.route('/resolve', methods=['POST'])
