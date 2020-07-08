@@ -151,13 +151,18 @@ def crawl():
     rating = 4.75 if rating == 5.0 else rating
 
     return jsonify({
-        'title': scrape.title(),
-        'src': url,
-        'domain': domain,
-        'ingredients': ingredients,
-        'directions': directions,
-        'image_src': urljoin(url, scraped_image),
-        'servings': servings,
-        'time': time,
-        'rating': rating,
+        'metadata': {
+            'service_version': image_version,
+        },
+        'result': {
+            'title': scrape.title(),
+            'src': url,
+            'domain': domain,
+            'ingredients': ingredients,
+            'directions': directions,
+            'image_src': urljoin(url, scraped_image),
+            'servings': servings,
+            'time': time,
+            'rating': rating,
+        },
     })
