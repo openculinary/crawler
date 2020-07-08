@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 from flask import Flask, abort, jsonify, request
+import kubernetes
 from tldextract import TLDExtract
 from recipe_scrapers._abstract import HEADERS
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
+from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
 
@@ -58,11 +60,23 @@ def parse_ingredients(descriptions):
 
 tldextract = TLDExtract(suffix_list_urls=None)
 domain_backoffs = {}
+image_version = None
 
 
 def get_domain(url):
     url_info = tldextract(url)
     return f'{url_info.domain}.{url_info.suffix}'
+
+
+@app.before_first_request
+def determine_image_version():
+    global image_version
+    kubernetes.config.load_incluster_config()
+    client = kubernetes.client.CoreV1Api()
+    pod = client.read_namespaced_pod(namespace='default', name=gethostname())
+    app = pod.metadata.labels['app']
+    container = next(filter(lambda c: c.name == app, pod.spec.containers))
+    image_version = container.image.split(':')[-1] if container else None
 
 
 @app.route('/resolve', methods=['POST'])
