@@ -156,7 +156,7 @@ def crawl():
         'metadata': {
             'service_version': app.image_version,
         },
-        'result': {
+        'recipe': {
             'title': scrape.title(),
             'src': url,
             'domain': domain,
