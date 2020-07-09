@@ -77,7 +77,10 @@ def test_crawl_response(image_version, scrape_recipe, parse_directions,
     parse_ingredients.return_value = ['test ingredient']
 
     response = client.post('/crawl', data={'url': content_url})
-    service_version = response.json.get('metadata', {}).get('service_version')
+    metadata = response.json.get('metadata', {})
+    service_version = metadata.get('service_version')
+    rs_version = metadata.get('recipe_scrapers_version')
 
     assert response.status_code == 200
     assert service_version == 'test_version'
+    assert rs_version == '8.2.0'

@@ -10,6 +10,7 @@ from time import sleep
 from urllib.parse import urljoin
 
 from recipe_scrapers import (
+    __version__ as rs_version,
     scrape_me as scrape_recipe,
     WebsiteNotImplementedError,
 )
@@ -155,6 +156,7 @@ def crawl():
     return jsonify({
         'metadata': {
             'service_version': app.image_version,
+            'recipe_scrapers_version': rs_version,
         },
         'recipe': {
             'title': scrape.title(),
