@@ -1,13 +1,16 @@
 from datetime import datetime, timedelta
 from flask import Flask, abort, jsonify, request
+import kubernetes
 from tldextract import TLDExtract
 from recipe_scrapers._abstract import HEADERS
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
+from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
 
 from recipe_scrapers import (
+    __version__ as rs_version,
     scrape_me as scrape_recipe,
     WebsiteNotImplementedError,
 )
@@ -63,6 +66,20 @@ domain_backoffs = {}
 def get_domain(url):
     url_info = tldextract(url)
     return f'{url_info.domain}.{url_info.suffix}'
+
+
+@app.before_first_request
+def before_first_request():
+    app.image_version = determine_image_version()
+
+
+def determine_image_version():
+    kubernetes.config.load_incluster_config()
+    client = kubernetes.client.CoreV1Api()
+    pod = client.read_namespaced_pod(namespace='default', name=gethostname())
+    app = pod.metadata.labels['app']
+    container = next(filter(lambda c: c.name == app, pod.spec.containers))
+    return container.image.split(':')[-1] if container else None
 
 
 @app.route('/resolve', methods=['POST'])
@@ -137,13 +154,19 @@ def crawl():
     rating = 4.75 if rating == 5.0 else rating
 
     return jsonify({
-        'title': scrape.title(),
-        'src': url,
-        'domain': domain,
-        'ingredients': ingredients,
-        'directions': directions,
-        'image_src': urljoin(url, scraped_image),
-        'servings': servings,
-        'time': time,
-        'rating': rating,
+        'metadata': {
+            'service_version': app.image_version,
+            'recipe_scrapers_version': rs_version,
+        },
+        'recipe': {
+            'title': scrape.title(),
+            'src': url,
+            'domain': domain,
+            'ingredients': ingredients,
+            'directions': directions,
+            'image_src': urljoin(url, scraped_image),
+            'servings': servings,
+            'time': time,
+            'rating': rating,
+        },
     })
