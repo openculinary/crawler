@@ -90,7 +90,13 @@ def resolve():
 
     response = requests.get(url, headers=HEADERS)
     return jsonify({
-        'resolves_to': response.url
+        'metadata': {
+            'service_version': app.image_version,
+            'recipe_scrapers_version': rs_version,
+        },
+        'url': {
+            'resolves_to': response.url
+        },
     })
 
 

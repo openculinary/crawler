@@ -24,13 +24,18 @@ def test_get_domain(origin_url):
 @responses.activate
 @patch('web.app.determine_image_version')
 def test_origin_url_resolution(image_version, client, origin_url, content_url):
+    image_version.return_value = 'test_version'
     redir_headers = {'Location': content_url}
     responses.add(responses.GET, origin_url, status=301, headers=redir_headers)
     responses.add(responses.GET, content_url, status=200)
 
     response = client.post('/resolve', data={'url': origin_url})
-    recipe_url = response.json['resolves_to']
+    metadata = response.json.get('metadata')
+    service_version = metadata.get('service_version')
 
+    recipe_url = response.json['url']['resolves_to']
+
+    assert service_version == 'test_version'
     assert recipe_url == content_url
 
 
