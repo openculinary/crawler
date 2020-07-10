@@ -2,15 +2,15 @@ from datetime import datetime, timedelta
 from flask import Flask, abort, jsonify, request
 import kubernetes
 from tldextract import TLDExtract
-from recipe_scrapers._abstract import HEADERS
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
 from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
 
+from recipe_scrapers._abstract import HEADERS
+from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers import (
-    __version__ as rs_version,
     scrape_me as scrape_recipe,
     WebsiteNotImplementedError,
 )
