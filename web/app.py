@@ -119,7 +119,7 @@ def crawl():
             print(f'* Backing off for {domain}')
             sleep(duration.seconds)
             return jsonify({'error': {
-                'message': f'backing off for {domain}'
+                'message': f'backing off for {domain}',
             }}), 429
 
     try:
@@ -139,7 +139,7 @@ def crawl():
         }}), 429
     except WebsiteNotImplementedError:
         return jsonify({'error': {
-            'message': 'website is not implemented'
+            'message': 'website is not implemented',
         }}), 501
 
     try:
@@ -159,7 +159,7 @@ def crawl():
 
     if not ingredients:
         return jsonify({'error': {
-            'message': 'could not find recipe ingredient'
+            'message': 'could not find recipe ingredient',
         }}), 404
 
     time = scrape.total_time()
