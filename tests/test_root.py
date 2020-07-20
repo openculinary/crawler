@@ -21,6 +21,14 @@ def test_get_domain(origin_url):
     assert domain == 'example.com'
 
 
+@patch('web.app.determine_image_version')
+def test_url_resolution_validation(image_version, client):
+    image_version.return_value = 'test_version'
+    response = client.post('/crawl', data={})
+
+    assert response.status_code == 400
+
+
 @responses.activate
 @patch('web.app.determine_image_version')
 def test_origin_url_resolution(image_version, client, origin_url, content_url):
