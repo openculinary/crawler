@@ -86,7 +86,9 @@ def determine_image_version():
 def resolve():
     url = request.form.get('url')
     if not url:
-        return jsonify({'error': 'url parameter is required'}), 400
+        return jsonify({'error': {
+            'message': 'url parameter is required',
+        }}), 400
 
     response = requests.get(url, headers=HEADERS)
     return jsonify({
@@ -104,7 +106,9 @@ def resolve():
 def crawl():
     url = request.form.get('url')
     if not url:
-        return jsonify({'error': 'url parameter is required'}), 400
+        return jsonify({'error': {
+            'message': 'url parameter is required',
+        }}), 400
 
     domain = get_domain(url)
     if domain in domain_backoffs:
@@ -114,7 +118,9 @@ def crawl():
         if datetime.utcnow() < (start + duration):
             print(f'* Backing off for {domain}')
             sleep(duration.seconds)
-            return jsonify({'error': f'backing off for {domain}'}), 429
+            return jsonify({'error': {
+                'message': f'backing off for {domain}'
+            }}), 429
 
     try:
         scrape = scrape_recipe(url)
@@ -128,27 +134,39 @@ def crawl():
         }
         print(f'* Setting backoff on {domain} for {duration.seconds} seconds')
         sleep(duration.seconds)
-        return jsonify({'error': f'timeout; adding backoff for {domain}'}), 429
+        return jsonify({'error': {
+            'message': f'timeout; adding backoff for {domain}',
+        }}), 429
     except WebsiteNotImplementedError:
-        return jsonify({'error': 'website is not implemented'}), 501
+        return jsonify({'error': {
+            'message': 'website is not implemented'
+        }}), 501
 
     try:
         scraped_image = scrape.image() or super(type(scrape), scrape).image()
     except NotImplementedError:
-        return jsonify({'error': 'image retrieval is not implemented'}), 501
+        return jsonify({'error': {
+            'message': 'image retrieval is not implemented',
+        }}), 501
 
     if not scraped_image:
-        return jsonify({'error': 'could not find recipe image'}), 404
+        return jsonify({'error': {
+            'message': 'could not find recipe image',
+        }}), 404
 
     directions = parse_directions(scrape.instructions().split('\n'))
     ingredients = parse_ingredients(scrape.ingredients())
 
     if not ingredients:
-        return jsonify({'error': 'could not find recipe ingredient'}), 404
+        return jsonify({'error': {
+            'message': 'could not find recipe ingredient'
+        }}), 404
 
     time = scrape.total_time()
     if not time:
-        return jsonify({'error': 'could not find recipe timing info'}), 404
+        return jsonify({'error': {
+            'message': 'could not find recipe timing info',
+        }}), 404
 
     servings = int(scrape.yields().split(' ')[0] or '1')
 
