@@ -40,7 +40,7 @@ image:
 	buildah run $(container) -- apk del libxslt-dev --
 	buildah run $(container) -- apk del musl-dev --
 	# End: NOTE
-	buildah config --port 8000 --user gunicorn --entrypoint '/srv/.local/bin/pipenv run gunicorn web.app:app' $(container)
+	buildah config --port 8000 --user gunicorn --entrypoint '/srv/.local/bin/pipenv run gunicorn web.app:app --bind :8000' $(container)
 	buildah commit --squash --rm $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
 lint:
