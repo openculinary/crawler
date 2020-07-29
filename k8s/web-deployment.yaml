@@ -21,7 +21,7 @@ spec:
         imagePullPolicy: IfNotPresent
         name: crawler
         ports:
-        - containerPort: 80
+        - containerPort: 8000
         volumeMounts:
         - name: proxy-cert
           mountPath: /etc/ssl/k8s/proxy-cert
