@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: crawler-ingress
@@ -7,6 +7,10 @@ spec:
   - host: crawler
     http:
       paths:
-      - backend:
-          serviceName: crawler-service
-          servicePort: 80
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: crawler-service
+            port:
+              number: 80
