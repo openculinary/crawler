@@ -155,7 +155,13 @@ def crawl():
         }}, 404
 
     directions = parse_directions(scrape.instructions().split('\n'))
-    ingredients = parse_ingredients(scrape.ingredients())
+    ingredients = scrape.ingredients()
+    try:
+        ingredients = parse_ingredients(ingredients)
+    except:
+        return {'error': {
+            'message': f'ingredient parsing failed for: {ingredients}'
+        }}, 400
 
     if not ingredients:
         return {'error': {
