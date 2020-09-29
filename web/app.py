@@ -158,7 +158,7 @@ def crawl():
     ingredients = scrape.ingredients()
     try:
         ingredients = parse_ingredients(ingredients)
-    except:
+    except Exception:
         return {'error': {
             'message': f'ingredient parsing failed for: {ingredients}'
         }}, 400
