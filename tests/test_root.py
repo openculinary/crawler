@@ -96,4 +96,4 @@ def test_crawl_response(image_version, scrape_recipe, parse_directions,
 
     assert response.status_code == 200
     assert service_version == 'test_version'
-    assert rs_version == '9.2.1'
+    assert rs_version == '9.2.4'
