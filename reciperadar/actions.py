@@ -5,7 +5,7 @@ def recrawl(url):
     data = {'url': url}
     try:
         resp = requests.post(
-            url='http://localhost:30080/api/recipes/crawl',
+            url='http://localhost:30080/recipes/crawl',
             headers={'Host': 'backend'},
             data=data
         )
@@ -18,7 +18,7 @@ def reindex(recipe_id):
     data = {'recipe_id': recipe_id}
     try:
         resp = requests.post(
-            url='http://localhost:30080/api/recipes/index',
+            url='http://localhost:30080/recipes/index',
             headers={'Host': 'backend'},
             data=data
         )
