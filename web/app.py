@@ -4,6 +4,7 @@ import kubernetes
 from tldextract import TLDExtract
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
+from requests_futures.sessions import FuturesSession
 from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
@@ -35,27 +36,33 @@ requests.sessions.Session.request = request_patch
 app = Flask(__name__)
 
 
-def parse_directions(descriptions):
-    directions = requests.post(
+def parse_directions(session, descriptions):
+    return session.post(
         url='http://direction-parser-service',
         data={'descriptions[]': descriptions},
         proxies={}
-    ).json()
+    )
+
+
+def format_directions(directions):
     return [
         {**{'index': index}, **direction}
-        for index, direction in enumerate(directions)
+        for index, direction in enumerate(directions.result().json())
     ]
 
 
-def parse_ingredients(descriptions):
-    ingredients = requests.post(
+def parse_ingredients(session, descriptions):
+    return session.post(
         url='http://ingredient-parser-service',
         data={'descriptions[]': descriptions},
         proxies={}
-    ).json()
+    )
+
+
+def format_ingredients(ingredients):
     return [
         {**{'index': index}, **ingredient}
-        for index, ingredient in enumerate(ingredients)
+        for index, ingredient in enumerate(ingredients.result().json())
     ]
 
 
@@ -154,10 +161,13 @@ def crawl():
             'message': 'could not find recipe image',
         }}, 404
 
-    directions = parse_directions(scrape.instructions().split('\n'))
-    ingredients = scrape.ingredients()
+    session = FuturesSession()
+    directions = parse_directions(session, scrape.instructions().split('\n'))
+    ingredients = parse_ingredients(session, scrape.ingredients())
+
+    directions = format_directions(directions)
     try:
-        ingredients = parse_ingredients(ingredients)
+        ingredients = format_ingredients(ingredients)
     except Exception:
         return {'error': {
             'message': f'ingredient parsing failed for: {ingredients}'
