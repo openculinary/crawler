@@ -189,7 +189,16 @@ def crawl():
             'message': 'could not find recipe timing info',
         }}, 404
 
-    servings = int(scrape.yields().split(' ')[0] or '1')
+    servings = 1
+    yields = scrape.yields()
+    if yields:
+        tokens = yields.split()
+        try:
+            servings = int(tokens[0])
+        except Exception:
+            return {'error': {
+                'message': f'servings parsing failed for: {yields}',
+            }}, 400
 
     try:
         rating = float(scrape.ratings())
