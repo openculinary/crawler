@@ -54,6 +54,9 @@ def scrape_result():
         def title(self):
             return 'test'
 
+        def author(self):
+            return 'test'
+
         def image(self):
             return 'test.png'
 

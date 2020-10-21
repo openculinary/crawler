@@ -150,6 +150,11 @@ def crawl():
         }}, 501
 
     try:
+        author = scrape.author()
+    except NotImplementedError:
+        author = None
+
+    try:
         scraped_image = scrape.image() or super(type(scrape), scrape).image()
     except NotImplementedError:
         return {'error': {
@@ -204,6 +209,7 @@ def crawl():
             'domain': domain,
             'ingredients': ingredients,
             'directions': directions,
+            'author': author,
             'image_src': urljoin(url, scraped_image),
             'servings': servings,
             'time': time,
