@@ -17,7 +17,6 @@ from recipe_scrapers import (
 
 
 def request_patch(self, *args, **kwargs):
-    kwargs['timeout'] = kwargs.pop('timeout', 5)
     kwargs['verify'] = kwargs.pop('verify', '/etc/ssl/k8s/proxy-cert/ca.crt')
     return self.request_orig(*args, **kwargs)
 
@@ -35,6 +34,7 @@ def parse_directions(descriptions):
     directions = requests.post(
         url='http://direction-parser-service',
         data={'descriptions[]': descriptions},
+        timeout=5,
     ).json()
     return [
         {**{'index': index}, **direction}
@@ -46,6 +46,7 @@ def parse_ingredients(descriptions):
     ingredients = requests.post(
         url='http://ingredient-parser-service',
         data={'descriptions[]': descriptions},
+        timeout=5,
     ).json()
     return [
         {**{'index': index}, **ingredient}
@@ -117,7 +118,7 @@ def crawl():
             }}, 429
 
     try:
-        scrape = scrape_recipe(url, proxies={
+        scrape = scrape_recipe(url, timeout=5, proxies={
             'http': 'http://proxy:3128',
             'https': 'http://proxy:3128',
         })
