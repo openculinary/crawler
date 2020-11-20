@@ -39,6 +39,7 @@ def parse_directions(descriptions):
     directions = requests.post(
         url='http://direction-parser-service',
         data={'descriptions[]': descriptions},
+        proxies={}
     ).json()
     return [
         {**{'index': index}, **direction}
@@ -50,6 +51,7 @@ def parse_ingredients(descriptions):
     ingredients = requests.post(
         url='http://ingredient-parser-service',
         data={'descriptions[]': descriptions},
+        proxies={}
     ).json()
     return [
         {**{'index': index}, **ingredient}
