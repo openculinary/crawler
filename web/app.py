@@ -44,14 +44,14 @@ app = Flask(__name__)
 
 
 def parse_descriptions(service, descriptions):
-    directions = requests.post(
+    entities = requests.post(
         url=f'http://{service}',
         data={'descriptions[]': descriptions},
         proxies={}
     ).json()
     return [
-        {**{'index': index}, **direction}
-        for index, direction in enumerate(directions)
+        {**{'index': index}, **entity}
+        for index, entity in enumerate(entities)
     ]
 
 
