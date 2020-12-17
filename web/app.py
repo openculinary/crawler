@@ -35,27 +35,15 @@ requests.sessions.Session.request = request_patch
 app = Flask(__name__)
 
 
-def parse_directions(descriptions):
+def parse_descriptions(service, descriptions):
     directions = requests.post(
-        url='http://direction-parser-service',
+        url=f'http://{service}',
         data={'descriptions[]': descriptions},
         proxies={}
     ).json()
     return [
         {**{'index': index}, **direction}
         for index, direction in enumerate(directions)
-    ]
-
-
-def parse_ingredients(descriptions):
-    ingredients = requests.post(
-        url='http://ingredient-parser-service',
-        data={'descriptions[]': descriptions},
-        proxies={}
-    ).json()
-    return [
-        {**{'index': index}, **ingredient}
-        for index, ingredient in enumerate(ingredients)
     ]
 
 
@@ -162,10 +150,16 @@ def crawl():
             'message': 'could not find recipe image',
         }}, 404
 
-    directions = parse_directions(scrape.instructions().split('\n'))
+    directions = parse_descriptions(
+        service='direction-parser-service',
+        descriptions=scrape.instructions().split('\n')
+    )
     ingredients = scrape.ingredients()
     try:
-        ingredients = parse_ingredients(ingredients)
+        ingredients = parse_descriptions(
+            service='ingredient-parser-service',
+            descriptions=ingredients
+        )
     except Exception:
         return {'error': {
             'message': f'ingredient parsing failed for: {ingredients}'

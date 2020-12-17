@@ -78,19 +78,20 @@ def scrape_result():
     return ScrapeResult()
 
 
-@patch('web.app.parse_ingredients')
-@patch('web.app.parse_directions')
+@patch('web.app.parse_descriptions')
 @patch('web.app.scrape_recipe')
 @patch('web.app.determine_image_version')
-def test_crawl_response(image_version, scrape_recipe, parse_directions,
-                        parse_ingredients, client, content_url, scrape_result):
+def test_crawl_response(image_version, scrape_recipe, parse_descriptions,
+                        client, content_url, scrape_result):
     # HACK: Ensure that app initialization methods (re)run during this test
     app._got_first_request = False
 
     image_version.return_value = 'test_version'
     scrape_recipe.return_value = scrape_result
-    parse_directions.return_value = ['test direction']
-    parse_ingredients.return_value = ['test ingredient']
+    parse_descriptions.side_effect = [
+        ['test direction'],
+        ['test ingredient'],
+    ]
 
     response = client.post('/crawl', data={'url': content_url})
     metadata = response.json.get('metadata', {})
