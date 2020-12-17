@@ -69,6 +69,15 @@ def scrape_result():
         def ingredients(self):
             return ['test']
 
+        def nutrients(self):
+            return {
+                'calories': '20 cal',
+                'carbohydrateContent': '5 g',
+                'fatContent': '1 g',
+                'fiberContent': '1 g',
+                'proteinContent': '2 g',
+            }
+
         def ratings(self):
             return 5
 
@@ -91,6 +100,13 @@ def test_crawl_response(image_version, scrape_recipe, parse_descriptions,
     parse_descriptions.side_effect = [
         ['test direction'],
         ['test ingredient'],
+        [
+            {'magnitude': 5, 'units': 'g'},
+            {'magnitude': 83.68, 'units': 'J'},
+            {'magnitude': 1, 'units': 'g'},
+            {'magnitude': 1, 'units': 'g'},
+            {'magnitude': 2, 'units': 'g'},
+        ],
     ]
 
     response = client.post('/crawl', data={'url': content_url})
@@ -101,3 +117,8 @@ def test_crawl_response(image_version, scrape_recipe, parse_descriptions,
     assert response.status_code == 200
     assert service_version == 'test_version'
     assert rs_version == '11.0.0'
+
+    nutrition = response.json.get('recipe', {}).get('nutrition')
+    assert nutrition is not None
+    assert nutrition['energy'] == 83.68
+    assert nutrition['energy_units'] == 'J'
