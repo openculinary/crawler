@@ -43,7 +43,7 @@ image:
 	# End: NOTE
 	# buildah config --env PYTHONPATH=/usr/lib/python3.8/site-packages --entrypoint '/srv/.local/bin/pipenv run gunicorn --worker-class gevent web.app:app --bind :8000' $(container)
 	buildah config --cmd '/srv/.local/bin/gunicorn --bind :8000 --worker-class gevent web.app:app' --port 8000 --user gunicorn $(container)
-	buildah commit --squash --rm $(container) ${IMAGE_NAME}:${IMAGE_TAG}
+	buildah commit --quiet --rm --squash $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
 # Virtualenv Makefile pattern derived from https://github.com/bottlepy/bottle/
 venv: venv/.installed requirements.txt requirements-dev.txt
