@@ -17,19 +17,18 @@ deploy:
 image:
 	$(eval container=$(shell buildah from docker.io/library/python:3.8-alpine))
 	buildah copy $(container) 'web' 'web'
-	buildah copy $(container) 'Pipfile'
+	buildah copy $(container) 'requirements.txt'
 	buildah run $(container) -- apk add py3-gevent --
 	buildah run $(container) -- apk add py3-lxml --
 	buildah run $(container) -- adduser -h /srv/ -s /sbin/nologin -D -H gunicorn --
 	buildah run $(container) -- chown gunicorn /srv/ --
-	buildah run --user gunicorn $(container) -- pip install --user pipenv --
 	# Begin: NOTE: These are build-time dependencies required by lxml (for extruct)
 	buildah run $(container) -- apk add gcc --
 	buildah run $(container) -- apk add libxml2-dev --
 	buildah run $(container) -- apk add libxslt-dev --
 	buildah run $(container) -- apk add musl-dev --
 	# End: NOTE
-	buildah run --user gunicorn $(container) -- /srv/.local/bin/pipenv install --skip-lock --
+	buildah run --user gunicorn $(container) -- pip install --no-warn-script-location --progress-bar off --requirement requirements.txt --user --
 	# Begin: HACK: For rootless compatibility across podman and k8s environments, unset file ownership and grant read+exec to binaries
 	buildah run $(container) -- chown -R nobody:nobody /srv/ --
 	buildah run $(container) -- chmod -R a+rx /srv/.local/bin/ --
@@ -41,11 +40,27 @@ image:
 	buildah run $(container) -- apk del libxslt-dev --
 	buildah run $(container) -- apk del musl-dev --
 	# End: NOTE
-	buildah config --port 8000 --user gunicorn --env PYTHONPATH=/usr/lib/python3.8/site-packages --entrypoint '/srv/.local/bin/pipenv run gunicorn --worker-class gevent web.app:app --bind :8000' $(container)
-	buildah commit --squash --rm $(container) ${IMAGE_NAME}:${IMAGE_TAG}
+	buildah config --cmd '/srv/.local/bin/gunicorn --bind :8000 --worker-class gevent web.app:app' --env PYTHONPATH=/usr/lib/python3.8/site-packages --port 8000 --user gunicorn $(container)
+	buildah commit --quiet --rm --squash $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
-lint:
-	pipenv run flake8
+# Virtualenv Makefile pattern derived from https://github.com/bottlepy/bottle/
+venv: venv/.installed requirements.txt requirements-dev.txt
+	venv/bin/pip install --requirement requirements-dev.txt --quiet
+	touch venv
+venv/.installed:
+	python3 -m venv venv
+	venv/bin/pip install pip-tools
+	touch venv/.installed
 
-tests:
-	pipenv run pytest tests
+requirements.txt: requirements.in
+	venv/bin/pip-compile --allow-unsafe --generate-hashes --no-header --quiet requirements.in
+
+requirements-dev.txt: requirements-dev.in
+	venv/bin/pip-compile --allow-unsafe --generate-hashes --no-header --quiet requirements-dev.in
+
+lint: venv
+	venv/bin/flake8 tests
+	venv/bin/flake8 web
+
+tests: venv
+	venv/bin/pytest tests
