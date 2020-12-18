@@ -15,6 +15,14 @@ from recipe_scrapers import (
     WebsiteNotImplementedError,
 )
 
+NUTRITION_SCHEMA_FIELDS = {
+     'carbohydrates': 'carbohydrateContent',
+     'energy': 'calories',
+     'fat': 'fatContent',
+     'fibre': 'fiberContent',
+     'protein': 'proteinContent',
+}
+
 
 def request_patch(self, *args, **kwargs):
     kwargs['proxies'] = kwargs.pop('proxies', {
@@ -188,6 +196,25 @@ def crawl():
             }}, 400
 
     try:
+        nutrients = scrape.nutrients()
+    except NotImplementedError:
+        nutrients = {}
+    nutrients = {
+        field: nutrients[source]
+        for field, source in NUTRITION_SCHEMA_FIELDS.items()
+        if source in nutrients
+    }
+    quantities = parse_descriptions(
+        service='quantity-parser-service',
+        descriptions=nutrients.values(),
+    )
+    nutrition = {}
+    for idx, field in enumerate(nutrients):
+        quantity = quantities[idx]
+        nutrition[f'{field}'] = quantity['magnitude']
+        nutrition[f'{field}_units'] = quantity['units']
+
+    try:
         rating = float(scrape.ratings())
     except NotImplementedError:
         rating = 4.0
@@ -207,6 +234,7 @@ def crawl():
             'directions': directions,
             'author': author,
             'image_src': urljoin(url, scraped_image),
+            'nutrition': nutrition,
             'servings': servings,
             'time': time,
             'rating': rating,

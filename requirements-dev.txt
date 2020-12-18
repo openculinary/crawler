@@ -228,8 +228,8 @@ rdflib==4.2.2 \
     --hash=sha256:58d5994610105a457cff7fdfe3d683d87786c5028a45ae032982498a7e913d6f \
     --hash=sha256:da1df14552555c5c7715d8ce71c08f404c988c58a1ecd38552d0da4fc261280d \
     # via -r requirements.txt, extruct, rdflib-jsonld
-recipe-scrapers==10.1.1 \
-    --hash=sha256:5987efa60f946b7f44e8af14849d2cd7db076f3f6dea0a6c14b89f37c3494e66 \
+recipe-scrapers==11.0.0 \
+    --hash=sha256:c5a43fd577539d953ea9ee821a27631ddba5985e43b7acdf570f3634e468e625 \
     # via -r requirements.txt
 requests-file==1.5.1 \
     --hash=sha256:07d74208d3389d01c38ab89ef403af0cfec63957d53a0081d8eca738d0247d8e \
