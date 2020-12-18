@@ -38,7 +38,7 @@ $ make deploy
 
 ### Initial data load
 
-To crawl and index `openrecipes` from scrath, execute the following commands:
+To crawl and index `openrecipes` from scratch, execute the following commands:
 
 ```sh
 $ cd openrecipes
