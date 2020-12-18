@@ -54,16 +54,16 @@ To recrawl and reindex the entire known `reciperadar` recipe set, execute the fo
 
 ```sh
 $ cd reciperadar
-$ pipenv install
-$ pipenv run python crawl_urls.py --recrawl
+$ make
+$ venv/bin/python crawl_urls.py --recrawl
 ```
 
 To reindex `reciperadar` recipes containing products named `tofu`, execute the following command:
 
 ```sh
 $ cd reciperadar
-$ pipenv install
-$ pipenv run python recipes.py --reindex --where "exists (select * from recipe_ingredients as ri join ingredient_products as ip on ip.ingredient_id = ri.id where ri.recipe_id = recipes.id and ip.product = 'tofu')"
+$ make
+$ venv/bin/python recipes.py --reindex --where "exists (select * from recipe_ingredients as ri join ingredient_products as ip on ip.ingredient_id = ri.id where ri.recipe_id = recipes.id and ip.product = 'tofu')"
 ```
 
 NB: Running either of these commands without the `--reindex` / `--recrawl` argument will run in a 'safe mode' and tell you about the entities which match your query, without performing any actions on them.
