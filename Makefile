@@ -22,7 +22,6 @@ image:
 	buildah run $(container) -- apk add py3-lxml --
 	buildah run $(container) -- adduser -h /srv/ -s /sbin/nologin -D -H gunicorn --
 	buildah run $(container) -- chown gunicorn /srv/ --
-	buildah run --user gunicorn $(container) -- pip install --user pipenv --
 	# Begin: NOTE: These are build-time dependencies required by lxml (for extruct)
 	buildah run $(container) -- apk add gcc --
 	buildah run $(container) -- apk add libxml2-dev --
