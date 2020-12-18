@@ -42,8 +42,8 @@ To crawl and index `openrecipes` from scrath, execute the following commands:
 
 ```sh
 $ cd openrecipes
-$ pipenv install
-$ pipenv run python crawl.py
+$ make
+$ venv/bin/python crawl.py
 ```
 
 NB: This requires you to download the [openrecipes](https://github.com/fictivekin/openrecipes) dataset and extract it to a file named 'recipes.json'
