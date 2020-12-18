@@ -4,12 +4,11 @@ import requests
 
 
 def ingest_url(url):
-    data = {'url': url}
     try:
         resp = requests.post(
             url='http://localhost:30080/api/recipes/crawl',
             headers={'Host': 'backend'},
-            data=data
+            data={'url': url}
         )
         resp.raise_for_status()
     except Exception as e:
