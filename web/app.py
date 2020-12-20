@@ -218,6 +218,7 @@ def crawl():
         quantity = quantities[idx]
         nutrition[f'{field}'] = quantity['magnitude']
         nutrition[f'{field}_units'] = quantity['units']
+    nutrition = nutrition or None
 
     try:
         rating = float(scrape.ratings())
