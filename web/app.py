@@ -8,8 +8,9 @@ from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
 
-from recipe_scrapers._abstract import HEADERS
 from recipe_scrapers.__version__ import __version__ as rs_version
+from recipe_scrapers._abstract import HEADERS
+from recipe_scrapers._utils import get_yields
 from recipe_scrapers import (
     scrape_me as scrape_recipe,
     WebsiteNotImplementedError,
@@ -189,6 +190,8 @@ def crawl():
     servings = 1
     yields = scrape.yields()
     if yields:
+        if not yields[0].isnumeric():
+            yields = get_yields(yields)
         tokens = yields.split()
         try:
             servings = int(tokens[0])

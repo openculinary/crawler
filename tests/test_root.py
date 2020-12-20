@@ -82,7 +82,7 @@ def scrape_result():
             return 5
 
         def yields(self):
-            return '1'
+            return 'Makes 2'
 
     return ScrapeResult()
 
