@@ -145,6 +145,8 @@ def crawl():
         author = scrape.author()
     except NotImplementedError:
         author = None
+    if isinstance(author, list):
+        author = ', '.join(author)
 
     try:
         scraped_image = scrape.image() or super(type(scrape), scrape).image()
