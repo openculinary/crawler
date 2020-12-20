@@ -195,6 +195,8 @@ def crawl():
         tokens = yields.split()
         try:
             servings = int(tokens[0])
+            if servings == 0:
+                raise ValueError
         except Exception:
             return {'error': {
                 'message': f'servings parsing failed for: {yields}',
