@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask import Flask, request
 import kubernetes
-from tldextract import TLDExtract
+from tld import get_tld
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
 from socket import gethostname
@@ -56,13 +56,12 @@ def parse_descriptions(service, descriptions):
     ]
 
 
-tldextract = TLDExtract(suffix_list_urls=None)
 domain_backoffs = {}
 
 
 def get_domain(url):
-    url_info = tldextract(url)
-    return f'{url_info.domain}.{url_info.suffix}'
+    url_info = get_tld(url, as_object=True, search_private=False)
+    return url_info.fld
 
 
 @app.before_first_request
