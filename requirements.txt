@@ -19,9 +19,9 @@ click==7.1.2 \
     --hash=sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a \
     --hash=sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc \
     # via flask
-extruct==0.11.0 \
-    --hash=sha256:44da685e7638509dc8d86427cdc72b5bbe00a8bc6527e0d7219710b97b55ca55 \
-    --hash=sha256:806e47214b8478d7a357f1dc6c63b56a8ce1796ed28ded3001b0a6287dbf4315 \
+extruct==0.12.0 \
+    --hash=sha256:42c6c9f50b00aa6c17b5c26b5f1b3a337ebc27b427fafc3714f34ce3bbb16c2f \
+    --hash=sha256:d4a68bb79d1b85ff36d603a42c2666888bb480191a399a659d9daaf735358276 \
     # via recipe-scrapers
 flask==1.1.2 \
     --hash=sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060 \
@@ -42,7 +42,7 @@ html-text==0.5.2 \
 html5lib==1.1 \
     --hash=sha256:0d78f8fde1c230e99fe37986a60526d7049ed4bf8a9fadbad5f00e22e58e041d \
     --hash=sha256:b2e5b40261e20f354d198eae92afc10d750afb487ed5e50f9c4eaf07c184146f \
-    # via mf2py
+    # via mf2py, pyrdfa3
 idna==2.10 \
     --hash=sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6 \
     --hash=sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0 \
@@ -162,6 +162,10 @@ pyparsing==2.4.7 \
     --hash=sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1 \
     --hash=sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b \
     # via rdflib
+pyrdfa3==3.5.3 \
+    --hash=sha256:157663a92b87df345b6f69bde235dff5f797891608e12fe1e4fa8dad687131ae \
+    --hash=sha256:4da7ed49e8f524b573ed67e4f7bc7f403bff3be00546d7438fe263c924a91ccf \
+    # via extruct
 python-dateutil==2.8.1 \
     --hash=sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c \
     --hash=sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a \
@@ -184,10 +188,10 @@ pyyaml==5.3.1 \
 rdflib-jsonld==0.5.0 \
     --hash=sha256:4f7d55326405071c7bce9acf5484643bcb984eadb84a6503053367da207105ed \
     # via extruct
-rdflib==4.2.2 \
-    --hash=sha256:58d5994610105a457cff7fdfe3d683d87786c5028a45ae032982498a7e913d6f \
-    --hash=sha256:da1df14552555c5c7715d8ce71c08f404c988c58a1ecd38552d0da4fc261280d \
-    # via extruct, rdflib-jsonld
+rdflib==5.0.0 \
+    --hash=sha256:78149dd49d385efec3b3adfbd61c87afaf1281c30d3fcaf1b323b34f603fb155 \
+    --hash=sha256:88208ea971a87886d60ae2b1a4b2cdc263527af0454c422118d43fe64b357877 \
+    # via extruct, pyrdfa3, rdflib-jsonld
 recipe-scrapers==11.0.0 \
     --hash=sha256:c5a43fd577539d953ea9ee821a27631ddba5985e43b7acdf570f3634e468e625 \
     # via -r requirements.in
@@ -210,7 +214,7 @@ rsa==4.6 \
 six==1.15.0 \
     --hash=sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259 \
     --hash=sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced \
-    # via extruct, google-auth, html5lib, isodate, kubernetes, language-tags, python-dateutil, requests-file, w3lib, websocket-client
+    # via extruct, google-auth, html5lib, isodate, kubernetes, language-tags, python-dateutil, rdflib, requests-file, w3lib, websocket-client
 soupsieve==2.1 \
     --hash=sha256:4bb21a6ee4707bf43b61230e80740e71bfe56e55d1f1f50924b087bb2975c851 \
     --hash=sha256:6dc52924dc0bc710a5d16794e6b3480b2c7c08b07729505feab2b2c16661ff6e \
