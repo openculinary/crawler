@@ -46,7 +46,7 @@ html5lib==1.1 \
 idna==2.10 \
     --hash=sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6 \
     --hash=sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0 \
-    # via requests, tldextract
+    # via requests
 isodate==0.6.0 \
     --hash=sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8 \
     --hash=sha256:aa4d33c06640f5352aca96e4b81afd8ab3b47337cc12089822d6f322ac772c81 \
@@ -192,13 +192,9 @@ rdflib==5.0.0 \
     --hash=sha256:78149dd49d385efec3b3adfbd61c87afaf1281c30d3fcaf1b323b34f603fb155 \
     --hash=sha256:88208ea971a87886d60ae2b1a4b2cdc263527af0454c422118d43fe64b357877 \
     # via extruct, pyrdfa3, rdflib-jsonld
-recipe-scrapers==11.0.0 \
-    --hash=sha256:c5a43fd577539d953ea9ee821a27631ddba5985e43b7acdf570f3634e468e625 \
+recipe-scrapers==12.0.0 \
+    --hash=sha256:8e516384f578974f7d7f2e29a5a532abf04aa088747de8891fd83d98fd7d193b \
     # via -r requirements.in
-requests-file==1.5.1 \
-    --hash=sha256:07d74208d3389d01c38ab89ef403af0cfec63957d53a0081d8eca738d0247d8e \
-    --hash=sha256:dfe5dae75c12481f68ba353183c53a65e6044c923e64c24b2209f6c7570ca953 \
-    # via tldextract
 requests-oauthlib==1.3.0 \
     --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
     --hash=sha256:b4261601a71fd721a8bd6d7aa1cc1d6a8a93b4a9f5e96626f8e4d91e8beeaa6a \
@@ -206,7 +202,7 @@ requests-oauthlib==1.3.0 \
 requests==2.25.1 \
     --hash=sha256:27973dd4a904a4f13b263a19c866c13b92a39ed1c964655f025f3f8d3d75b804 \
     --hash=sha256:c210084e36a42ae6b9219e00e48287def368a26d03a048ddad7bfee44f75871e \
-    # via -r requirements.in, kubernetes, mf2py, recipe-scrapers, requests-file, requests-oauthlib, tldextract
+    # via -r requirements.in, kubernetes, mf2py, recipe-scrapers, requests-oauthlib
 rsa==4.6 \
     --hash=sha256:109ea5a66744dd859bf16fe904b8d8b627adafb9408753161e766a92e7d681fa \
     --hash=sha256:6166864e23d6b5195a5cfed6cd9fed0fe774e226d8f854fcb23b7bbef0350233 \
@@ -214,7 +210,7 @@ rsa==4.6 \
 six==1.15.0 \
     --hash=sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259 \
     --hash=sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced \
-    # via extruct, google-auth, html5lib, isodate, kubernetes, language-tags, python-dateutil, rdflib, requests-file, w3lib, websocket-client
+    # via extruct, google-auth, html5lib, isodate, kubernetes, language-tags, python-dateutil, rdflib, w3lib, websocket-client
 soupsieve==2.1 \
     --hash=sha256:4bb21a6ee4707bf43b61230e80740e71bfe56e55d1f1f50924b087bb2975c851 \
     --hash=sha256:6dc52924dc0bc710a5d16794e6b3480b2c7c08b07729505feab2b2c16661ff6e \
@@ -226,11 +222,7 @@ tld==0.12.3 \
     --hash=sha256:9891e6b405f8e2367dcb83009aa88babfd2ff3cd29e11cca05479190391a0553 \
     --hash=sha256:c34408bbbb78434df66bb1937c3d3f6e91ffc0a3043c5e7e7f5037a0bbb293d2 \
     --hash=sha256:cd7746e80881266743c253a1cc83a457e8c7ba135f8573e62c876307633fe236 \
-    # via -r requirements.in
-tldextract==2.2.2 \
-    --hash=sha256:16b2f7e81d89c2a5a914d25bdbddd3932c31a6b510db886c3ce0764a195c0ee7 \
-    --hash=sha256:9aa21a1f7827df4209e242ec4fc2293af5940ec730cde46ea80f66ed97bfc808 \
-    # via recipe-scrapers
+    # via -r requirements.in, recipe-scrapers
 urllib3==1.26.2 \
     --hash=sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08 \
     --hash=sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473 \
@@ -256,4 +248,4 @@ werkzeug==1.0.1 \
 setuptools==51.1.0 \
     --hash=sha256:12b5544f6f31292b4cb4490d608baebb0583d3702e05cf569dbd5993714aa5ae \
     --hash=sha256:b4f6f2e65bbdb66452f6f94da46a436da962da3ec1f8a412fdba3bcd4fdc4eb7 \
-    # via google-auth, gunicorn, kubernetes, tldextract
+    # via google-auth, gunicorn, kubernetes
