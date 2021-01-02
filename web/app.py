@@ -104,7 +104,7 @@ def resolve():
         # HTTP response; this avoids a second request being made by the scraper
         # library.  There should be a neater way to achieve this.
         scrape = scraper(url=content, test=True)
-        canonical_url = scrape.canonical_url
+        canonical_url = scrape.canonical_url()
 
     return {
         'metadata': {
