@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
+from socket import gethostname
+from time import sleep
+from urllib.parse import urljoin
+
 from flask import Flask, request
 import kubernetes
 from tld import get_tld
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
-from socket import gethostname
-from time import sleep
-from urllib.parse import urljoin
 
 from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._abstract import HEADERS
