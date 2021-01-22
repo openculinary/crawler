@@ -302,8 +302,9 @@ rdflib==5.0.0 \
     #   extruct
     #   pyrdfa3
     #   rdflib-jsonld
-recipe-scrapers==12.0.2 \
-    --hash=sha256:9abb9ed937848052eea5b4dd6edc53c62a25018d2c05aabaedbfb111f216e034
+recipe-scrapers==12.0.3 \
+    --hash=sha256:79b6f202aef4b2b3f94f36a2b68ab8d420bd7fbf43f5e91baa7b97e67e168a5b \
+    --hash=sha256:a1922b495b1b56e40112935b413ebeeb3e2d9511cf4e67a7103128df96e53576
     # via -r requirements.txt
 requests-oauthlib==1.3.0 \
     --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
