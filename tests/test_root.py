@@ -116,7 +116,7 @@ def test_crawl_response(image_version, scrape_recipe, parse_descriptions,
 
     assert response.status_code == 200
     assert service_version == 'test_version'
-    assert rs_version == '12.0.4'
+    assert rs_version == '12.0.5'
 
     nutrition = response.json.get('recipe', {}).get('nutrition')
     assert nutrition is not None
