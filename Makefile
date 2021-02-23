@@ -18,7 +18,6 @@ image:
 	$(eval container=$(shell buildah from docker.io/library/python:3.9-alpine))
 	buildah copy $(container) 'web' 'web'
 	buildah copy $(container) 'requirements.txt'
-	buildah run $(container) -- apk add py3-gevent --
 	buildah run $(container) -- apk add py3-lxml --
 	buildah run $(container) -- adduser -h /srv/ -s /sbin/nologin -D -H gunicorn --
 	buildah run $(container) -- chown gunicorn /srv/ --
@@ -40,7 +39,7 @@ image:
 	buildah run $(container) -- apk del libxslt-dev --
 	buildah run $(container) -- apk del musl-dev --
 	# End: NOTE
-	buildah config --cmd '/srv/.local/bin/gunicorn --bind :8000 --worker-class gevent web.app:app' --env PYTHONPATH=/usr/lib/python3.8/site-packages --port 8000 --user gunicorn $(container)
+	buildah config --cmd '/srv/.local/bin/gunicorn --bind :8000 web.app:app' --port 8000 --user gunicorn $(container)
 	buildah commit --quiet --rm --squash $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
 # Virtualenv Makefile pattern derived from https://github.com/bottlepy/bottle/
