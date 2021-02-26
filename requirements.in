@@ -1,6 +1,6 @@
 flask==1.1.2
 gunicorn==20.0.4
 kubernetes==12.0.1
-recipe-scrapers==12.1.5
+recipe-scrapers==12.2.0
 requests==2.25.1
 tld==0.12.5
