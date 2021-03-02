@@ -139,3 +139,25 @@ def test_crawl_response(
     assert nutrition is not None
     assert nutrition['energy'] == 83.68
     assert nutrition['energy_units'] == 'J'
+
+
+@patch('web.app.scrape_recipe')
+@patch('web.app.can_fetch')
+def test_robots_txt_crawl_filtering(can_fetch, scrape_recipe, client):
+    can_fetch.return_value = False
+
+    response = client.post('/crawl', data={'url': content_url})
+
+    assert response.status_code == 403
+    assert not scrape_recipe.called
+
+
+@patch('requests.get')
+@patch('web.app.can_fetch')
+def test_robots_txt_resolution_filtering(can_fetch, get, client):
+    can_fetch.return_value = False
+
+    response = client.post('/resolve', data={'url': content_url})
+
+    assert response.status_code == 403
+    assert not get.called
