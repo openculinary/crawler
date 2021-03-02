@@ -31,7 +31,15 @@ def test_url_resolution_validation(image_version, client):
 
 @responses.activate
 @patch('web.app.determine_image_version')
-def test_origin_url_resolution(image_version, client, origin_url, content_url):
+@patch('web.app.can_fetch')
+def test_origin_url_resolution(
+    can_fetch,
+    image_version,
+    client,
+    origin_url,
+    content_url,
+):
+    can_fetch.return_value = True
     image_version.return_value = 'test_version'
     redir_headers = {'Location': content_url}
     responses.add(responses.GET, origin_url, status=301, headers=redir_headers)
@@ -90,11 +98,20 @@ def scrape_result():
 @patch('web.app.parse_descriptions')
 @patch('web.app.scrape_recipe')
 @patch('web.app.determine_image_version')
-def test_crawl_response(image_version, scrape_recipe, parse_descriptions,
-                        client, content_url, scrape_result):
+@patch('web.app.can_fetch')
+def test_crawl_response(
+    can_fetch,
+    image_version,
+    scrape_recipe,
+    parse_descriptions,
+    client,
+    content_url,
+    scrape_result,
+):
     # HACK: Ensure that app initialization methods (re)run during this test
     app._got_first_request = False
 
+    can_fetch.return_value = True
     image_version.return_value = 'test_version'
     scrape_recipe.return_value = scrape_result
     parse_descriptions.side_effect = [

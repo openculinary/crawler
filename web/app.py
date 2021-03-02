@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
+from urllib.robotparser import RobotFileParser
 
 from flask import Flask, request
 import kubernetes
@@ -58,11 +59,27 @@ def parse_descriptions(service, descriptions):
 
 
 domain_backoffs = {}
+domain_robot_parsers = {}
 
 
 def get_domain(url):
     url_info = get_tld(url, as_object=True, search_private=False)
     return url_info.fld
+
+
+def get_robot_parser(url):
+    domain = get_domain(url)
+    if domain not in domain_robot_parsers:
+        robot_parser = RobotFileParser(urljoin(url, '/robots.txt'))
+        robot_parser.read()
+        domain_robot_parsers[domain] = robot_parser
+    return domain_robot_parsers[domain]
+
+
+def can_fetch(url):
+    robot_parser = get_robot_parser(url)
+    user_agent = HEADERS.get('User-Agent', '*')
+    return robot_parser.can_fetch(user_agent, url)
 
 
 @app.before_first_request
@@ -87,6 +104,11 @@ def resolve():
             'message': 'url parameter is required',
         }}, 400
 
+    if not can_fetch(url):
+        return {'error': {
+            'message': f'crawling {url} disallowed by robots.txt',
+        }}, 403
+
     response = requests.get(url, headers=HEADERS)
     return {
         'metadata': {
@@ -106,6 +128,11 @@ def crawl():
         return {'error': {
             'message': 'url parameter is required',
         }}, 400
+
+    if not can_fetch(url):
+        return {'error': {
+            'message': f'crawling {url} disallowed by robots.txt',
+        }}, 403
 
     domain = get_domain(url)
     if domain in domain_backoffs:
