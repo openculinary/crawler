@@ -93,8 +93,8 @@ def resolve():
     canonical_url = None
     response = requests.get(url, headers=HEADERS)
 
-    # TODO: what is our strategy regarding domain redirects and selection of
-    # scrapers?  Should it use the request and/or response domain(s)?
+    # Select a scraper based on the response URL.
+    # The response URL's domain should correlate with the format of the response body.
     response_domain = scraper_domain(response.url)
     if response.ok and response_domain in SCRAPERS:
         content = StringIO(response.text)
