@@ -31,9 +31,9 @@ flask==1.1.2 \
     --hash=sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060 \
     --hash=sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557
     # via -r requirements.in
-google-auth==1.27.0 \
-    --hash=sha256:d3640ea61ee025d5af00e3ffd82ba0a06dd99724adaf50bdd52f49daf29f3f65 \
-    --hash=sha256:da5218cbf33b8461d7661d6b4ad91c12c0107e2767904d5e3ae6408031d5463e
+google-auth==1.27.1 \
+    --hash=sha256:63a5636d7eacfe6ef5b7e36e112b3149fa1c5b5ad77dd6df54910459bcd6b89f \
+    --hash=sha256:d8958af6968e4ecd599f82357ebcfeb126f826ed0656126ad68416f810f7531e
     # via kubernetes
 gunicorn==20.0.4 \
     --hash=sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626 \
@@ -249,9 +249,9 @@ requests==2.25.1 \
     #   mf2py
     #   recipe-scrapers
     #   requests-oauthlib
-rsa==4.7.1 \
-    --hash=sha256:74ba16e7ef58920b80b5c54c1c1066d391a2c1e812c466773f74c634eb12253b \
-    --hash=sha256:9d74d1ff850745c9802cd6b53382bfeec7f6dbe4e26ee2759241ed1e7b0ecf5d
+rsa==4.7.2 \
+    --hash=sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2 \
+    --hash=sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9
     # via google-auth
 six==1.15.0 \
     --hash=sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259 \
@@ -296,9 +296,9 @@ webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
     --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
     # via html5lib
-websocket-client==0.57.0 \
-    --hash=sha256:0fc45c961324d79c781bab301359d5a1b00b13ad1b10415a4780229ef71a5549 \
-    --hash=sha256:d735b91d6d1692a6a181f2a8c9e0238e5f6373356f561bb9dc4c7af36f452010
+websocket-client==0.58.0 \
+    --hash=sha256:44b5df8f08c74c3d82d28100fdc81f4536809ce98a17f0757557813275fbb663 \
+    --hash=sha256:63509b41d158ae5b7f67eb4ad20fecbb4eee99434e73e140354dc3ff8e09716f
     # via kubernetes
 werkzeug==1.0.1 \
     --hash=sha256:2de2a5db0baeae7b2d2664949077c2ac63fbd16d98da0ff71837f7d1dea3fd43 \
@@ -306,9 +306,9 @@ werkzeug==1.0.1 \
     # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==53.0.0 \
-    --hash=sha256:0e86620d658c5ca87a71a283bd308fcaeb4c33e17792ef6f081aec17c171347f \
-    --hash=sha256:1b18ef17d74ba97ac9c0e4b4265f123f07a8ae85d9cd093949fa056d3eeeead5
+setuptools==54.0.0 \
+    --hash=sha256:34efee89c4c879204f5739ec6d9d3635195b0b7d2b51e25c9261a327367ec5ff \
+    --hash=sha256:d85b57c41e88b69ab87065c964134ec85b7573cbab0fdaa7ef32330ed764600a
     # via
     #   google-auth
     #   gunicorn
