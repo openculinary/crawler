@@ -94,7 +94,7 @@ def resolve():
     response = requests.get(url, headers=HEADERS)
 
     # Select a scraper based on the response URL.
-    # The response URL's domain should correlate with the format of the response body.
+    # The response URL's domain should correlate with the response body format.
     response_domain = scraper_domain(response.url)
     if response.ok and response_domain in SCRAPERS:
         content = StringIO(response.text)
