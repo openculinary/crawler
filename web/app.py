@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from io import StringIO
 from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
@@ -13,7 +14,9 @@ from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._abstract import HEADERS
 from recipe_scrapers._utils import get_yields
 from recipe_scrapers import (
+    get_domain as scraper_domain,
     scrape_me as scrape_recipe,
+    SCRAPERS,
     WebsiteNotImplementedError,
 )
 
@@ -87,14 +90,29 @@ def resolve():
             'message': 'url parameter is required',
         }}, 400
 
+    canonical_url = None
     response = requests.get(url, headers=HEADERS)
+
+    # Select a scraper based on the response URL.
+    # The response URL's domain should correlate with the format of the response body.
+    response_domain = scraper_domain(response.url)
+    if response.ok and response_domain in SCRAPERS:
+        content = StringIO(response.text)
+        scraper = SCRAPERS[response_domain]
+
+        # TODO: 'test' mode is used here to read scrape content from the prior
+        # HTTP response; this avoids a second request being made by the scraper
+        # library.  There should be a neater way to achieve this.
+        scrape = scraper(url=content, test=True)
+        canonical_url = scrape.canonical_url()
+
     return {
         'metadata': {
             'service_version': app.image_version,
             'recipe_scrapers_version': rs_version,
         },
         'url': {
-            'resolves_to': response.url
+            'resolves_to': canonical_url or response.url
         },
     }
 
