@@ -15,7 +15,7 @@ deploy:
 	kubectl set image deployments -l app=${SERVICE} ${SERVICE}=${IMAGE_NAME}:${IMAGE_TAG}
 
 image:
-	$(eval container=$(shell buildah from python:3.9-alpine))
+	$(eval container=$(shell buildah --storage-opt overlay.mount_program=/usr/bin/fuse-overlayfs from docker.io/library/python:3.9-alpine))
 	buildah copy $(container) 'web' 'web'
 	buildah copy $(container) 'requirements.txt'
 	buildah run $(container) -- apk add py3-lxml --
@@ -40,7 +40,7 @@ image:
 	buildah run $(container) -- apk del musl-dev --
 	# End: NOTE
 	buildah config --cmd '/srv/.local/bin/gunicorn --bind :8000 web.app:app' --port 8000 --user gunicorn $(container)
-	buildah commit --quiet --rm --squash $(container) ${IMAGE_NAME}:${IMAGE_TAG}
+	buildah commit --quiet --rm --squash --storage-opt overlay.mount_program=/usr/bin/fuse-overlayfs $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
 # Virtualenv Makefile pattern derived from https://github.com/bottlepy/bottle/
 venv: venv/.installed requirements.txt requirements-dev.txt
