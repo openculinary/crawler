@@ -15,7 +15,7 @@ from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._abstract import HEADERS
 from recipe_scrapers._utils import get_yields
 from recipe_scrapers import (
-    get_domain as scraper_domain,
+    get_host_name as scraper_domain,
     scrape_me as scrape_recipe,
     SCRAPERS,
     WebsiteNotImplementedError,
