@@ -41,9 +41,9 @@ extruct==0.12.0 \
     # via
     #   -r requirements.txt
     #   recipe-scrapers
-flake8==3.9.1 \
-    --hash=sha256:1aa8990be1e689d96c745c5682b687ea49f2e05a443aff1f8251092b0014e378 \
-    --hash=sha256:3b9f848952dddccf635be78098ca75010f073bfe14d2c6bda867154bea728d2a
+flake8==3.9.2 \
+    --hash=sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b \
+    --hash=sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907
     # via -r requirements-dev.in
 flask==1.1.2 \
     --hash=sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060 \
@@ -333,9 +333,9 @@ rdflib==5.0.0 \
     #   extruct
     #   pyrdfa3
     #   rdflib-jsonld
-recipe-scrapers==13.2.1 \
-    --hash=sha256:1bef944f85509d5e618565cf3a8f4f68fe0d190bf3624764c85834fb44a6fbe6 \
-    --hash=sha256:f3620d5a720c4e6b69341b2daf34dbb5c81ee61b1060f504224106da4b6465c7
+recipe-scrapers==13.2.3 \
+    --hash=sha256:285894f9a4a066a9ad1a756b18171f4a5e62906b841fe3d9cc90e0d07f4f019c \
+    --hash=sha256:7598cb4bb6de5bdcefef198b740a5dc4079a1cfeb8c7edb1b49a773c2d5e4865
     # via -r requirements.txt
 requests-oauthlib==1.3.0 \
     --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
@@ -363,9 +363,9 @@ rsa==4.7.2 \
     # via
     #   -r requirements.txt
     #   google-auth
-six==1.15.0 \
-    --hash=sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259 \
-    --hash=sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced
+six==1.16.0 \
+    --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
+    --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254
     # via
     #   -r requirements.txt
     #   extruct
@@ -417,9 +417,9 @@ webencodings==0.5.1 \
     # via
     #   -r requirements.txt
     #   html5lib
-websocket-client==0.58.0 \
-    --hash=sha256:44b5df8f08c74c3d82d28100fdc81f4536809ce98a17f0757557813275fbb663 \
-    --hash=sha256:63509b41d158ae5b7f67eb4ad20fecbb4eee99434e73e140354dc3ff8e09716f
+websocket-client==0.59.0 \
+    --hash=sha256:2e50d26ca593f70aba7b13a489435ef88b8fc3b5c5643c1ce8808ff9b40f0b32 \
+    --hash=sha256:d376bd60eace9d437ab6d7ee16f4ab4e821c9dae591e1b783c58ebd8aaf80c5c
     # via
     #   -r requirements.txt
     #   kubernetes
@@ -431,9 +431,9 @@ werkzeug==1.0.1 \
     #   flask
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==56.0.0 \
-    --hash=sha256:08a1c0f99455307c48690f00d5c2ac2c1ccfab04df00454fef854ec145b81302 \
-    --hash=sha256:7430499900e443375ba9449a9cc5d78506b801e929fef4a186496012f93683b5
+setuptools==56.2.0 \
+    --hash=sha256:7bb5652625e94e73b9358b7ed8c6431b732e80cf31f4e0972294c64f0e5b849e \
+    --hash=sha256:bc30153eec47d82f20c6f5e1a13d4ee725c6deb7013a67557f89bfe5d25235c4
     # via
     #   -r requirements.txt
     #   google-auth
