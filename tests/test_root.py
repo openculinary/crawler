@@ -133,7 +133,7 @@ def test_crawl_response(
 
     assert response.status_code == 200
     assert service_version == 'test_version'
-    assert rs_version == '13.2.3'
+    assert rs_version == '13.2.7'
 
     nutrition = response.json.get('recipe', {}).get('nutrition')
     assert nutrition is not None
