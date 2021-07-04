@@ -225,12 +225,6 @@ py==1.10.0 \
     --hash=sha256:21b81bda15b66ef5e1a777a21c4dcd9c20ad3efd0b3f817e7a809035269e1bd3 \
     --hash=sha256:3b80836aa6d1feeaa108e046da6423ab8f6ceda6468545ae8d02d9d58d18818a
     # via pytest
-pyasn1-modules==0.2.8 \
-    --hash=sha256:905f84c712230b2c592c19470d3ca8d552de726050d1d1716282a1f6146be65e \
-    --hash=sha256:a50b808ffeb97cb3601dd25981f6b016cbb3d31fbf57a8b8a87428e6158d0c74
-    # via
-    #   -r requirements.txt
-    #   google-auth
 pyasn1==0.4.8 \
     --hash=sha256:39c7e2ec30515947ff4e87fb6f456dfc6e84857d34be479c9d4a4ba4bf46aa5d \
     --hash=sha256:aef77c9fb94a3ac588e87841208bdec464471d9871bd5050a287cc9a475cd0ba
@@ -238,6 +232,12 @@ pyasn1==0.4.8 \
     #   -r requirements.txt
     #   pyasn1-modules
     #   rsa
+pyasn1-modules==0.2.8 \
+    --hash=sha256:905f84c712230b2c592c19470d3ca8d552de726050d1d1716282a1f6146be65e \
+    --hash=sha256:a50b808ffeb97cb3601dd25981f6b016cbb3d31fbf57a8b8a87428e6158d0c74
+    # via
+    #   -r requirements.txt
+    #   google-auth
 pycodestyle==2.7.0 \
     --hash=sha256:514f76d918fcc0b55c6680472f0a37970994e07bbb80725808c17089be302068 \
     --hash=sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef
@@ -302,11 +302,6 @@ pyyaml==5.4.1 \
     # via
     #   -r requirements.txt
     #   kubernetes
-rdflib-jsonld==0.5.0 \
-    --hash=sha256:4f7d55326405071c7bce9acf5484643bcb984eadb84a6503053367da207105ed
-    # via
-    #   -r requirements.txt
-    #   extruct
 rdflib==5.0.0 \
     --hash=sha256:78149dd49d385efec3b3adfbd61c87afaf1281c30d3fcaf1b323b34f603fb155 \
     --hash=sha256:88208ea971a87886d60ae2b1a4b2cdc263527af0454c422118d43fe64b357877
@@ -315,16 +310,15 @@ rdflib==5.0.0 \
     #   extruct
     #   pyrdfa3
     #   rdflib-jsonld
-recipe-scrapers==13.2.7 \
-    --hash=sha256:e03d20a5c39f9c3dcb0185be1b6480ac0a086900d6aacf1699c77fa090944901 \
-    --hash=sha256:e5b2a251bbba2ef319ce32a10c4073b23f483f0ee2db83da543204549b06dffe
-    # via -r requirements.txt
-requests-oauthlib==1.3.0 \
-    --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
-    --hash=sha256:b4261601a71fd721a8bd6d7aa1cc1d6a8a93b4a9f5e96626f8e4d91e8beeaa6a
+rdflib-jsonld==0.5.0 \
+    --hash=sha256:4f7d55326405071c7bce9acf5484643bcb984eadb84a6503053367da207105ed
     # via
     #   -r requirements.txt
-    #   kubernetes
+    #   extruct
+recipe-scrapers==13.3.0 \
+    --hash=sha256:1132c01edec7f76e2dadf025927a33fcd781db2f075216d58792831a383a42d5 \
+    --hash=sha256:47a78344615f16493fdd1534dcc932cb18f6b3720aeebf69c46ac72184e39815
+    # via -r requirements.txt
 requests==2.25.1 \
     --hash=sha256:27973dd4a904a4f13b263a19c866c13b92a39ed1c964655f025f3f8d3d75b804 \
     --hash=sha256:c210084e36a42ae6b9219e00e48287def368a26d03a048ddad7bfee44f75871e
@@ -335,6 +329,12 @@ requests==2.25.1 \
     #   recipe-scrapers
     #   requests-oauthlib
     #   responses
+requests-oauthlib==1.3.0 \
+    --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
+    --hash=sha256:b4261601a71fd721a8bd6d7aa1cc1d6a8a93b4a9f5e96626f8e4d91e8beeaa6a
+    # via
+    #   -r requirements.txt
+    #   kubernetes
 responses==0.13.3 \
     --hash=sha256:18a5b88eb24143adbf2b4100f328a2f5bfa72fbdacf12d97d41f07c26c45553d \
     --hash=sha256:b54067596f331786f5ed094ff21e8d79e6a1c68ef625180a7d34808d6f36c11b
