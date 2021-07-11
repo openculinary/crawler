@@ -274,7 +274,7 @@ def crawl():
 
     try:
         rating = float(scrape.ratings())
-    except NotImplementedError:
+    except Exception:
         rating = 4.0
     rating = 3.0 if not 1 <= rating <= 5 else rating
     rating = 4.75 if rating == 5.0 else rating
