@@ -20,6 +20,7 @@ from recipe_scrapers import (
     SCRAPERS,
     WebsiteNotImplementedError,
 )
+from recipe_scrapers.settings import settings as scraper_settings
 
 NUTRITION_SCHEMA_FIELDS = {
      'carbohydrates': 'carbohydrateContent',
@@ -125,7 +126,11 @@ def resolve():
         # TODO: 'test' mode is used here to read scrape content from the prior
         # HTTP response; this avoids a second request being made by the scraper
         # library.  There should be a neater way to achieve this.
-        scrape = scraper(url=content, test=True)
+        orig_test_mode = scraper_settings.TEST_MODE
+        scraper_settings.TEST_MODE = True
+        scrape = scraper(url=content)
+        scraper_settings.TEST_MODE = orig_test_mode
+
         canonical_url = scrape.canonical_url()
 
     return {
