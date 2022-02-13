@@ -4,9 +4,9 @@ beautifulsoup4==4.10.0 \
     # via
     #   mf2py
     #   recipe-scrapers
-cachetools==4.2.4 \
-    --hash=sha256:89ea6f1b638d5a73a4f9226be57ac5e4f399d22770b92355f92dcb0f7f001693 \
-    --hash=sha256:92971d3cb7d2a97efff7c7bb1657f21a8f5fb309a37530537c71b1774189f2d1
+cachetools==5.0.0 \
+    --hash=sha256:486471dfa8799eb7ec503a8059e263db000cdda20075ce5e48903087f79d5fd6 \
+    --hash=sha256:8fecd4203a38af17928be7b90689d8083603073622229ca7077b72d8e5a976e4
     # via google-auth
 certifi==2021.10.8 \
     --hash=sha256:78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872 \
@@ -14,9 +14,9 @@ certifi==2021.10.8 \
     # via
     #   kubernetes
     #   requests
-charset-normalizer==2.0.10 \
-    --hash=sha256:876d180e9d7432c5d1dfd4c5d26b72f099d503e8fcc0feb7532c9289be60fcbd \
-    --hash=sha256:cb957888737fc0bbcd78e3df769addb41fd1ff8cf950dc9e7ad7793f1bf44455
+charset-normalizer==2.0.12 \
+    --hash=sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597 \
+    --hash=sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df
     # via requests
 click==8.0.3 \
     --hash=sha256:353f466495adaeb40b6b5f592f9f91cb22372351c84caeb068132442a4518ef3 \
@@ -30,9 +30,9 @@ flask==2.0.2 \
     --hash=sha256:7b2fb8e934ddd50731893bdcdb00fc8c0315916f9fcd50d22c7cc1a95ab634e2 \
     --hash=sha256:cb90f62f1d8e4dc4621f52106613488b5ba826b2e1e10a33eac92f723093ab6a
     # via -r requirements.in
-google-auth==2.3.3 \
-    --hash=sha256:a348a50b027679cb7dae98043ac8dbcc1d7951f06d8387496071a1e05a2465c0 \
-    --hash=sha256:d83570a664c10b97a1dc6f8df87e5fdfff012f48f62be131e449c20dfc32630e
+google-auth==2.6.0 \
+    --hash=sha256:218ca03d7744ca0c8b6697b6083334be7df49b7bf76a69d555962fd1a7657b5f \
+    --hash=sha256:ad160fc1ea8f19e331a16a14a79f3d643d813a69534ba9611d2c80dc10439dad
     # via kubernetes
 gunicorn==20.1.0 \
     --hash=sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e \
@@ -209,9 +209,9 @@ markupsafe==2.0.1 \
 mf2py==1.1.2 \
     --hash=sha256:84f1f8f2ff3f1deb1c30be497e7ccd805452996a662fd4a77f09e0105bede2c9
     # via extruct
-oauthlib==3.1.1 \
-    --hash=sha256:42bf6354c2ed8c6acb54d971fce6f88193d97297e18602a3a886603f9d7730cc \
-    --hash=sha256:8f0215fcc533dd8dd1bee6f4c412d4f0cd7297307d43ac61666389e3bc3198a3
+oauthlib==3.2.0 \
+    --hash=sha256:23a8208d75b902797ea29fd31fa80a15ed9dc2c6c16fe73f5d346f83f6fa27a2 \
+    --hash=sha256:6db33440354787f9b7f3a6dbd4febf5d0f93758354060e802f6c06cb493022fe
     # via requests-oauthlib
 pyasn1==0.4.8 \
     --hash=sha256:39c7e2ec30515947ff4e87fb6f456dfc6e84857d34be479c9d4a4ba4bf46aa5d \
@@ -223,9 +223,9 @@ pyasn1-modules==0.2.8 \
     --hash=sha256:905f84c712230b2c592c19470d3ca8d552de726050d1d1716282a1f6146be65e \
     --hash=sha256:a50b808ffeb97cb3601dd25981f6b016cbb3d31fbf57a8b8a87428e6158d0c74
     # via google-auth
-pyparsing==3.0.6 \
-    --hash=sha256:04ff808a5b90911829c55c4e26f75fa5ca8a2f5f36aa3a51f68e27033341d3e4 \
-    --hash=sha256:d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81
+pyparsing==3.0.7 \
+    --hash=sha256:18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea \
+    --hash=sha256:a6c06a88f252e6c322f65faf8f418b16213b51bdfaece0524c1c1bc30c63c484
     # via rdflib
 pyrdfa3==3.5.3 \
     --hash=sha256:157663a92b87df345b6f69bde235dff5f797891608e12fe1e4fa8dad687131ae \
@@ -281,9 +281,9 @@ rdflib-jsonld==0.6.2 \
     --hash=sha256:011afe67672353ca9978ab9a4bee964dff91f14042f2d8a28c22a573779d2f8b \
     --hash=sha256:107cd3019d41354c31687e64af5e3fd3c3e3fa5052ce635f5ce595fd31853a63
     # via extruct
-recipe-scrapers==13.10.1 \
-    --hash=sha256:2d0e28e3cbd7d87549b0b1fa43b56ac581631ece2164a4de1f85043440281707 \
-    --hash=sha256:6dbe178af1183002b32722ad6caef4227e925502cb6b8c2b40521632be39da7e
+recipe-scrapers==13.13.0 \
+    --hash=sha256:3b0df847fd82164fff1da094e9bab6c1a6fd65bdd22cebe324dd1d10ace27847 \
+    --hash=sha256:f877ccf227e48550d67572c6ae7a8809a689f6369a77568bde7c0ae7dc91a325
     # via -r requirements.in
 requests==2.27.1 \
     --hash=sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61 \
@@ -294,9 +294,9 @@ requests==2.27.1 \
     #   mf2py
     #   recipe-scrapers
     #   requests-oauthlib
-requests-oauthlib==1.3.0 \
-    --hash=sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d \
-    --hash=sha256:b4261601a71fd721a8bd6d7aa1cc1d6a8a93b4a9f5e96626f8e4d91e8beeaa6a
+requests-oauthlib==1.3.1 \
+    --hash=sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5 \
+    --hash=sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a
     # via kubernetes
 rsa==4.8 \
     --hash=sha256:5c6bd9dc7a543b7fe4304a631f8a8a3b674e2bbfc49c2ae96200cdbe55df6b17 \
@@ -326,9 +326,9 @@ tld==0.12.6 \
     --hash=sha256:b6650f2d5392a49760064bc55d73ce3397a378ef24ded96efb516c6b8ec68c26 \
     --hash=sha256:ef5b162d6fa295822dacd4fe4df1b62d8df2550795a97399a8905821b58d3702
     # via -r requirements.in
-urllib3==1.26.7 \
-    --hash=sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece \
-    --hash=sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844
+urllib3==1.26.8 \
+    --hash=sha256:000ca7f471a233c2251c6c7023ee85305721bfdf18621ebff4fd17a8653427ed \
+    --hash=sha256:0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c
     # via
     #   kubernetes
     #   requests
@@ -344,17 +344,16 @@ websocket-client==1.2.3 \
     --hash=sha256:1315816c0acc508997eb3ae03b9d3ff619c9d12d544c9a9b553704b1cc4f6af5 \
     --hash=sha256:2eed4cc58e4d65613ed6114af2f380f7910ff416fc8c46947f6e76b6815f56c0
     # via kubernetes
-werkzeug==2.0.2 \
-    --hash=sha256:63d3dc1cf60e7b7e35e97fa9861f7397283b75d765afcaefd993d6046899de8f \
-    --hash=sha256:aa2bb6fc8dee8d6c504c0ac1e7f5f7dc5810a9903e793b6f715a9f015bdadb9a
+werkzeug==2.0.3 \
+    --hash=sha256:1421ebfc7648a39a5c58c601b154165d05cf47a3cd0ccb70857cbdacf6c8f2b8 \
+    --hash=sha256:b863f8ff057c522164b6067c9e28b041161b4be5ba4d0daceeaa50a163822d3c
     # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==60.3.1 \
-    --hash=sha256:2932bfeb248c648dc411ea9714d5a6de7a33ef1a0db2f0fce644d8172b0479e8 \
-    --hash=sha256:2b62b3dbec1fe95585dadf3bd9a014c8c578624918190428c3a7994bb52ae2b8
+setuptools==60.8.2 \
+    --hash=sha256:43a5575eea6d3459789316e1596a3d2a0d215260cacf4189508112f35c9a145b \
+    --hash=sha256:66b8598da112b8dc8cd941d54cf63ef91d3b50657b374457eda5851f3ff6a899
     # via
-    #   google-auth
     #   gunicorn
     #   kubernetes
     #   rdflib
