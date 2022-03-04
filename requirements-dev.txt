@@ -44,9 +44,9 @@ flake8==4.0.1 \
     --hash=sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d \
     --hash=sha256:806e034dda44114815e23c16ef92f95c91e4c71100ff52813adf7132a6ad870d
     # via -r requirements-dev.in
-flask==2.0.2 \
-    --hash=sha256:7b2fb8e934ddd50731893bdcdb00fc8c0315916f9fcd50d22c7cc1a95ab634e2 \
-    --hash=sha256:cb90f62f1d8e4dc4621f52106613488b5ba826b2e1e10a33eac92f723093ab6a
+flask==2.0.3 \
+    --hash=sha256:59da8a3170004800a2837844bfa84d49b022550616070f7cb1a659682b2e7c9f \
+    --hash=sha256:e1120c228ca2f553b470df4a5fa927ab66258467526069981b3eb0a91902687d
     # via -r requirements.txt
 google-auth==2.6.0 \
     --hash=sha256:218ca03d7744ca0c8b6697b6083334be7df49b7bf76a69d555962fd1a7657b5f \
@@ -104,9 +104,9 @@ jstyleson==0.0.2 \
     # via
     #   -r requirements.txt
     #   extruct
-kubernetes==21.7.0 \
-    --hash=sha256:044c20253f8577491a87af8f9edea1f929ed6d62ce306376a6cb8aed24e572c5 \
-    --hash=sha256:c9849afc2eafdce60efa210049ee7a94e7ef6cf3a7afa14a69b3bf0447825977
+kubernetes==23.3.0 \
+    --hash=sha256:05c98e4bd92f7091fa0fa58f594490e712c9151144d5f458235663a8909e342a \
+    --hash=sha256:223ff8f0ece5bc20fb65545f09a2308c5e1e9c0be83ae68504c1b1c6baa38f5b
     # via -r requirements.txt
 lxml==4.7.1 \
     --hash=sha256:0607ff0988ad7e173e5ddf7bf55ee65534bd18a5461183c33e8e41a59e89edf4 \
@@ -368,9 +368,9 @@ rdflib-jsonld==0.6.2 \
     # via
     #   -r requirements.txt
     #   extruct
-recipe-scrapers==13.13.0 \
-    --hash=sha256:3b0df847fd82164fff1da094e9bab6c1a6fd65bdd22cebe324dd1d10ace27847 \
-    --hash=sha256:f877ccf227e48550d67572c6ae7a8809a689f6369a77568bde7c0ae7dc91a325
+recipe-scrapers==13.19.0 \
+    --hash=sha256:6e57ef6430b07285a8203ebe2d532e8b5efc5ae8350bedca67f3b30b9258dcf6 \
+    --hash=sha256:fbb238085245778524854cdf563c549caac3dbe548e861c5d51c378b408913de
     # via -r requirements.txt
 requests==2.27.1 \
     --hash=sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61 \
