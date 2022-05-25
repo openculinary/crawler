@@ -27,7 +27,7 @@ image:
 	buildah run $(container) -- apk add libxslt-dev --
 	buildah run $(container) -- apk add musl-dev --
 	# End: NOTE
-	buildah run --user gunicorn $(container) -- pip install --no-warn-script-location --progress-bar off --requirement requirements.txt --user --
+	buildah run --user gunicorn $(container) -- pip install --no-deps --no-warn-script-location --progress-bar off --requirement requirements.txt --user --
 	# Begin: HACK: For rootless compatibility across podman and k8s environments, unset file ownership and grant read+exec to binaries
 	buildah run $(container) -- chown -R nobody:nobody /srv/ --
 	buildah run $(container) -- chmod -R a+rx /srv/.local/bin/ --
