@@ -1,1 +1,1 @@
-requests==2.27.1
+requests[use_chardet_on_py3]==2.27.1
