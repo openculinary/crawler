@@ -2,5 +2,5 @@ flask==2.1.2
 gunicorn==20.1.0
 kubernetes==23.6.0
 recipe-scrapers==14.1.0
-requests==2.27.1
+requests[use_chardet_on_py3]==2.27.1
 tld==0.12.6
