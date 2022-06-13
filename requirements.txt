@@ -18,6 +18,10 @@ chardet==4.0.0 \
     --hash=sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa \
     --hash=sha256:f864054d66fd9118f2e67044ac8981a54775ec5b67aed0441892edb553d21da5
     # via requests
+charset-normalizer==2.0.12 \
+    --hash=sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597 \
+    --hash=sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df
+    # via requests
 click==8.1.3 \
     --hash=sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e \
     --hash=sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48
@@ -257,13 +261,13 @@ rdflib-jsonld==0.6.2 \
     --hash=sha256:011afe67672353ca9978ab9a4bee964dff91f14042f2d8a28c22a573779d2f8b \
     --hash=sha256:107cd3019d41354c31687e64af5e3fd3c3e3fa5052ce635f5ce595fd31853a63
     # via extruct
-recipe-scrapers==14.1.0 \
-    --hash=sha256:5c6931dc13cdb458f7ce52c2fae6a63348ee826a9e0f71ba7679a3d3f7a9257b \
-    --hash=sha256:fc4bf1d5bd142e63a81b1b734a874e2fd6686b22287b41a9bc1355c2004bd5f7
+recipe-scrapers==14.3.1 \
+    --hash=sha256:0f15aee46dfc071627c5af8d068b0b2076f13c4525042e3e64455a5c43b49a80 \
+    --hash=sha256:547ffd03aa9b8060f6167d7ee5dd5196acf4f5b31dbed3ab921d9051cc74201d
     # via -r requirements.in
-requests[use_chardet_on_py3]==2.27.1 \
-    --hash=sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61 \
-    --hash=sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d
+requests[use_chardet_on_py3]==2.28.0 \
+    --hash=sha256:bc7861137fbce630f17b03d3ad02ad0bf978c844f3536d0edda6499dafce2b6f \
+    --hash=sha256:d568723a7ebd25875d8d1eaf5dfa068cd2fc8194b2e483d7b1f7c81918dbec6b
     # via
     #   -r requirements.in
     #   kubernetes
