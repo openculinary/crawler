@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from io import StringIO
 from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
@@ -17,10 +16,10 @@ from recipe_scrapers._utils import get_yields
 from recipe_scrapers import (
     get_host_name as scraper_domain,
     scrape_me as scrape_recipe,
+    scrape_html,
     SCRAPERS,
     WebsiteNotImplementedError,
 )
-from recipe_scrapers.settings import settings as scraper_settings
 
 NUTRITION_SCHEMA_FIELDS = {
      'carbohydrates': 'carbohydrateContent',
@@ -120,17 +119,7 @@ def resolve():
     # The response URL's domain should correlate with the response body format.
     response_domain = scraper_domain(response.url)
     if response.ok and response_domain in SCRAPERS:
-        content = StringIO(response.text)
-        scraper = SCRAPERS[response_domain]
-
-        # TODO: 'test' mode is used here to read scrape content from the prior
-        # HTTP response; this avoids a second request being made by the scraper
-        # library.  There should be a neater way to achieve this.
-        orig_test_mode = scraper_settings.TEST_MODE
-        scraper_settings.TEST_MODE = True
-        scrape = scraper(url=content)
-        scraper_settings.TEST_MODE = orig_test_mode
-
+        scrape = scrape_html(response.text, response.url)
         canonical_url = scrape.canonical_url()
 
     return {
