@@ -115,8 +115,8 @@ def test_crawl_response(
     image_version.return_value = 'test_version'
     scrape_recipe.return_value = scrape_result
     parse_descriptions.side_effect = [
-        ['test direction'],
         ['test ingredient'],
+        ['test direction'],
         [
             {'magnitude': 5, 'units': 'g'},
             {'magnitude': 83.68, 'units': 'J'},

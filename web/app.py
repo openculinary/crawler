@@ -200,10 +200,6 @@ def crawl():
             'message': 'could not find recipe image',
         }}, 404
 
-    directions = parse_descriptions(
-        service='direction-parser-service',
-        descriptions=scrape.instructions().split('\n')
-    )
     ingredients = scrape.ingredients()
     try:
         ingredients = parse_descriptions(
@@ -219,6 +215,11 @@ def crawl():
         return {'error': {
             'message': 'could not find recipe ingredient',
         }}, 404
+
+    directions = parse_descriptions(
+        service='direction-parser-service',
+        descriptions=scrape.instructions().split('\n')
+    )
 
     time = scrape.total_time()
     if not time:
