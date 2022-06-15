@@ -2,13 +2,13 @@ from datetime import datetime, timedelta
 from socket import gethostname
 from time import sleep
 from urllib.parse import urljoin
-from urllib.robotparser import RobotFileParser
 
 from flask import Flask, request
 import kubernetes
 from tld import get_tld
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
+from robotexclusionrulesparser import RobotExclusionRulesParser
 
 from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._abstract import HEADERS
@@ -73,8 +73,9 @@ def get_domain(url):
 def get_robot_parser(url):
     domain = get_domain(url)
     if domain not in domain_robot_parsers:
-        robot_parser = RobotFileParser(urljoin(url, '/robots.txt'))
-        robot_parser.read()
+        robot_parser = RobotExclusionRulesParser()
+        robots_txt = requests.get(urljoin(url, "/robots.txt"))
+        robot_parser.parse(robots_txt.content)
         domain_robot_parsers[domain] = robot_parser
     return domain_robot_parsers[domain]
 
@@ -82,7 +83,7 @@ def get_robot_parser(url):
 def can_fetch(url):
     robot_parser = get_robot_parser(url)
     user_agent = HEADERS.get('User-Agent', '*')
-    return robot_parser.can_fetch(user_agent, url)
+    return robot_parser.is_allowed(user_agent, url)
 
 
 @app.before_first_request

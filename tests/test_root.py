@@ -2,7 +2,7 @@ import pytest
 import responses
 from unittest.mock import patch
 
-from web.app import app, get_domain
+from web.app import app, get_domain, get_robot_parser
 
 
 @pytest.fixture
@@ -161,3 +161,14 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client):
 
     assert response.status_code == 403
     assert not get.called
+
+
+@responses.activate
+def test_get_robot_parser():
+    responses.add(responses.GET, "https://example.com/robots.txt")
+
+    target_url = "https://example.com/foo/bar"
+    robot_parser = get_robot_parser(target_url)
+
+    assert robot_parser is not None
+    assert robot_parser.is_allowed("*", target_url)
