@@ -200,7 +200,12 @@ def crawl():
             'message': 'could not find recipe image',
         }}, 404
 
-    ingredients = scrape.ingredients()
+    # Naive filtering for ingredient lines that describe an ingredient sub-group
+    #   Example: 'For the sauce:'
+    ingredients = [
+        ingredient for ingredient in scrape.ingredients()
+        if not (ingredient[:4].lower() == 'for ' and ingredient.endswith(':'))
+    ]
     try:
         ingredients = parse_descriptions(
             service='ingredient-parser-service',
