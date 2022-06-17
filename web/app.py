@@ -201,7 +201,7 @@ def crawl():
             'message': 'could not find recipe image',
         }}, 404
 
-    # Naive filtering for ingredient lines that describe an ingredient sub-group
+    # Naive filtering for ingredient lines that describe ingredient sub-groups
     #   Example: 'For the sauce:'
     ingredients = [
         ingredient for ingredient in scrape.ingredients()
