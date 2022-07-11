@@ -6,15 +6,15 @@ from actions import recrawl, reindex
 
 
 def query_recipes(where):
-    where = where or 'true'
+    where = where or "true"
     query = (
-        f'select id, dst, title '
-        f'from recipes '
-        f'where {where} '
-        f'order by random()'
+        f"select id, dst, title "
+        f"from recipes "
+        f"where {where} "
+        f"order by random()"
     )
 
-    db = pg8000.connect(host='192.168.100.1', user='api', database='api')
+    db = pg8000.connect(host="192.168.100.1", user="api", database="api")
     cursor = db.cursor()
     results = cursor.execute(query)
     for recipe_id, dst, title in results.fetchall():
@@ -22,18 +22,18 @@ def query_recipes(where):
     cursor.close()
 
 
-parser = argparse.ArgumentParser(description='Reindex recipes')
-parser.add_argument('--where', help='SQL WHERE clause to select recipes')
-parser.add_argument('--recrawl', action='store_true', help='Invoke recrawling')
-parser.add_argument('--reindex', action='store_true', help='Invoke reindexing')
+parser = argparse.ArgumentParser(description="Reindex recipes")
+parser.add_argument("--where", help="SQL WHERE clause to select recipes")
+parser.add_argument("--recrawl", action="store_true", help="Invoke recrawling")
+parser.add_argument("--reindex", action="store_true", help="Invoke reindexing")
 args = parser.parse_args()
 
 for recipe_id, dst, title in query_recipes(args.where):
     if args.recrawl:
         recrawl(dst)
-        print(f'* Queued recipe {title} for recrawling')
+        print(f"* Queued recipe {title} for recrawling")
     elif args.reindex:
         reindex(recipe_id)
-        print(f'* Queued recipe {title} for reindexing')
+        print(f"* Queued recipe {title} for reindexing")
     else:
-        print(f'* Found recipe {title}')
+        print(f"* Found recipe {title}")

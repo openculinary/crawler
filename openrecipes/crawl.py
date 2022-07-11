@@ -6,20 +6,20 @@ import requests
 def ingest_url(url):
     try:
         requests.post(
-            url='http://localhost:30080/api/recipes/crawl',
-            headers={'Host': 'backend'},
-            data={'url': url}
+            url="http://localhost:30080/api/recipes/crawl",
+            headers={"Host": "backend"},
+            data={"url": url},
         ).raise_for_status()
     except Exception as e:
         print(e)
 
 
-with open('recipes.json', 'r') as f:
+with open("recipes.json", "r") as f:
     docs = []
     for line in f:
         docs.append(json.loads(line))
 
     shuffle(docs)
     for doc in docs:
-        ingest_url(doc['url'])
-        print('* Ingested {}'.format(doc['name']))
+        ingest_url(doc["url"])
+        print("* Ingested {}".format(doc["name"]))
