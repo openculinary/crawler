@@ -25,6 +25,6 @@ args = parser.parse_args()
 for url in query_crawl_urls(args.where):
     if args.recrawl:
         recrawl(url)
-        print(f"* Queued URL {url} for recrawling")
+        print(f"* Processed URL {url} for recrawling")
     else:
         print(f"* Found URL {url}")

@@ -31,9 +31,9 @@ args = parser.parse_args()
 for recipe_id, dst, title in query_recipes(args.where):
     if args.recrawl:
         recrawl(dst)
-        print(f"* Queued recipe {title} for recrawling")
+        print(f"* Processed recipe {title} for recrawling")
     elif args.reindex:
         reindex(recipe_id)
-        print(f"* Queued recipe {title} for reindexing")
+        print(f"* Processed recipe {title} for reindexing")
     else:
         print(f"* Found recipe {title}")
