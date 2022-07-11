@@ -1,6 +1,9 @@
 .PHONY: lint
 
 lint: venv
+	venv/bin/black --check --quiet actions.py
+	venv/bin/black --check --quiet crawl_urls.py
+	venv/bin/black --check --quiet recipes.py
 	venv/bin/flake8 actions.py
 	venv/bin/flake8 crawl_urls.py
 	venv/bin/flake8 recipes.py

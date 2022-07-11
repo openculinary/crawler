@@ -1,6 +1,7 @@
 .PHONY: lint
 
 lint: venv
+	venv/bin/black --check --quiet crawl.py
 	venv/bin/flake8 crawl.py
 
 # Virtualenv Makefile pattern derived from https://github.com/bottlepy/bottle/
