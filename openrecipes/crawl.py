@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 def ingest_url(url):
     headers = {"Host": "backend"}
     data = urlencode({"url": url}).encode("utf-8")
-    request = Request("https://localhost:30080/api/recipes/crawl", data, headers)
+    request = Request("https://localhost:30080/recipes/crawl", data, headers)
     try:
         with urlopen(request) as response:
             if response.status == HTTPStatus.OK:
