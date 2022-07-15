@@ -26,4 +26,4 @@ with open("recipes.json", "r") as f:
     shuffle(docs)
     for doc in docs:
         ingest_url(doc["url"])
-        print("* Processed {}".format(doc["name"]))
+        print("* Processed {}".format(doc["url"]))
