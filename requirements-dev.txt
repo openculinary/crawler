@@ -399,9 +399,9 @@ rdflib-jsonld==0.6.2 \
     # via
     #   -r requirements.txt
     #   extruct
-recipe-scrapers==14.8.0 \
-    --hash=sha256:745c9a701ad81eabb2bfc126d92d08a1aeac32725767b91dd366c42f13959bcc \
-    --hash=sha256:9bbafcaa3b478f8ba494562ff9f6efbfb4a944b4f1e0c01a78ee5cc6caec24c5
+recipe-scrapers==14.10.0 \
+    --hash=sha256:019a673bde25ab22d64d43629963b6980802993c5647e0f26331fb194927dd99 \
+    --hash=sha256:bc9268a10dec2b4ce339d85c132bd44ce9eb2fa7905803d0d84414d49be1588e
     # via -r requirements.txt
 requests[use_chardet_on_py3]==2.28.1 \
     --hash=sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983 \
