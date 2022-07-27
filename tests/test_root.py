@@ -70,6 +70,9 @@ def scrape_result():
         def instructions(self):
             return "test"
 
+        def instructions_list(self):
+            return ["test"]
+
         def total_time(self):
             return 60
 
@@ -132,7 +135,7 @@ def test_crawl_response(
 
     assert response.status_code == 200
     assert service_version == "test_version"
-    assert rs_version == "14.10.0"
+    assert rs_version == "14.11.0"
 
     nutrition = response.json.get("recipe", {}).get("nutrition")
     assert nutrition is not None
