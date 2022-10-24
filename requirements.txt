@@ -281,9 +281,9 @@ rdflib-jsonld==0.6.2 \
     --hash=sha256:011afe67672353ca9978ab9a4bee964dff91f14042f2d8a28c22a573779d2f8b \
     --hash=sha256:107cd3019d41354c31687e64af5e3fd3c3e3fa5052ce635f5ce595fd31853a63
     # via extruct
-recipe-scrapers==14.20.0 \
-    --hash=sha256:00b8aaeee4a99e0cfb67606ce513939e48382889ec2025a61a394d0ba16b6e62 \
-    --hash=sha256:4c0ac3c44e7fe05afaa0f22f6120e399395250a31b92cfab6435a71911e57bfc
+recipe-scrapers==14.21.0 \
+    --hash=sha256:73a359c639c571af0ec8c7e82fe18e70905728cb71f9519a9b9753ec951a8ff9 \
+    --hash=sha256:7502066ef380585d3bc7a362e8a3128ed43db4de7b10a38cfc8da319c4a36e40
     # via -r requirements.in
 requests[use_chardet_on_py3]==2.28.1 \
     --hash=sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983 \
@@ -328,18 +328,6 @@ tld==0.12.6 \
     --hash=sha256:b6650f2d5392a49760064bc55d73ce3397a378ef24ded96efb516c6b8ec68c26 \
     --hash=sha256:ef5b162d6fa295822dacd4fe4df1b62d8df2550795a97399a8905821b58d3702
     # via -r requirements.in
-types-beautifulsoup4==4.11.6 \
-    --hash=sha256:2670dd71995df464041e2941fa9bbb694795271e3dedd7262b4766649a1cbe82 \
-    --hash=sha256:ac9dd1383481201ea07f27c5a43e7b1ee71caf9c720b7ae951db15d60d126e80
-    # via recipe-scrapers
-types-requests==2.28.11.2 \
-    --hash=sha256:14941f8023a80b16441b3b46caffcbfce5265fd14555844d6029697824b5a2ef \
-    --hash=sha256:fdcd7bd148139fb8eef72cf4a41ac7273872cad9e6ada14b11ff5dfdeee60ed3
-    # via recipe-scrapers
-types-urllib3==1.26.25.1 \
-    --hash=sha256:a948584944b2412c9a74b9cf64f6c48caf8652cb88b38361316f6d15d8a184cd \
-    --hash=sha256:f6422596cc9ee5fdf68f9d547f541096a20c2dcfd587e37c804c9ea720bf5cb2
-    # via types-requests
 urllib3==1.26.12 \
     --hash=sha256:3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e \
     --hash=sha256:b930dd878d5a8afb066a637fbb35144fe7901e3b209d1cd4f524bd0e9deee997
