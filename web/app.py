@@ -15,7 +15,6 @@ from recipe_scrapers._abstract import HEADERS
 from recipe_scrapers._utils import get_yields
 from recipe_scrapers import (
     get_host_name as scraper_domain,
-    scrape_me as scrape_recipe,
     scrape_html,
     SCRAPERS,
     WebsiteNotImplementedError,
@@ -163,14 +162,8 @@ def crawl():
             }, 429
 
     try:
-        scrape = scrape_recipe(
-            url,
-            timeout=5,
-            proxies={
-                "http": "http://proxy:3128",
-                "https": "http://proxy:3128",
-            },
-        )
+        response = requests.get(url, headers=HEADERS)
+        scrape = scrape_html(response.text, response.url)
     except (ConnectionError, ReadTimeout):
         duration = timedelta(seconds=1)
         if domain in domain_backoffs:

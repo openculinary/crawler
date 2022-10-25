@@ -97,15 +97,17 @@ def scrape_result():
     return ScrapeResult()
 
 
+@patch("requests.get")
 @patch("web.app.parse_descriptions")
-@patch("web.app.scrape_recipe")
+@patch("web.app.scrape_html")
 @patch("web.app.determine_image_version")
 @patch("web.app.can_fetch")
 def test_crawl_response(
     can_fetch,
     image_version,
-    scrape_recipe,
+    scrape_html,
     parse_descriptions,
+    get,
     client,
     content_url,
     scrape_result,
@@ -115,7 +117,7 @@ def test_crawl_response(
 
     can_fetch.return_value = True
     image_version.return_value = "test_version"
-    scrape_recipe.return_value = scrape_result
+    scrape_html.return_value = scrape_result
     parse_descriptions.side_effect = [
         ["test ingredient"],
         ["test direction"],
@@ -143,15 +145,15 @@ def test_crawl_response(
     assert nutrition["energy_units"] == "J"
 
 
-@patch("web.app.scrape_recipe")
+@patch("web.app.scrape_html")
 @patch("web.app.can_fetch")
-def test_robots_txt_crawl_filtering(can_fetch, scrape_recipe, client):
+def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client):
     can_fetch.return_value = False
 
     response = client.post("/crawl", data={"url": content_url})
 
     assert response.status_code == 403
-    assert not scrape_recipe.called
+    assert not scrape_html.called
 
 
 @patch("requests.get")
