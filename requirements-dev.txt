@@ -122,9 +122,13 @@ dulwich==0.20.50 \
     --hash=sha256:f08406b6b789dea5c95ba1130a0801d8748a67f18be940fe7486a8b481fde875 \
     --hash=sha256:fbb6368f18451dc44c95c55e1a609d1a01d3821f7ed480b22b2aea1baca0f4a7
     # via -r requirements-dev.in
-extruct==0.13.0 \
-    --hash=sha256:50a5b5bac4c5e19ecf682bf63a28fde0b1bb57433df7057371f60b58c94a2c64 \
-    --hash=sha256:fe19b9aefdb4dfbf828c2b082b81a363a03a44c7591c2d6b62ca225cb8f8c0be
+exceptiongroup==1.0.0 \
+    --hash=sha256:2ac84b496be68464a2da60da518af3785fff8b7ec0d090a581604bc870bdee41 \
+    --hash=sha256:affbabf13fb6e98988c38d9c5650e701569fe3c1de3233cfb61c5f33774690ad
+    # via pytest
+extruct==0.14.0 \
+    --hash=sha256:22739b23a7fd66239137838b8cde7b15ce838ad7a0e0721dba86058df206a2da \
+    --hash=sha256:4c74a3f0c6829252fa40b3a1c7364c966265fd4c0f0dbcef019d1b839e3434bf
     # via
     #   -r requirements.txt
     #   recipe-scrapers
@@ -342,10 +346,6 @@ pluggy==1.0.0 \
     --hash=sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159 \
     --hash=sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3
     # via pytest
-py==1.11.0 \
-    --hash=sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719 \
-    --hash=sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378
-    # via pytest
 pycodestyle==2.9.1 \
     --hash=sha256:2c9607871d58c76354b697b42f5d57e1ada7d261c261efac224b664affdc5785 \
     --hash=sha256:d1735fc58b418fd7c5f658d28d943854f8a849b01a5d0a1e6f3f3fdd0166804b
@@ -367,9 +367,9 @@ pyrdfa3==3.5.3 \
     # via
     #   -r requirements.txt
     #   extruct
-pytest==7.1.3 \
-    --hash=sha256:1377bda3466d70b55e3f5cecfa55bb7cfcf219c7964629b967c37cf0bda818b7 \
-    --hash=sha256:4f365fec2dff9c1162f834d9f18af1ba13062db0c708bf7b946f8a5c76180c39
+pytest==7.2.0 \
+    --hash=sha256:892f933d339f068883b6fd5a459f03d85bfcb355e4981e146d2c7616c21fef71 \
+    --hash=sha256:c4014eb40e10f11f355ad4e3c2fb2c6c6d1919c73f3b5a433de4708202cade59
     # via -r requirements-dev.in
 rdflib==6.2.0 \
     --hash=sha256:62dc3c86d1712db0f55785baf8047f63731fa59b2682be03219cb89262065942 \
@@ -378,16 +378,9 @@ rdflib==6.2.0 \
     #   -r requirements.txt
     #   extruct
     #   pyrdfa3
-    #   rdflib-jsonld
-rdflib-jsonld==0.6.2 \
-    --hash=sha256:011afe67672353ca9978ab9a4bee964dff91f14042f2d8a28c22a573779d2f8b \
-    --hash=sha256:107cd3019d41354c31687e64af5e3fd3c3e3fa5052ce635f5ce595fd31853a63
-    # via
-    #   -r requirements.txt
-    #   extruct
-recipe-scrapers==14.21.0 \
-    --hash=sha256:73a359c639c571af0ec8c7e82fe18e70905728cb71f9519a9b9753ec951a8ff9 \
-    --hash=sha256:7502066ef380585d3bc7a362e8a3128ed43db4de7b10a38cfc8da319c4a36e40
+recipe-scrapers==14.23.0 \
+    --hash=sha256:507ad4611cd39b55c1a8a09d974f39c9e8b3d1e70eadfaecc1447f47be2e81c7 \
+    --hash=sha256:a90e560c8efd41ff8528badf0ddab5d0410c40509e29554e9b93f05571ef2014
     # via -r requirements.txt
 requests[use_chardet_on_py3]==2.28.1 \
     --hash=sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983 \
@@ -471,9 +464,9 @@ werkzeug==2.2.2 \
     # via
     #   -r requirements.txt
     #   flask
-zipp==3.9.0 \
-    --hash=sha256:3a7af91c3db40ec72dd9d154ae18e008c69efe8ca88dde4f9a731bb82fe2f9eb \
-    --hash=sha256:972cfa31bc2fedd3fa838a51e9bc7e64b7fb725a8c00e7431554311f180e9980
+zipp==3.10.0 \
+    --hash=sha256:4fcb6f278987a6605757302a6e40e896257570d11c51628968ccb2a47e80c6c1 \
+    --hash=sha256:7a7262fd930bd3e36c50b9a64897aec3fafff3dfdeec9623ae22b40e93f99bb8
     # via
     #   -r requirements.txt
     #   importlib-metadata
