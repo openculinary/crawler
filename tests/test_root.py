@@ -1,3 +1,4 @@
+from dulwich import porcelain
 import pytest
 import responses
 from unittest.mock import patch
@@ -21,26 +22,21 @@ def test_get_domain(origin_url):
     assert domain == "example.com"
 
 
-@patch("web.app.determine_image_version")
-def test_url_resolution_validation(image_version, client):
-    image_version.return_value = "test_version"
+def test_url_resolution_validation(client):
     response = client.post("/crawl", data={})
 
     assert response.status_code == 400
 
 
 @responses.activate
-@patch("web.app.determine_image_version")
 @patch("web.app.can_fetch")
 def test_origin_url_resolution(
     can_fetch,
-    image_version,
     client,
     origin_url,
     content_url,
 ):
     can_fetch.return_value = True
-    image_version.return_value = "test_version"
     redir_headers = {"Location": content_url}
     responses.add(responses.GET, origin_url, status=301, headers=redir_headers)
     responses.add(responses.GET, content_url, status=200)
@@ -51,7 +47,7 @@ def test_origin_url_resolution(
 
     recipe_url = response.json["url"]["resolves_to"]
 
-    assert service_version == "test_version"
+    assert service_version == porcelain.describe(".")
     assert recipe_url == content_url
 
 
@@ -100,11 +96,9 @@ def scrape_result():
 @patch("requests.get")
 @patch("web.app.parse_descriptions")
 @patch("web.app.scrape_html")
-@patch("web.app.determine_image_version")
 @patch("web.app.can_fetch")
 def test_crawl_response(
     can_fetch,
-    image_version,
     scrape_html,
     parse_descriptions,
     get,
@@ -116,7 +110,6 @@ def test_crawl_response(
     app._got_first_request = False
 
     can_fetch.return_value = True
-    image_version.return_value = "test_version"
     scrape_html.return_value = scrape_result
     parse_descriptions.side_effect = [
         ["test ingredient"],
@@ -136,7 +129,7 @@ def test_crawl_response(
     rs_version = metadata.get("recipe_scrapers_version")
 
     assert response.status_code == 200
-    assert service_version == "test_version"
+    assert service_version == porcelain.describe(".")
     assert rs_version == "14.21.0"
 
     nutrition = response.json.get("recipe", {}).get("nutrition")

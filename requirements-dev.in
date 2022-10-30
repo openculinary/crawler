@@ -1,5 +1,6 @@
 --requirement requirements.txt
 black
+dulwich --global-option=--pure
 flake8
 pytest
 responses

@@ -39,7 +39,7 @@ image:
 	buildah run $(container) -- apk del libxslt-dev --
 	buildah run $(container) -- apk del musl-dev --
 	# End: NOTE
-	buildah config --cmd '/srv/.local/bin/gunicorn --bind :8000 web.app:app' --port 8000 --user gunicorn $(container)
+	buildah config --env IMAGE_VERSION=${IMAGE_TAG} --cmd '/srv/.local/bin/gunicorn --bind :8000 web.app:app' --port 8000 --user gunicorn $(container)
 	buildah commit --quiet --rm --squash $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
 # Virtualenv Makefile pattern derived from https://github.com/bottlepy/bottle/
@@ -64,4 +64,4 @@ lint: venv
 	venv/bin/flake8 web
 
 tests: venv
-	venv/bin/pytest tests
+	IMAGE_VERSION=${IMAGE_TAG} venv/bin/pytest tests

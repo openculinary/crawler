@@ -1,10 +1,9 @@
 from datetime import datetime, timedelta
-from socket import gethostname
+from os import getenv
 from time import sleep
 from urllib.parse import urljoin
 
 from flask import Flask, request
-import kubernetes
 from tld import get_tld
 import requests
 from requests.exceptions import ConnectionError, ReadTimeout
@@ -86,12 +85,7 @@ def before_first_request():
 
 
 def determine_image_version():
-    kubernetes.config.load_incluster_config()
-    client = kubernetes.client.CoreV1Api()
-    pod = client.read_namespaced_pod(namespace="default", name=gethostname())
-    app = pod.metadata.labels["app"]
-    container = next(filter(lambda c: c.name == app, pod.spec.containers))
-    return container.image.split(":")[-1] if container else None
+    return getenv("IMAGE_VERSION")
 
 
 @app.route("/resolve", methods=["POST"])
