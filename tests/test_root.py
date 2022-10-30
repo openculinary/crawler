@@ -47,7 +47,11 @@ def test_origin_url_resolution(
 
     recipe_url = response.json["url"]["resolves_to"]
 
-    assert service_version == porcelain.describe(".")
+    # dulwich v0.20.50: porcelain.describe adds a single-character 'g' prefix
+    dulwich_version = porcelain.describe(".")
+    assert dulwich_version.startswith("g")
+
+    assert service_version == dulwich_version[1:]
     assert recipe_url == content_url
 
 
@@ -128,8 +132,12 @@ def test_crawl_response(
     service_version = metadata.get("service_version")
     rs_version = metadata.get("recipe_scrapers_version")
 
+    # dulwich v0.20.50: porcelain.describe adds a single-character 'g' prefix
+    dulwich_version = porcelain.describe(".")
+    assert dulwich_version.startswith("g")
+
     assert response.status_code == 200
-    assert service_version == porcelain.describe(".")
+    assert service_version == dulwich_version[1:]
     assert rs_version == "14.21.0"
 
     nutrition = response.json.get("recipe", {}).get("nutrition")
