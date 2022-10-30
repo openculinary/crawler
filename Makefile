@@ -18,27 +18,14 @@ image:
 	$(eval container=$(shell buildah from docker.io/library/python:3.10-alpine))
 	buildah copy $(container) 'web' 'web'
 	buildah copy $(container) 'requirements.txt'
-	buildah run $(container) -- apk add py3-lxml --
 	buildah run $(container) -- adduser -h /srv/ -s /sbin/nologin -D -H gunicorn --
 	buildah run $(container) -- chown gunicorn /srv/ --
-	# Begin: NOTE: These are build-time dependencies required by lxml (for extruct)
-	buildah run $(container) -- apk add gcc --
-	buildah run $(container) -- apk add libxml2-dev --
-	buildah run $(container) -- apk add libxslt-dev --
-	buildah run $(container) -- apk add musl-dev --
-	# End: NOTE
-	buildah run --user gunicorn $(container) -- pip install --no-deps --no-warn-script-location --progress-bar off --requirement requirements.txt --user --
+	buildah run --user gunicorn $(container) -- pip install --no-deps --no-warn-script-location --only-binary lxml --progress-bar off --requirement requirements.txt --user --
 	# Begin: HACK: For rootless compatibility across podman and k8s environments, unset file ownership and grant read+exec to binaries
 	buildah run $(container) -- chown -R nobody:nobody /srv/ --
 	buildah run $(container) -- chmod -R a+rx /srv/.local/bin/ --
 	buildah run $(container) -- find /srv/ -type d -exec chmod a+rx {} \;
 	# End: HACK
-	# Begin: NOTE: These are build-time dependencies required by lxml (for extruct)
-	buildah run $(container) -- apk del gcc --
-	buildah run $(container) -- apk del libxml2-dev --
-	buildah run $(container) -- apk del libxslt-dev --
-	buildah run $(container) -- apk del musl-dev --
-	# End: NOTE
 	buildah config --env IMAGE_VERSION=${IMAGE_TAG} --cmd '/srv/.local/bin/gunicorn --bind :8000 web.app:app' --port 8000 --user gunicorn $(container)
 	buildah commit --quiet --rm --squash $(container) ${IMAGE_NAME}:${IMAGE_TAG}
 
