@@ -1,6 +1,6 @@
-beautifulsoup4==4.12.0 \
-    --hash=sha256:2130a5ad7f513200fae61a17abb5e338ca980fa28c439c0571014bc0217e9591 \
-    --hash=sha256:c5fceeaec29d09c84970e47c65f2f0efe57872f7cff494c9691a26ec0ff13234
+beautifulsoup4==4.12.2 \
+    --hash=sha256:492bbc69dca35d12daac71c4db1bfff0c876c00ef4a2ffacce226d4638eb72da \
+    --hash=sha256:bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a
     # via
     #   mf2py
     #   recipe-scrapers
@@ -288,9 +288,9 @@ rdflib==6.3.2 \
     # via
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.35.0 \
-    --hash=sha256:201446599b3ba5fe9dab219bd8462c0aa8ee4c95961b8b5d3ea29aee8d5f37b1 \
-    --hash=sha256:997238707bcde81103df6fb6ef1c1b86e7d69f50d3ae52affdbb4028a9fd2198
+recipe-scrapers==14.36.1 \
+    --hash=sha256:ccb045740e13196289ea897d179dc9f9599e1c77d34aa1c516e08949725ba76d \
+    --hash=sha256:fe50da09750ef1317a40dfc4ceeb8014c94efc02a17354a08a2cf327f0406059
     # via -r requirements.in
 requests[use_chardet_on_py3]==2.28.2 \
     --hash=sha256:64299f4909223da747622c030b781c0d7811e359c37124b4bd368fb8c6518baa \
@@ -309,9 +309,9 @@ six==1.16.0 \
     #   extruct
     #   html5lib
     #   isodate
-soupsieve==2.4 \
-    --hash=sha256:49e5368c2cda80ee7e84da9dbe3e110b70a4575f196efb74e51b94549d921955 \
-    --hash=sha256:e28dba9ca6c7c00173e34e4ba57448f0688bb681b7c5e8bf4971daafc093d69a
+soupsieve==2.4.1 \
+    --hash=sha256:1c1bfee6819544a3447586c889157365a27e10d88cde3ad3da0cf0ddf646feb8 \
+    --hash=sha256:89d12b2d5dfcd2c9e8c22326da9d9aa9cb3dfab0a83a024f05704076ee8d35ea
     # via beautifulsoup4
 tld==0.13 \
     --hash=sha256:93dde5e1c04bdf1844976eae440706379d21f4ab235b73c05d7483e074fb5629 \
@@ -335,7 +335,7 @@ werkzeug==2.2.3 \
     # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==67.6.0 \
-    --hash=sha256:2ee892cd5f29f3373097f5a814697e397cf3ce313616df0af11231e2ad118077 \
-    --hash=sha256:b78aaa36f6b90a074c1fa651168723acbf45d14cb1196b6f02c0fd07f17623b2
+setuptools==67.6.1 \
+    --hash=sha256:257de92a9d50a60b8e22abfcbb771571fde0dbf3ec234463212027a4eeecbe9a \
+    --hash=sha256:e728ca814a823bf7bf60162daf9db95b93d532948c4c0bea762ce62f60189078
     # via gunicorn
