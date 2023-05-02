@@ -45,6 +45,7 @@ setattr(requests.sessions.Session, "request_orig", requests.sessions.Session.req
 requests.sessions.Session.request = request_patch
 
 app = Flask(__name__)
+image_version = getenv("IMAGE_VERSION")
 
 
 def parse_descriptions(service, descriptions):
@@ -79,15 +80,6 @@ def can_fetch(url):
     return robot_parser.is_allowed(user_agent, url)
 
 
-@app.before_first_request
-def before_first_request():
-    app.image_version = determine_image_version()
-
-
-def determine_image_version():
-    return getenv("IMAGE_VERSION")
-
-
 @app.route("/resolve", methods=["POST"])
 def resolve():
     url = request.form.get("url")
@@ -117,7 +109,7 @@ def resolve():
 
     return {
         "metadata": {
-            "service_version": app.image_version,
+            "service_version": image_version,
             "recipe_scrapers_version": rs_version,
         },
         "url": {"resolves_to": canonical_url or response.url},
@@ -282,7 +274,7 @@ def crawl():
 
     return {
         "metadata": {
-            "service_version": app.image_version,
+            "service_version": image_version,
             "recipe_scrapers_version": rs_version,
         },
         "recipe": {
