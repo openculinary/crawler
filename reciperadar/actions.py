@@ -19,7 +19,7 @@ def recrawl(url):
 def reindex(recipe_id):
     headers = {"Host": "backend"}
     data = urlencode({"recipe_id": recipe_id}).encode("utf-8")
-    request = Request("https://localhost:30080/recipes/index", data, headers)
+    request = Request("http://localhost:30080/recipes/index", data, headers)
     try:
         with urlopen(request) as response:
             if response.status == HTTPStatus.OK:
