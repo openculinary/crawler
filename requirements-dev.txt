@@ -419,13 +419,13 @@ pathspec==0.11.1 \
     --hash=sha256:2798de800fa92780e33acca925945e9a19a133b715067cf165b8866c15a31687 \
     --hash=sha256:d8af70af76652554bd134c22b3e8a1cc46ed7d91edcdd721ef1a0c51a84a5293
     # via black
-platformdirs==3.5.1 \
-    --hash=sha256:412dae91f52a6f84830f39a8078cecd0e866cb72294a5c66808e74d5e88d251f \
-    --hash=sha256:e2378146f1964972c03c085bb5662ae80b2b8c06226c54b2ff4aa9483e8a13a5
+platformdirs==3.8.0 \
+    --hash=sha256:b0cabcb11063d21a0b261d557acb0a9d2126350e63b70cdf7db6347baea456dc \
+    --hash=sha256:ca9ed98ce73076ba72e092b23d3c93ea6c4e186b3f1c3dad6edd98ff6ffcca2e
     # via black
-pluggy==1.0.0 \
-    --hash=sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159 \
-    --hash=sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3
+pluggy==1.2.0 \
+    --hash=sha256:c2fd55a7d7a3863cba1a013e4e2414658b1d07b6bc57b3919e0c63c9abb99849 \
+    --hash=sha256:d12f0c4b579b15f5e054301bb226ee85eeeba08ffec228092f8defbaa3a4c4b3
     # via pytest
 pycodestyle==2.10.0 \
     --hash=sha256:347187bdb476329d98f695c213d7295a846d1152ff4fe9bacb8a9590b8ee7053 \
@@ -447,9 +447,9 @@ pyrdfa3==3.5.3 \
     # via
     #   -r requirements.txt
     #   extruct
-pytest==7.3.1 \
-    --hash=sha256:3799fa815351fea3a5e96ac7e503a96fa51cc9942c3753cda7651b93c1cfa362 \
-    --hash=sha256:434afafd78b1d78ed0addf160ad2b77a30d35d4bdf8af234fe621919d9ed15e3
+pytest==7.4.0 \
+    --hash=sha256:78bf16451a2eb8c7a2ea98e32dc119fd2aa758f1d5d66dbf0a59d69a3969df32 \
+    --hash=sha256:b4bf8c45bd59934ed84001ad51e11b4ee40d40a1229d2c79f9c592b0a3f6bd8a
     # via -r requirements-dev.in
 pyyaml==6.0 \
     --hash=sha256:01b45c0191e6d66c470b6cf1b9531a771a83c1c4208272ead47a3ae4f2f603bf \
@@ -500,9 +500,9 @@ rdflib==6.3.2 \
     #   -r requirements.txt
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.36.1 \
-    --hash=sha256:ccb045740e13196289ea897d179dc9f9599e1c77d34aa1c516e08949725ba76d \
-    --hash=sha256:fe50da09750ef1317a40dfc4ceeb8014c94efc02a17354a08a2cf327f0406059
+recipe-scrapers==14.37.0 \
+    --hash=sha256:8d24911de32dc18ec784016f5db6d9e348c63931246598a8ec77ee4e6ba77bca \
+    --hash=sha256:a4948880e38f5f015053ca29f736c885d000ece00d17a3a5200d05966cff51b9
     # via -r requirements.txt
 requests[use_chardet_on_py3]==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
