@@ -515,9 +515,9 @@ rdflib==6.3.2 \
     #   -r requirements.txt
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.38.0 \
-    --hash=sha256:46a1ac357988c55c9517be2bad34e96071fea552f8a04f82a98d39c5ce32502a \
-    --hash=sha256:baa88574bc9483914fb2e5cdb6c28ee8b1f6bd40fee99de3aea002190c5942ac
+recipe-scrapers==14.39.0 \
+    --hash=sha256:5d0c0fff23f55dd8f5870c91cb03254f3e3724e59cd452d0140f83a020af9ba5 \
+    --hash=sha256:d36e1d9d02896668b35ad828016265bea1860a560c46300a4bb93afbda289fab
     # via -r requirements.txt
 requests[use_chardet_on_py3]==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
