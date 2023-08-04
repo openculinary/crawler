@@ -197,9 +197,9 @@ extruct==0.16.0 \
     # via
     #   -r requirements.txt
     #   recipe-scrapers
-flake8==6.0.0 \
-    --hash=sha256:3833794e27ff64ea4e9cf5d410082a8b97ff1a06c16aa3d2027339cd0f1195c7 \
-    --hash=sha256:c61007e76655af75e6785a931f452915b371dc48f56efd765247c8fe68f2b181
+flake8==6.1.0 \
+    --hash=sha256:d5b3857f07c030bdb5bf41c7f53799571d75c4491748a3adcd47de929e34cd23 \
+    --hash=sha256:ffdfce58ea94c6580c77888a86506937f9a1a227dfcd15f245d694ae20a6b6e5
     # via -r requirements-dev.in
 flask==2.3.2 \
     --hash=sha256:77fd4e1249d8c9923de34907236b747ced06e5467ecac1a7bb7115ae0e9670b0 \
@@ -430,25 +430,25 @@ packaging==23.1 \
     #   black
     #   gunicorn
     #   pytest
-pathspec==0.11.1 \
-    --hash=sha256:2798de800fa92780e33acca925945e9a19a133b715067cf165b8866c15a31687 \
-    --hash=sha256:d8af70af76652554bd134c22b3e8a1cc46ed7d91edcdd721ef1a0c51a84a5293
+pathspec==0.11.2 \
+    --hash=sha256:1d6ed233af05e679efb96b1851550ea95bbb64b7c490b0f5aa52996c11e92a20 \
+    --hash=sha256:e0d8d0ac2f12da61956eb2306b69f9469b42f4deb0f3cb6ed47b9cce9996ced3
     # via black
-platformdirs==3.9.1 \
-    --hash=sha256:1b42b450ad933e981d56e59f1b97495428c9bd60698baab9f3eb3d00d5822421 \
-    --hash=sha256:ad8291ae0ae5072f66c16945166cb11c63394c7a3ad1b1bc9828ca3162da8c2f
+platformdirs==3.10.0 \
+    --hash=sha256:b45696dab2d7cc691a3226759c0d3b00c47c8b6e293d96f6436f733303f77f6d \
+    --hash=sha256:d7c24979f292f916dc9cbf8648319032f551ea8c49a4c9bf2fb556a02070ec1d
     # via black
 pluggy==1.2.0 \
     --hash=sha256:c2fd55a7d7a3863cba1a013e4e2414658b1d07b6bc57b3919e0c63c9abb99849 \
     --hash=sha256:d12f0c4b579b15f5e054301bb226ee85eeeba08ffec228092f8defbaa3a4c4b3
     # via pytest
-pycodestyle==2.10.0 \
-    --hash=sha256:347187bdb476329d98f695c213d7295a846d1152ff4fe9bacb8a9590b8ee7053 \
-    --hash=sha256:8a4eaf0d0495c7395bdab3589ac2db602797d76207242c17d470186815706610
+pycodestyle==2.11.0 \
+    --hash=sha256:259bcc17857d8a8b3b4a2327324b79e5f020a13c16074670f9c8c8f872ea76d0 \
+    --hash=sha256:5d1013ba8dc7895b548be5afb05740ca82454fd899971563d2ef625d090326f8
     # via flake8
-pyflakes==3.0.1 \
-    --hash=sha256:ec55bf7fe21fff7f1ad2f7da62363d749e2a470500eab1b555334b67aa1ef8cf \
-    --hash=sha256:ec8b276a6b60bd80defed25add7e439881c19e64850afd9b346283d4165fd0fd
+pyflakes==3.1.0 \
+    --hash=sha256:4132f6d49cb4dae6819e5379898f2b8cce3c5f23994194c24b77d5da2e36f774 \
+    --hash=sha256:a0aae034c444db0071aa077972ba4768d40c830d9539fd45bf4cd3f8f6992efc
     # via flake8
 pyparsing==3.1.0 \
     --hash=sha256:d554a96d1a7d3ddaf7183104485bc19fd80543ad6ac5bdb6426719d766fb06c1 \
@@ -527,9 +527,9 @@ requests[use_chardet_on_py3]==2.31.0 \
     #   mf2py
     #   recipe-scrapers
     #   responses
-responses==0.23.1 \
-    --hash=sha256:8a3a5915713483bf353b6f4079ba8b2a29029d1d1090a503c70b0dc5d9d0c7bd \
-    --hash=sha256:c4d9aa9fc888188f0c673eff79a8dadbe2e75b7fe879dc80a221a06e0a68138f
+responses==0.23.3 \
+    --hash=sha256:205029e1cb334c21cb4ec64fc7599be48b859a0fd381a42443cdd600bfe8b16a \
+    --hash=sha256:e6fbcf5d82172fecc0aa1860fd91e58cbfd96cee5e96da5b63fa6eb3caa10dd3
     # via -r requirements-dev.in
 robotexclusionrulesparser==1.7.1 \
     --hash=sha256:d23aa14ae8145c13c95612d696736bad52a4bd0819ce8c9437ee745098fb8388
@@ -552,9 +552,9 @@ tld==0.13 \
     --hash=sha256:93dde5e1c04bdf1844976eae440706379d21f4ab235b73c05d7483e074fb5629 \
     --hash=sha256:f75b2be080f767ed17c2338a339eaa4fab5792586319ca819119da252f9f3749
     # via -r requirements.txt
-types-pyyaml==6.0.12.10 \
-    --hash=sha256:662fa444963eff9b68120d70cda1af5a5f2aa57900003c2006d7626450eaae5f \
-    --hash=sha256:ebab3d0700b946553724ae6ca636ea932c1b0868701d4af121630e78d695fc97
+types-pyyaml==6.0.12.11 \
+    --hash=sha256:7d340b19ca28cddfdba438ee638cd4084bde213e501a3978738543e27094775b \
+    --hash=sha256:a461508f3096d1d5810ec5ab95d7eeecb651f3a15b71959999988942063bf01d
     # via responses
 urllib3==2.0.3 \
     --hash=sha256:48e7fafa40319d358848e1bc6809b208340fafe2096f1725d05d67443d0483d1 \
