@@ -138,7 +138,7 @@ def test_crawl_response(
 
     assert response.status_code == 200
     assert service_version == dulwich_version[1:]
-    assert rs_version == "14.39.0"
+    assert rs_version == "14.42.0"
 
     nutrition = response.json.get("recipe", {}).get("nutrition")
     assert nutrition is not None

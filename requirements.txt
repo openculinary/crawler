@@ -93,9 +93,9 @@ charset-normalizer==3.2.0 \
     --hash=sha256:f779d3ad205f108d14e99bb3859aa7dd8e9c68874617c72354d7ecaec2a054ac \
     --hash=sha256:f87f746ee241d30d6ed93969de31e5ffd09a2961a051e60ae6bddde9ec3583aa
     # via requests
-click==8.1.6 \
-    --hash=sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd \
-    --hash=sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5
+click==8.1.7 \
+    --hash=sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28 \
+    --hash=sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de
     # via flask
 extruct==0.16.0 \
     --hash=sha256:2499ea9e7d22744745ca708acee9542a4aa231871620c4f65f869a1286e64aa8 \
@@ -312,11 +312,11 @@ rdflib==7.0.0 \
     # via
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.41.0 \
-    --hash=sha256:86653d76585a116da14e934e8d296d1221c7c290c798d7c30551a8cfdac39ade \
-    --hash=sha256:97926707edaf7c6ce06dfc8bb6b769dc88502a7a8c77e5bcf7a3c1faaaca1e9a
+recipe-scrapers==14.42.0 \
+    --hash=sha256:02704e423fcb0219a62ae2e3500eede5050d7a7ceada0e41b96df107bb93a523 \
+    --hash=sha256:8e82dec359460d3ce3b721d86064f81b3cddbc2af90530384b42b5a85263f4e7
     # via -r requirements.in
-requests[use_chardet_on_py3]==2.31.0 \
+requests==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
     --hash=sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1
     # via
@@ -353,7 +353,7 @@ webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
     --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
     # via html5lib
-werkzeug==2.3.6 \
-    --hash=sha256:935539fa1413afbb9195b24880778422ed620c0fc09670945185cce4d91a8890 \
-    --hash=sha256:98c774df2f91b05550078891dee5f0eb0cb797a522c757a2452b9cee5b202330
+werkzeug==2.3.7 \
+    --hash=sha256:2b8c0e447b4b9dbcc85dd97b6eeb4dcbaf6c8b6c3be0bd654e25553e0a2157d8 \
+    --hash=sha256:effc12dba7f3bd72e605ce49807bbe692bd729c3bb122a3b91747a6ae77df528
     # via flask
