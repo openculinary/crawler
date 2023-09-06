@@ -312,9 +312,9 @@ rdflib==7.0.0 \
     # via
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.44.0 \
-    --hash=sha256:be4dfea64cc2adecdbff2fd6d056e4974b5094a7cde1326a93f3feaecc04ffb0 \
-    --hash=sha256:c1935fe225a7b414c077b6289ba27390b968fc0f92d184840ca4287ed38ec030
+recipe-scrapers==14.45.0 \
+    --hash=sha256:1dc1319395791d2411b587d2027492589fb588532674c7d95f619e321ba8dd0d \
+    --hash=sha256:a60dedb7a81d4e2a2daad33f1a5f10eb0b2ecdf0bcb6fd94e7d0dabe3ffe7d69
     # via -r requirements.in
 requests==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
@@ -333,9 +333,9 @@ six==1.16.0 \
     #   extruct
     #   html5lib
     #   isodate
-soupsieve==2.4.1 \
-    --hash=sha256:1c1bfee6819544a3447586c889157365a27e10d88cde3ad3da0cf0ddf646feb8 \
-    --hash=sha256:89d12b2d5dfcd2c9e8c22326da9d9aa9cb3dfab0a83a024f05704076ee8d35ea
+soupsieve==2.5 \
+    --hash=sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690 \
+    --hash=sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7
     # via beautifulsoup4
 tld==0.13 \
     --hash=sha256:93dde5e1c04bdf1844976eae440706379d21f4ab235b73c05d7483e074fb5629 \
