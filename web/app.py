@@ -215,9 +215,12 @@ def crawl():
             }
         }, 404
 
+    instructions = scrape.instructions()
     directions = parse_descriptions(
         service="direction-parser-service",
-        descriptions=scrape.instructions().split("\n"),
+        descriptions=(
+            instructions if isinstance(instructions, list) else instructions.split("\n")
+        ),
     )
 
     time = scrape.total_time()
