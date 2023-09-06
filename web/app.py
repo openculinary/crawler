@@ -217,7 +217,7 @@ def crawl():
 
     directions = parse_descriptions(
         service="direction-parser-service",
-        descriptions=scrape.instructions_list(),
+        descriptions=scrape.instructions().split("\n"),
     )
 
     time = scrape.total_time()
