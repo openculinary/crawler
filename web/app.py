@@ -234,6 +234,8 @@ def crawl():
     servings = 1
     yields = scrape.yields()
     if yields:
+        if not isinstance(yields, str):
+            yields = str(yields)
         if not yields[0].isnumeric():
             yields = get_yields(yields)
         tokens = yields.split()
