@@ -1,6 +1,6 @@
 flask==2.3.3
 gunicorn==21.2.0
-recipe-scrapers==14.45.0
+recipe-scrapers==14.48.0
 requests[use_chardet_on_py3]==2.31.0
 robotexclusionrulesparser==1.7.1
 tld==0.13.0
