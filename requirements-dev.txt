@@ -533,9 +533,9 @@ rdflib==7.0.0 \
     #   -r requirements.txt
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.48.0 \
-    --hash=sha256:4a2892e2766e0fda50bba58bf453366f3f2a6a7ceaeaf0113a768dcb54e96690 \
-    --hash=sha256:5549b129009d32e40c92738a3a39dc8f4d7c9529b3202c9dcedfe6fb1922f9b0
+recipe-scrapers==14.49.0 \
+    --hash=sha256:720234e5c1da02234bd5c2ea31217a9aaf717d8ffe7c9b2170584e9cf36de4d8 \
+    --hash=sha256:74990fd2d6eba0e44202c055536e55d7bc93a9f5e5c26d4b5c7ec52961bad663
     # via -r requirements.txt
 requests==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
@@ -570,9 +570,9 @@ tld==0.13 \
     --hash=sha256:93dde5e1c04bdf1844976eae440706379d21f4ab235b73c05d7483e074fb5629 \
     --hash=sha256:f75b2be080f767ed17c2338a339eaa4fab5792586319ca819119da252f9f3749
     # via -r requirements.txt
-types-pyyaml==6.0.12.11 \
-    --hash=sha256:7d340b19ca28cddfdba438ee638cd4084bde213e501a3978738543e27094775b \
-    --hash=sha256:a461508f3096d1d5810ec5ab95d7eeecb651f3a15b71959999988942063bf01d
+types-pyyaml==6.0.12.12 \
+    --hash=sha256:334373d392fde0fdf95af5c3f1661885fa10c52167b14593eb856289e1855062 \
+    --hash=sha256:c05bc6c158facb0676674b7f11fe3960db4f389718e19e62bd2b84d6205cfd24
     # via responses
 urllib3==2.0.4 \
     --hash=sha256:8d22f86aae8ef5e410d4f539fde9ce6b2113a001bb4d189e0aed70642d602b11 \
