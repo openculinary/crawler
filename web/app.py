@@ -97,9 +97,7 @@ def resolve():
             }
         }, 403
 
-    canonical_url = None
     response = requests.get(url, headers=HEADERS)
-
     if not response.ok:
         return {
             "error": {
@@ -107,10 +105,9 @@ def resolve():
             }
         }, 400
 
-    # Select a scraper based on the response URL.
-    # The response URL's domain should correlate with the response body format.
-    response_domain = scraper_domain(response.url)
-    if response_domain in SCRAPERS:
+    # Attempt to identify a canonical URL from the response
+    canonical_url = None
+    if scraper_domain(response.url) in SCRAPERS:
         scrape = scrape_html(response.text, response.url)
         canonical_url = scrape.canonical_url()
 
