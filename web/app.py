@@ -100,10 +100,17 @@ def resolve():
     canonical_url = None
     response = requests.get(url, headers=HEADERS)
 
+    if not response.ok:
+        return {
+            "error": {
+                "message": f"received non-success status code from {url}",
+            }
+        }, 400
+
     # Select a scraper based on the response URL.
     # The response URL's domain should correlate with the response body format.
     response_domain = scraper_domain(response.url)
-    if response.ok and response_domain in SCRAPERS:
+    if response_domain in SCRAPERS:
         scrape = scrape_html(response.text, response.url)
         canonical_url = scrape.canonical_url()
 

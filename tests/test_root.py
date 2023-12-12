@@ -55,6 +55,24 @@ def test_origin_url_resolution(
     assert recipe_url == content_url
 
 
+@responses.activate
+@patch("web.app.can_fetch")
+def test_error_url_resolution(
+    can_fetch,
+    client,
+    origin_url,
+    content_url,
+):
+    can_fetch.return_value = True
+    responses.add(responses.GET, origin_url, status=404)
+
+    response = client.post("/resolve", data={"url": origin_url})
+    error = response.json.get("error")
+
+    assert error is not None
+    assert "url" not in response.json
+
+
 @pytest.fixture
 def scrape_result():
     class ScrapeResult(object):
