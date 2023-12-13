@@ -9,7 +9,7 @@ def query_crawl_urls(where):
     where = where or "true"
     query = f"select url " f"from crawl_urls " f"where {where} " f"order by random()"
 
-    db = pg8000.connect(host="192.168.100.1", user="api", database="api")
+    db = pg8000.connect(host="192.168.100.1", user="backend", database="backend")
     cursor = db.cursor()
     results = cursor.execute(query)
     for (url,) in results.fetchall():

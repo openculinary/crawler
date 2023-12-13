@@ -14,7 +14,7 @@ def query_recipes(where):
         f"order by random()"
     )
 
-    db = pg8000.connect(host="192.168.100.1", user="api", database="api")
+    db = pg8000.connect(host="192.168.100.1", user="backend", database="backend")
     cursor = db.cursor()
     results = cursor.execute(query)
     for recipe_id, dst, title in results.fetchall():
