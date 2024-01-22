@@ -478,9 +478,9 @@ pyparsing==3.1.1 \
     # via
     #   -r requirements.txt
     #   rdflib
-pyrdfa3==3.5.3 \
-    --hash=sha256:157663a92b87df345b6f69bde235dff5f797891608e12fe1e4fa8dad687131ae \
-    --hash=sha256:4da7ed49e8f524b573ed67e4f7bc7f403bff3be00546d7438fe263c924a91ccf
+pyrdfa3==3.6.2 \
+    --hash=sha256:290c2fa966ddd1b45ac94a727da144f5a233ed58c63c370e3d68e6d00b0dee5d \
+    --hash=sha256:73681dab957f60901696767388b956a5769c730bc451da6ffb2f0e36f18314c2
     # via
     #   -r requirements.txt
     #   extruct
@@ -557,6 +557,7 @@ requests==2.31.0 \
     # via
     #   -r requirements.txt
     #   mf2py
+    #   pyrdfa3
     #   recipe-scrapers
     #   responses
 responses==0.24.1 \

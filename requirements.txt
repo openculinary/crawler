@@ -313,9 +313,9 @@ pyparsing==3.1.1 \
     --hash=sha256:32c7c0b711493c72ff18a981d24f28aaf9c1fb7ed5e9667c9e84e3db623bdbfb \
     --hash=sha256:ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db
     # via rdflib
-pyrdfa3==3.5.3 \
-    --hash=sha256:157663a92b87df345b6f69bde235dff5f797891608e12fe1e4fa8dad687131ae \
-    --hash=sha256:4da7ed49e8f524b573ed67e4f7bc7f403bff3be00546d7438fe263c924a91ccf
+pyrdfa3==3.6.2 \
+    --hash=sha256:290c2fa966ddd1b45ac94a727da144f5a233ed58c63c370e3d68e6d00b0dee5d \
+    --hash=sha256:73681dab957f60901696767388b956a5769c730bc451da6ffb2f0e36f18314c2
     # via extruct
 rdflib==7.0.0 \
     --hash=sha256:0438920912a642c866a513de6fe8a0001bd86ef975057d6962c79ce4771687cd \
@@ -333,6 +333,7 @@ requests==2.31.0 \
     # via
     #   -r requirements.in
     #   mf2py
+    #   pyrdfa3
     #   recipe-scrapers
     #   requests
 robotexclusionrulesparser==1.7.1 \
