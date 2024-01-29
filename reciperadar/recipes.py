@@ -17,8 +17,7 @@ def query_recipes(where):
     db = pg8000.connect(host="192.168.100.1", user="backend", database="backend")
     cursor = db.cursor()
     results = cursor.execute(query)
-    for recipe_id, dst, title in results.fetchall():
-        yield recipe_id, dst, title
+    yield from results.fetchall()
     cursor.close()
 
 
