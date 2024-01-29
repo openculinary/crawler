@@ -75,7 +75,7 @@ def test_error_url_resolution(
 
 @pytest.fixture
 def scrape_result():
-    class ScrapeResult(object):
+    class ScrapeResult:
         def title(self):
             return "test"
 
