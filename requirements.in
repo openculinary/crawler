@@ -1,4 +1,4 @@
-flask==3.0.1
+flask==3.0.2
 gunicorn==21.2.0
 recipe-scrapers==14.54.0
 requests[use_chardet_on_py3]==2.31.0
