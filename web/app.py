@@ -12,12 +12,7 @@ from robotexclusionrulesparser import RobotExclusionRulesParser
 from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._abstract import HEADERS
 from recipe_scrapers._utils import get_yields
-from recipe_scrapers import (
-    get_host_name as scraper_domain,
-    scrape_html,
-    SCRAPERS,
-    WebsiteNotImplementedError,
-)
+from recipe_scrapers import WebsiteNotImplementedError, scrape_html
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
@@ -107,9 +102,16 @@ def resolve():
 
     # Attempt to identify a canonical URL from the response
     canonical_url = None
-    if scraper_domain(response.url) in SCRAPERS:
-        scrape = scrape_html(response.text, response.url)
+    try:
+        scrape = scrape_html(
+            html=response.text,
+            org_url=response.url,
+            online=False,
+            supported_only=True,
+        )
         canonical_url = scrape.canonical_url()
+    except WebsiteNotImplementedError:
+        pass
 
     return {
         "metadata": {

@@ -548,9 +548,9 @@ rdflib==7.0.0 \
     #   -r requirements.txt
     #   extruct
     #   pyrdfa3
-recipe-scrapers==14.55.0 \
-    --hash=sha256:0c2aff7b1604beb787a81f7db490bb0e5d8fb7a6bc1184b23d686c27f4b2184f \
-    --hash=sha256:86872a5988efc44971039ebacf51f49b9db09355270a7a7ba912333b60af9d70
+recipe-scrapers==15.0.0rc2 \
+    --hash=sha256:8f1b3dee86c83862b9f780c1ddc715e6fdbafdeb1e7d63c2d77b1ef6eb454589 \
+    --hash=sha256:92dcf58e34167bba97bdc328d95c7801a2a955d037dc22a29b2699f4fda918cb
     # via -r requirements.txt
 requests==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
@@ -559,7 +559,6 @@ requests==2.31.0 \
     #   -r requirements.txt
     #   mf2py
     #   pyrdfa3
-    #   recipe-scrapers
     #   responses
 responses==0.25.0 \
     --hash=sha256:01ae6a02b4f34e39bffceb0fc6786b67a25eae919c6368d05eabc8d9576c2a66 \
