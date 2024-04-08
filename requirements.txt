@@ -116,9 +116,9 @@ extruct==0.16.0 \
     --hash=sha256:2499ea9e7d22744745ca708acee9542a4aa231871620c4f65f869a1286e64aa8 \
     --hash=sha256:d09cb3d86d149a276b277b3bd45b2b867ef3ec78bed9cd58ee0f2ae01ae670c4
     # via recipe-scrapers
-flask==3.0.2 \
-    --hash=sha256:3232e0e9c850d781933cf0207523d1ece087eb8d87b23777ae38456e2fbe7c6e \
-    --hash=sha256:822c03f4b799204250a7ee84b1eddc40665395333973dfb9deebfe425fefcb7d
+flask==3.0.3 \
+    --hash=sha256:34e815dfaa43340d1d15a5c3a02b8476004037eb4840b34910c6e21679d288f3 \
+    --hash=sha256:ceb27b0af3823ea2737928a4d99d125a06175b8512c445cbd9a9ce200ef76842
     # via -r requirements.in
 gunicorn==21.2.0 \
     --hash=sha256:3213aa5e8c24949e792bcacfc176fef362e7aac80b76c56f6b5122bf350722f0 \
@@ -364,7 +364,7 @@ webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
     --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
     # via html5lib
-werkzeug==3.0.1 \
-    --hash=sha256:507e811ecea72b18a404947aded4b3390e1db8f826b494d76550ef45bb3b1dcc \
-    --hash=sha256:90a285dc0e42ad56b34e696398b8122ee4c681833fb35b8334a095d82c56da10
+werkzeug==3.0.2 \
+    --hash=sha256:3aac3f5da756f93030740bc235d3e09449efcf65f2f55e3602e1d851b8f48795 \
+    --hash=sha256:e39b645a6ac92822588e7b39a692e7828724ceae0b0d702ef96701f90e70128d
     # via flask
