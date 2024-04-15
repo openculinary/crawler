@@ -195,3 +195,14 @@ def test_get_robot_parser():
 
     assert robot_parser is not None
     assert robot_parser.is_allowed("*", target_url)
+
+
+@responses.activate
+@patch("web.app.scrape_html")
+def test_http_error_not_crawled(scrape_html, client, content_url):
+    responses.add(responses.GET, content_url, status=404)
+
+    response = client.post("/crawl", data={"url": content_url})
+
+    assert response.status_code == 404
+    assert not scrape_html.called

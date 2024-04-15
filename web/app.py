@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 from flask import Flask, request
 from tld import get_tld
 import requests
-from requests.exceptions import ConnectionError, ReadTimeout
+from requests.exceptions import ConnectionError, HTTPError, ReadTimeout
 from robotexclusionrulesparser import RobotExclusionRulesParser
 
 from recipe_scrapers.__version__ import __version__ as rs_version
@@ -155,7 +155,14 @@ def crawl():
 
     try:
         response = requests.get(url, headers=HEADERS)
+        response.raise_for_status()
         scrape = scrape_html(response.text, response.url)
+    except HTTPError:
+        return {
+            "error": {
+                "message": f"received non-success status code from {url}",
+            }
+        }, response.status_code
     except (ConnectionError, ReadTimeout):
         duration = timedelta(seconds=1)
         if domain in domain_backoffs:
