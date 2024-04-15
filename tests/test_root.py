@@ -166,7 +166,7 @@ def test_crawl_response(
 
 @patch("web.app.scrape_html")
 @patch("web.app.can_fetch")
-def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client):
+def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client, content_url):
     can_fetch.return_value = False
 
     response = client.post("/crawl", data={"url": content_url})
@@ -177,7 +177,7 @@ def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client):
 
 @patch("requests.get")
 @patch("web.app.can_fetch")
-def test_robots_txt_resolution_filtering(can_fetch, get, client):
+def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
     can_fetch.return_value = False
 
     response = client.post("/resolve", data={"url": content_url})
