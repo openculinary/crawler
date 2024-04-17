@@ -1,5 +1,5 @@
 flask==3.0.3
-gunicorn==21.2.0
+gunicorn==22.0.0
 lxml==5.1.0
 recipe-scrapers==15.0.0-rc2
 requests[use_chardet_on_py3]==2.31.0
