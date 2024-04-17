@@ -18,7 +18,7 @@ venv/.installed:
 	touch venv/.installed
 
 requirements.txt: requirements.in
-	venv/bin/pip-compile --allow-unsafe --generate-hashes --no-header --quiet --resolver backtracking requirements.in
+	venv/bin/pip-compile --allow-unsafe --generate-hashes --no-header --quiet --strip-extras --resolver backtracking requirements.in
 
 requirements-dev.txt: requirements.txt requirements-dev.in
-	venv/bin/pip-compile --allow-unsafe --generate-hashes --no-header --quiet --resolver backtracking requirements-dev.in
+	venv/bin/pip-compile --allow-unsafe --generate-hashes --no-header --quiet --strip-extras --resolver backtracking requirements-dev.in
