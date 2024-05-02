@@ -4,9 +4,9 @@ beautifulsoup4==4.12.3 \
     # via
     #   mf2py
     #   recipe-scrapers
-blinker==1.7.0 \
-    --hash=sha256:c3f865d4d54db7abc53758a01601cf343fe55b84c1de4e3fa910e420b438d5b9 \
-    --hash=sha256:e6820ff6fa4e4d1d8e2747c2283749c3f547e4fee112b98555cdcdae32996182
+blinker==1.8.1 \
+    --hash=sha256:5f1cdeff423b77c31b89de0565cd03e5275a03028f44b2b15f912632a58cced6 \
+    --hash=sha256:da44ec748222dcd0105ef975eed946da197d5bdf8bafb6aa92f5bc89da63fa25
     # via flask
 certifi==2024.2.2 \
     --hash=sha256:0569859f95fc761b18b45ef421b1290a0f65f147e92a1e5eb3e635f9a5e4e66f \
@@ -124,9 +124,9 @@ gunicorn==22.0.0 \
     --hash=sha256:350679f91b24062c86e386e198a15438d53a7a8207235a78ba1b53df4c4378d9 \
     --hash=sha256:4a0b436239ff76fb33f11c07a16482c521a7e09c1ce3cc293c2330afe01bec63
     # via -r requirements.in
-html-text==0.5.2 \
-    --hash=sha256:3f1e063f05eddf3e099a88f0440219c55fdc01c44f1291fe59c66e5228d7fc56 \
-    --hash=sha256:afd61bbb70651d494a8c32670a29b9140492eccc9690109857beae41c3093ded
+html-text==0.6.2 \
+    --hash=sha256:81455b4de5430cf63ce7c45a870fb8629e79ca8518e240f172d62409c2f2ff72 \
+    --hash=sha256:d83d619ccd4b4d6172e21084d8a46e29e49ce87a08cc02161e7ca8c2918e7bca
     # via extruct
 html5lib==1.1 \
     --hash=sha256:0d78f8fde1c230e99fe37986a60526d7049ed4bf8a9fadbad5f00e22e58e041d \
@@ -144,9 +144,9 @@ isodate==0.6.1 \
     # via
     #   rdflib
     #   recipe-scrapers
-itsdangerous==2.1.2 \
-    --hash=sha256:2c2349112351b88699d8d4b6b075022c0808887cb7ad10069318a8b0bc88db44 \
-    --hash=sha256:5dbbc68b317e5e42f327f9021763545dc3fc3bfe22e6deb96aaf1fc38874156a
+itsdangerous==2.2.0 \
+    --hash=sha256:c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef \
+    --hash=sha256:e0050c0b7da1eea53ffaf149c0cfbb5c6e2e2b69c4bef22c81fa6eb73e5f6173
     # via flask
 jinja2==3.1.3 \
     --hash=sha256:7d6d50dd97d52cbc355597bd845fabfbac3f551e1f99619e39a35ce8c370b5fa \
@@ -238,6 +238,11 @@ lxml==5.1.0 \
     #   -r requirements.in
     #   extruct
     #   html-text
+    #   lxml-html-clean
+lxml-html-clean==0.1.1 \
+    --hash=sha256:58c04176593c9caf72ec92e033d2f38859e918b3eff0cc0f8051ad27dc2ab8ef \
+    --hash=sha256:8a644ed01dbbe132fabddb9467f077f6dad12a1d4f3a6a553e280f3815fa46df
+    # via html-text
 markupsafe==2.1.5 \
     --hash=sha256:00e046b6dd71aa03a41079792f8473dc494d564611a8f89bbbd7cb93295ebdcf \
     --hash=sha256:075202fa5b72c86ad32dc7d0b56024ebdbcf2048c0ba09f1cde31bfdd57bcfff \
@@ -310,9 +315,9 @@ packaging==24.0 \
     --hash=sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5 \
     --hash=sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9
     # via gunicorn
-pyparsing==3.1.1 \
-    --hash=sha256:32c7c0b711493c72ff18a981d24f28aaf9c1fb7ed5e9667c9e84e3db623bdbfb \
-    --hash=sha256:ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db
+pyparsing==3.1.2 \
+    --hash=sha256:a1bac0ce561155ecc3ed78ca94d3c9378656ad4c94c1270de543f621420f94ad \
+    --hash=sha256:f9db75911801ed778fe61bb643079ff86601aca99fcae6345aa67292038fb742
     # via rdflib
 pyrdfa3==3.6.2 \
     --hash=sha256:290c2fa966ddd1b45ac94a727da144f5a233ed58c63c370e3d68e6d00b0dee5d \
@@ -324,9 +329,9 @@ rdflib==7.0.0 \
     # via
     #   extruct
     #   pyrdfa3
-recipe-scrapers==15.0.0rc2 \
-    --hash=sha256:8f1b3dee86c83862b9f780c1ddc715e6fdbafdeb1e7d63c2d77b1ef6eb454589 \
-    --hash=sha256:92dcf58e34167bba97bdc328d95c7801a2a955d037dc22a29b2699f4fda918cb
+recipe-scrapers==15.0.0rc3 \
+    --hash=sha256:e5cce178c93698f2242e4cc5c86a1603ffb28329bd0883908b6b9de5a4109f89 \
+    --hash=sha256:ff08abc22d288ddd642f5dccd7897179bf0751660a74962ce63a7ff327b3f88e
     # via -r requirements.in
 requests==2.31.0 \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
