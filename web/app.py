@@ -167,7 +167,10 @@ def crawl():
         duration = timedelta(seconds=1)
         if domain in domain_backoffs:
             duration += domain_backoffs[domain]["duration"]
-        domain_backoffs[domain] = {"timestamp": datetime.now(tz=UTC), "duration": duration}
+        domain_backoffs[domain] = {
+            "timestamp": datetime.now(tz=UTC),
+            "duration": duration,
+        }
         print(f"* Setting backoff on {domain} for {duration.seconds} seconds")
         sleep(duration.seconds)
         return {
