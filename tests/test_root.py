@@ -112,6 +112,9 @@ def scrape_result():
         def yields(self):
             return "Makes 2"
 
+        def language(self):
+            return "en"
+
     return ScrapeResult()
 
 

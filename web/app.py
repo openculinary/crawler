@@ -43,9 +43,14 @@ app = Flask(__name__)
 image_version = getenv("IMAGE_VERSION")
 
 
-def parse_descriptions(service, descriptions):
+def parse_descriptions(service, language_code, descriptions):
     entities = requests.post(
-        url=f"http://{service}", data={"descriptions[]": descriptions}, proxies={}
+        url=f"http://{service}",
+        data={
+            "language_code": language_code,
+            "descriptions[]": descriptions,
+        },
+        proxies={},
     ).json()
     return [{**{"index": index}, **entity} for index, entity in enumerate(entities)]
 
@@ -208,6 +213,8 @@ def crawl():
             }
         }, 404
 
+    language_code = scrape.language()
+
     # Naive filtering for ingredient lines that describe ingredient sub-groups
     #   Example: 'For the sauce:'
     ingredients = [
@@ -217,7 +224,9 @@ def crawl():
     ]
     try:
         ingredients = parse_descriptions(
-            service="ingredient-parser-service", descriptions=ingredients
+            service="ingredient-parser-service",
+            language_code=language_code,
+            descriptions=ingredients,
         )
     except Exception:
         return {
@@ -234,6 +243,7 @@ def crawl():
     instructions = scrape.instructions()
     directions = parse_descriptions(
         service="direction-parser-service",
+        language_code=language_code,
         descriptions=(
             instructions if isinstance(instructions, list) else instructions.split("\n")
         ),
@@ -277,6 +287,7 @@ def crawl():
     }
     quantities = parse_descriptions(
         service="quantity-parser-service",
+        language_code=language_code,
         descriptions=nutrients.values(),
     )
     nutrition = {}
