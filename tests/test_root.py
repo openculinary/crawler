@@ -38,8 +38,8 @@ def test_origin_url_resolution(
 ):
     can_fetch.return_value = True
     redir_headers = {"Location": content_url}
-    responses.add(responses.GET, origin_url, status=301, headers=redir_headers)
-    responses.add(responses.GET, content_url, status=200)
+    responses.get(origin_url, status=301, headers=redir_headers)
+    responses.get(content_url, status=200)
 
     response = client.post("/resolve", data={"url": origin_url})
     metadata = response.json.get("metadata")
@@ -64,7 +64,7 @@ def test_error_url_resolution(
     content_url,
 ):
     can_fetch.return_value = True
-    responses.add(responses.GET, origin_url, status=404)
+    responses.get(origin_url, status=404)
 
     response = client.post("/resolve", data={"url": origin_url})
     error = response.json.get("error")
@@ -191,7 +191,7 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
 
 @responses.activate
 def test_get_robot_parser():
-    responses.add(responses.GET, "https://example.com/robots.txt")
+    responses.get("https://example.com/robots.txt")
 
     target_url = "https://example.com/foo/bar"
     robot_parser = get_robot_parser(target_url)
@@ -203,7 +203,7 @@ def test_get_robot_parser():
 @responses.activate
 @patch("web.app.scrape_html")
 def test_http_error_not_crawled(scrape_html, client, content_url):
-    responses.add(responses.GET, content_url, status=404)
+    responses.get(content_url, status=404)
 
     response = client.post("/crawl", data={"url": content_url})
 
