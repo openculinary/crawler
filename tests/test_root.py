@@ -1,6 +1,9 @@
+import re
+
 from dulwich import porcelain
 import pytest
 import responses
+from responses import matchers
 from unittest.mock import patch
 
 from web.app import app, get_domain, get_robot_parser
@@ -14,6 +17,14 @@ def origin_url():
 @pytest.fixture
 def content_url(origin_url):
     return origin_url.replace("subdomain", "migrated")
+
+
+@pytest.fixture
+def user_agent_matcher():
+    expected_headers = {
+        "User-Agent": re.compile(r".*\bRecipeRadar\b.*"),
+    }
+    return matchers.header_matcher(expected_headers)
 
 
 def test_get_domain(origin_url):
@@ -33,13 +44,14 @@ def test_url_resolution_validation(client):
 def test_origin_url_resolution(
     can_fetch,
     client,
+    user_agent_matcher,
     origin_url,
     content_url,
 ):
     can_fetch.return_value = True
-    redir_headers = {"Location": content_url}
-    responses.get(origin_url, status=301, headers=redir_headers)
-    responses.get(content_url, status=200)
+    headers = {"Location": content_url}
+    responses.get(origin_url, match=[user_agent_matcher], status=301, headers=headers)
+    responses.get(content_url, match=[user_agent_matcher], status=200)
 
     response = client.post("/resolve", data={"url": origin_url})
     metadata = response.json.get("metadata")
@@ -60,11 +72,12 @@ def test_origin_url_resolution(
 def test_error_url_resolution(
     can_fetch,
     client,
+    user_agent_matcher,
     origin_url,
     content_url,
 ):
     can_fetch.return_value = True
-    responses.get(origin_url, status=404)
+    responses.get(origin_url, match=[user_agent_matcher], status=404)
 
     response = client.post("/resolve", data={"url": origin_url})
     error = response.json.get("error")
@@ -202,8 +215,8 @@ def test_get_robot_parser():
 
 @responses.activate
 @patch("web.app.scrape_html")
-def test_http_error_not_crawled(scrape_html, client, content_url):
-    responses.get(content_url, status=404)
+def test_http_error_not_crawled(scrape_html, client, user_agent_matcher, content_url):
+    responses.get(content_url, match=[user_agent_matcher], status=404)
 
     response = client.post("/crawl", data={"url": content_url})
 
