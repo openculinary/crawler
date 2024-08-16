@@ -7,12 +7,24 @@ from flask import Flask, request
 from tld import get_tld
 import requests
 from requests.exceptions import ConnectionError, HTTPError, ReadTimeout
+from requests.utils import default_user_agent as requests_user_agent
 from robotexclusionrulesparser import RobotExclusionRulesParser
 
 from recipe_scrapers.__version__ import __version__ as rs_version
-from recipe_scrapers._abstract import HEADERS
 from recipe_scrapers._utils import get_yields
 from recipe_scrapers import WebsiteNotImplementedError, scrape_html
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 ("
+        "compatible; "
+        "Linux x86_64; "
+        f"{requests_user_agent()}; "
+        "RecipeRadar/0.1; "
+        "+https://www.reciperadar.com"
+        ")"
+    )
+}
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
