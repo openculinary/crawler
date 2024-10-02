@@ -333,5 +333,6 @@ def crawl():
             "servings": servings,
             "time": time,
             "rating": rating,
+            "language_code": language_code,
         },
     }
