@@ -3,6 +3,7 @@ import re
 from dulwich import porcelain
 import pytest
 import responses
+from recipe_scrapers import StaticValueException
 from responses import matchers
 from unittest.mock import patch
 
@@ -93,7 +94,7 @@ def scrape_result():
             return "test"
 
         def author(self):
-            return "test"
+            raise StaticValueException(return_value="test author")
 
         def image(self):
             return "test.png"
@@ -126,7 +127,7 @@ def scrape_result():
             return "Makes 2"
 
         def language(self):
-            return "en"
+            raise StaticValueException(return_value="en")
 
     return ScrapeResult()
 
@@ -178,6 +179,12 @@ def test_crawl_response(
     assert nutrition is not None
     assert nutrition["energy"] == 83.68
     assert nutrition["energy_units"] == "J"
+
+    author = response.json.get("recipe", {}).get("author")
+    assert author == "test author"
+
+    language = response.json.get("recipe", {}).get("language_code")
+    assert language == "en"
 
 
 @patch("web.app.scrape_html")

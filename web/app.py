@@ -12,7 +12,11 @@ from robotexclusionrulesparser import RobotExclusionRulesParser
 
 from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._utils import get_yields
-from recipe_scrapers import WebsiteNotImplementedError, scrape_html
+from recipe_scrapers import (
+    StaticValueException,
+    WebsiteNotImplementedError,
+    scrape_html,
+)
 
 HEADERS = {
     "User-Agent": (
@@ -204,6 +208,8 @@ def crawl():
 
     try:
         author = scrape.author()
+    except StaticValueException as static:
+        author = static.return_value
     except NotImplementedError:
         author = None
     if isinstance(author, list):
@@ -225,7 +231,10 @@ def crawl():
             }
         }, 404
 
-    language_code = scrape.language()
+    try:
+        language_code = scrape.language()
+    except StaticValueException as static:
+        language_code = static.return_value
 
     # Naive filtering for ingredient lines that describe ingredient sub-groups
     #   Example: 'For the sauce:'
