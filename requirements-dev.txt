@@ -507,9 +507,9 @@ pyrdfa3==3.6.4 \
     --hash=sha256:64712d1a4bf21829652b39715bada6e7c03bcf19cb49f962c190a38f46172243 \
     --hash=sha256:ed11affa5567ab7afdbc939a58f9286a274447f3ab2999c260c56b5c6e87fb2f
     # via extruct
-pytest==8.3.3 \
-    --hash=sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181 \
-    --hash=sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2
+pytest==8.3.4 \
+    --hash=sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6 \
+    --hash=sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761
     # via -r requirements-dev.in
 pyyaml==6.0.2 \
     --hash=sha256:01179a4a8559ab5de078078f37e5c1a30d76bb88519906844fd7bdea1b7729ff \
@@ -572,9 +572,9 @@ rdflib==7.1.1 \
     # via
     #   extruct
     #   pyrdfa3
-recipe-scrapers==15.2.1 \
-    --hash=sha256:5c81ad6b20dab653895ca7e1dcdc511fb3368196442e413e6516bfbf2ed7041a \
-    --hash=sha256:ac38572f8a564c68287cc1f611eaf9f5dcda00fef3284d0d037f4010c8e4070b
+recipe-scrapers==15.3.2 \
+    --hash=sha256:434dfee1ff5769f168f1bef979f89e17b6bb60b0501577971f54c13fc1809387 \
+    --hash=sha256:4fc361512b899fefbcf1426e769880e909edf4d4ab875fcb670a98f3ce8a7c21
     # via -r requirements.in
 requests==2.32.3 \
     --hash=sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760 \
