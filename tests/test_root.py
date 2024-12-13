@@ -132,7 +132,7 @@ def scrape_result():
     return ScrapeResult()
 
 
-@patch("requests.get")
+@patch("requests.sessions.Session.get")
 @patch("web.app.parse_descriptions")
 @patch("web.app.scrape_html")
 @patch("web.app.can_fetch")
@@ -198,7 +198,7 @@ def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client, content_url)
     assert not scrape_html.called
 
 
-@patch("requests.get")
+@patch("requests.sessions.Session.get")
 @patch("web.app.can_fetch")
 def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
     can_fetch.return_value = False

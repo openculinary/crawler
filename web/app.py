@@ -1,11 +1,13 @@
 from datetime import UTC, datetime, timedelta
 from os import getenv
+import ssl
 from time import sleep
 from urllib.parse import urljoin
 
 from flask import Flask, request
 from tld import get_tld
 import requests
+from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError, HTTPError, ReadTimeout
 from requests.utils import default_user_agent as requests_user_agent
 from robotexclusionrulesparser import RobotExclusionRulesParser
@@ -39,28 +41,38 @@ NUTRITION_SCHEMA_FIELDS = {
 }
 
 
-def request_patch(self, *args, **kwargs):
-    kwargs["proxies"] = kwargs.pop(
-        "proxies",
-        {
-            "http": "http://proxy:3128",
-            "https": "http://proxy:3128",
-        },
-    )
-    kwargs["timeout"] = kwargs.pop("timeout", 5)
-    kwargs["verify"] = kwargs.pop("verify", "/etc/ssl/k8s/proxy-cert/ca.crt")
-    return self.request_orig(*args, **kwargs)
+class ProxyCacheHTTPAdapter(HTTPAdapter):
+    def _get_tls_context(self):
+        context = ssl.create_default_context(cafile="/etc/ssl/k8s/proxy-cert/ca.crt")
+        context.verify_flags &= ~ssl.VERIFY_X509_STRICT
+        while True:
+            yield context
+
+    def build_connection_pool_key_attributes(self, *args, **kwargs):
+        params = super().build_connection_pool_key_attributes(*args, **kwargs)
+        _, context_params = params
+        context_params["ssl_context"] = next(self._get_tls_context())
+        return params
 
 
-setattr(requests.sessions.Session, "request_orig", requests.sessions.Session.request)
-requests.sessions.Session.request = request_patch
+microservice_client = requests.Session()
+proxy_cache_client = requests.Session()
+proxy_cache_client.proxies.update(
+    {
+        "http": "http://proxy:3128",
+        "https": "http://proxy:3128",
+    }
+)
+proxy_cache_client.mount("https://", ProxyCacheHTTPAdapter())
+web_client = requests.Session()
+
 
 app = Flask(__name__)
 image_version = getenv("IMAGE_VERSION")
 
 
 def parse_descriptions(service, language_code, descriptions):
-    entities = requests.post(
+    entities = microservice_client.post(
         url=f"http://{service}",
         data={
             "language_code": language_code,
@@ -84,7 +96,7 @@ def get_robot_parser(url):
     domain = get_domain(url)
     if domain not in domain_robot_parsers:
         robot_parser = RobotExclusionRulesParser()
-        robots_txt = requests.get(urljoin(url, "/robots.txt"))
+        robots_txt = web_client.get(urljoin(url, "/robots.txt"))
         robot_parser.parse(robots_txt.content)
         domain_robot_parsers[domain] = robot_parser
     return domain_robot_parsers[domain]
@@ -113,7 +125,7 @@ def resolve():
             }
         }, 403
 
-    response = requests.get(url, headers=HEADERS)
+    response = proxy_cache_client.get(url, headers=HEADERS, timeout=5)
     if not response.ok:
         return {
             "error": {
@@ -175,7 +187,7 @@ def crawl():
             }, 429
 
     try:
-        response = requests.get(url, headers=HEADERS)
+        response = proxy_cache_client.get(url, headers=HEADERS, timeout=5)
         response.raise_for_status()
         scrape = scrape_html(response.text, response.url)
     except HTTPError:
