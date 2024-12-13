@@ -12,7 +12,7 @@ from web.app import app, get_domain, get_robot_parser
 
 @pytest.fixture
 def origin_url():
-    return "https://recipe.subdomain.example.com/recipe/123"
+    return "https://recipe.subdomain.example.test/recipe/123"
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def user_agent_matcher():
 def test_get_domain(origin_url):
     domain = get_domain(origin_url)
 
-    assert domain == "example.com"
+    assert domain == "example.test"
 
 
 def test_url_resolution_validation(client):
@@ -211,9 +211,9 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
 
 @responses.activate
 def test_get_robot_parser():
-    responses.get("https://example.com/robots.txt")
+    responses.get("https://example.test/robots.txt")
 
-    target_url = "https://example.com/foo/bar"
+    target_url = "https://example.test/foo/bar"
     robot_parser = get_robot_parser(target_url)
 
     assert robot_parser is not None
