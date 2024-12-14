@@ -1,9 +1,10 @@
 from datetime import UTC, datetime, timedelta
 from os import getenv
 import ssl
-from time import sleep
+from time import sleep, time
 from urllib.parse import urljoin
 
+from cacheout import Cache
 from flask import Flask, request
 from tld import get_tld
 import requests
@@ -84,7 +85,7 @@ def parse_descriptions(service, language_code, descriptions):
 
 
 domain_backoffs = {}
-domain_robot_parsers = {}
+domain_robot_parsers = Cache(ttl=60 * 60, timer=time)  # 1hr cache expiry
 
 
 def get_domain(url):
@@ -98,8 +99,8 @@ def get_robot_parser(url):
         robot_parser = RobotExclusionRulesParser()
         robots_txt = web_client.get(urljoin(url, "/robots.txt"))
         robot_parser.parse(robots_txt.content)
-        domain_robot_parsers[domain] = robot_parser
-    return domain_robot_parsers[domain]
+        domain_robot_parsers.set(domain, robot_parser)
+    return domain_robot_parsers.get(domain)
 
 
 def can_fetch(url):
