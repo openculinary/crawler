@@ -34,6 +34,13 @@ def unproxied_matcher():
     return matchers.request_kwargs_matcher({"proxies": OrderedDict()})
 
 
+@pytest.fixture
+def cache_proxy_matcher():
+    protocols = ("http", "https")
+    proxies = OrderedDict([(protocol, "http://proxy:3128") for protocol in protocols])
+    return matchers.request_kwargs_matcher({"proxies": proxies})
+
+
 def test_get_domain(origin_url):
     domain = get_domain(origin_url)
 
@@ -52,13 +59,23 @@ def test_origin_url_resolution(
     can_fetch,
     client,
     user_agent_matcher,
+    cache_proxy_matcher,
     origin_url,
     content_url,
 ):
     can_fetch.return_value = True
     headers = {"Location": content_url}
-    responses.get(origin_url, match=[user_agent_matcher], status=301, headers=headers)
-    responses.get(content_url, match=[user_agent_matcher], status=200)
+    responses.get(
+        origin_url,
+        match=[user_agent_matcher, cache_proxy_matcher],
+        status=301,
+        headers=headers,
+    )
+    responses.get(
+        content_url,
+        match=[user_agent_matcher, cache_proxy_matcher],
+        status=200,
+    )
 
     response = client.post("/resolve", data={"url": origin_url})
     metadata = response.json.get("metadata")
@@ -80,11 +97,16 @@ def test_error_url_resolution(
     can_fetch,
     client,
     user_agent_matcher,
+    cache_proxy_matcher,
     origin_url,
     content_url,
 ):
     can_fetch.return_value = True
-    responses.get(origin_url, match=[user_agent_matcher], status=404)
+    responses.get(
+        origin_url,
+        match=[user_agent_matcher, cache_proxy_matcher],
+        status=404,
+    )
 
     response = client.post("/resolve", data={"url": origin_url})
     error = response.json.get("error")
@@ -228,8 +250,18 @@ def test_get_robot_parser(unproxied_matcher):
 
 @responses.activate
 @patch("web.app.scrape_html")
-def test_http_error_not_crawled(scrape_html, client, user_agent_matcher, content_url):
-    responses.get(content_url, match=[user_agent_matcher], status=404)
+def test_http_error_not_crawled(
+    scrape_html,
+    client,
+    user_agent_matcher,
+    cache_proxy_matcher,
+    content_url,
+):
+    responses.get(
+        content_url,
+        match=[user_agent_matcher, cache_proxy_matcher],
+        status=404,
+    )
 
     response = client.post("/crawl", data={"url": content_url})
 
