@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import re
 
 from dulwich import porcelain
@@ -26,6 +27,11 @@ def user_agent_matcher():
         "User-Agent": re.compile(r".*\bRecipeRadar\b.*"),
     }
     return matchers.header_matcher(expected_headers)
+
+
+@pytest.fixture
+def unproxied_matcher():
+    return matchers.request_kwargs_matcher({"proxies": OrderedDict()})
 
 
 def test_get_domain(origin_url):
@@ -210,8 +216,8 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
 
 
 @responses.activate
-def test_get_robot_parser():
-    responses.get("https://example.test/robots.txt")
+def test_get_robot_parser(unproxied_matcher):
+    responses.get("https://example.test/robots.txt", match=[unproxied_matcher])
 
     target_url = "https://example.test/foo/bar"
     robot_parser = get_robot_parser(target_url)
