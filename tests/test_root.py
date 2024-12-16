@@ -67,14 +67,14 @@ def test_origin_url_resolution(
     headers = {"Location": content_url}
     responses.get(
         origin_url,
-        match=[user_agent_matcher, cache_proxy_matcher],
-        status=301,
         headers=headers,
+        status=301,
+        match=[user_agent_matcher, cache_proxy_matcher],
     )
     responses.get(
         content_url,
-        match=[user_agent_matcher, cache_proxy_matcher],
         status=200,
+        match=[user_agent_matcher, cache_proxy_matcher],
     )
 
     response = client.post("/resolve", data={"url": origin_url})
@@ -104,8 +104,8 @@ def test_error_url_resolution(
     can_fetch.return_value = True
     responses.get(
         origin_url,
-        match=[user_agent_matcher, cache_proxy_matcher],
         status=404,
+        match=[user_agent_matcher, cache_proxy_matcher],
     )
 
     response = client.post("/resolve", data={"url": origin_url})
@@ -259,8 +259,8 @@ def test_http_error_not_crawled(
 ):
     responses.get(
         content_url,
-        match=[user_agent_matcher, cache_proxy_matcher],
         status=404,
+        match=[user_agent_matcher, cache_proxy_matcher],
     )
 
     response = client.post("/crawl", data={"url": content_url})
