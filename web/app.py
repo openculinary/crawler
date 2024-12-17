@@ -229,22 +229,6 @@ def crawl():
         author = ", ".join(author)
 
     try:
-        scraped_image = scrape.image() or super(type(scrape), scrape).image()
-    except NotImplementedError:
-        return {
-            "error": {
-                "message": "image retrieval is not implemented",
-            }
-        }, 501
-
-    if not scraped_image:
-        return {
-            "error": {
-                "message": "could not find recipe image",
-            }
-        }, 404
-
-    try:
         language_code = scrape.language()
     except StaticValueException as static:
         language_code = static.return_value
@@ -350,7 +334,6 @@ def crawl():
             "ingredients": ingredients,
             "directions": directions,
             "author": author,
-            "image_src": urljoin(url, scraped_image),
             "nutrition": nutrition,
             "servings": servings,
             "time": time,
