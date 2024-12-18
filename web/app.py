@@ -258,15 +258,6 @@ def crawl():
             }
         }, 404
 
-    instructions = scrape.instructions()
-    directions = parse_descriptions(
-        service="direction-parser-service",
-        language_code=language_code,
-        descriptions=(
-            instructions if isinstance(instructions, list) else instructions.split("\n")
-        ),
-    )
-
     time = scrape.total_time()
     if not time:
         return {
@@ -332,7 +323,6 @@ def crawl():
             "src": url,
             "domain": domain,
             "ingredients": ingredients,
-            "directions": directions,
             "author": author,
             "nutrition": nutrition,
             "servings": servings,
