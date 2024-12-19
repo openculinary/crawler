@@ -30,6 +30,12 @@ def user_agent_matcher():
 
 
 @pytest.fixture
+def nocache_matcher():
+    expected_headers = {"Cache-Control": "no-cache"}
+    return matchers.header_matcher(expected_headers)
+
+
+@pytest.fixture
 def unproxied_matcher():
     return matchers.request_kwargs_matcher({"proxies": OrderedDict()})
 
@@ -284,7 +290,13 @@ def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
 
 @responses.activate
 @patch("web.app.scrape_html")
-def test_http_cache_disabled_direct_access(client, unproxied_matcher, content_url):
+def test_http_cache_disabled_direct_access(
+    scrape_html,
+    client,
+    unproxied_matcher,
+    nocache_matcher,
+    content_url,
+):
     responses.get(
         "http://backend-service/domains/example.test",
         json={"cache_enabled": False},
@@ -292,10 +304,12 @@ def test_http_cache_disabled_direct_access(client, unproxied_matcher, content_ur
     responses.get(
         content_url,
         status=200,
-        match=[unproxied_matcher],
+        match=[unproxied_matcher, nocache_matcher],
     )
 
     client.post("/crawl", data={"url": content_url})
+
+    assert scrape_html.called
 
 
 @responses.activate

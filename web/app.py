@@ -21,7 +21,7 @@ from recipe_scrapers import (
     scrape_html,
 )
 
-HEADERS = {
+HEADERS_DEFAULT = {
     "User-Agent": (
         "Mozilla/5.0 ("
         "compatible; "
@@ -32,6 +32,7 @@ HEADERS = {
         ")"
     )
 }
+HEADERS_NOCACHE = {"Cache-Control": "no-cache"}
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
@@ -120,7 +121,7 @@ def can_crawl(domain_config):
 
 def can_fetch(url):
     robot_parser = get_robot_parser(url)
-    user_agent = HEADERS.get("User-Agent", "*")
+    user_agent = HEADERS_DEFAULT.get("User-Agent", "*")
     return robot_parser.is_allowed(user_agent, url)
 
 
@@ -164,9 +165,11 @@ def resolve():
             }
         }, 403
 
-    domain_http_client = proxy_cache_client if can_cache(domain_config) else web_client
+    cacheable = can_cache(domain_config)
+    domain_http_client = proxy_cache_client if cacheable else web_client
+    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
 
-    response = domain_http_client.get(url, headers=HEADERS, timeout=5)
+    response = domain_http_client.get(url, headers=headers, timeout=5)
     if not response.ok:
         return {
             "error": {
@@ -243,9 +246,12 @@ def crawl():
                 }
             }, 429
 
-    domain_http_client = proxy_cache_client if can_cache(domain_config) else web_client
+    cacheable = can_cache(domain_config)
+    domain_http_client = proxy_cache_client if cacheable else web_client
+    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
+
     try:
-        response = domain_http_client.get(url, headers=HEADERS, timeout=5)
+        response = domain_http_client.get(url, headers=headers, timeout=5)
         response.raise_for_status()
         scrape = scrape_html(response.text, response.url)
     except HTTPError:
