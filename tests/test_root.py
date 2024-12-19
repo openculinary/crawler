@@ -30,8 +30,8 @@ def user_agent_matcher():
 
 
 @pytest.fixture
-def nocache_matcher():
-    expected_headers = {"Cache-Control": "no-cache"}
+def nostore_matcher():
+    expected_headers = {"Cache-Control": "no-store"}
     return matchers.header_matcher(expected_headers)
 
 
@@ -294,7 +294,7 @@ def test_http_cache_disabled_direct_access(
     scrape_html,
     client,
     unproxied_matcher,
-    nocache_matcher,
+    nostore_matcher,
     content_url,
 ):
     responses.get(
@@ -304,7 +304,7 @@ def test_http_cache_disabled_direct_access(
     responses.get(
         content_url,
         status=200,
-        match=[unproxied_matcher, nocache_matcher],
+        match=[unproxied_matcher, nostore_matcher],
     )
 
     client.post("/crawl", data={"url": content_url})
