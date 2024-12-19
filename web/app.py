@@ -32,7 +32,7 @@ HEADERS_DEFAULT = {
         ")"
     )
 }
-HEADERS_NOCACHE = {"Cache-Control": "no-cache"}
+HEADERS_NOCACHE = {"Cache-Control": "no-store"}
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
