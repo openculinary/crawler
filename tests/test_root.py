@@ -66,6 +66,10 @@ def test_origin_url_resolution(
     can_fetch.return_value = True
     headers = {"Location": content_url}
     responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
+    responses.get(
         origin_url,
         headers=headers,
         status=301,
@@ -102,6 +106,10 @@ def test_error_url_resolution(
     content_url,
 ):
     can_fetch.return_value = True
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
     responses.get(
         origin_url,
         status=404,
@@ -250,6 +258,48 @@ def test_get_robot_parser(unproxied_matcher):
 
 @responses.activate
 @patch("web.app.scrape_html")
+def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url):
+    responses.get(
+        "http://backend-service/domains/example.test",
+        status=500,
+    )
+
+    client.post("/crawl", data={"url": content_url})
+
+    assert not scrape_html.called
+
+
+@responses.activate
+@patch("web.app.scrape_html")
+def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={"crawl_enabled": False},
+    )
+
+    client.post("/crawl", data={"url": content_url})
+
+    assert not scrape_html.called
+
+
+@responses.activate
+@patch("web.app.scrape_html")
+def test_http_cache_disabled_direct_access(client, unproxied_matcher, content_url):
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={"cache_enabled": False},
+    )
+    responses.get(
+        content_url,
+        status=200,
+        match=[unproxied_matcher],
+    )
+
+    client.post("/crawl", data={"url": content_url})
+
+
+@responses.activate
+@patch("web.app.scrape_html")
 def test_http_error_not_crawled(
     scrape_html,
     client,
@@ -257,6 +307,7 @@ def test_http_error_not_crawled(
     cache_proxy_matcher,
     content_url,
 ):
+    responses.get("http://backend-service/domains/example.test", json={})
     responses.get(
         content_url,
         status=404,
