@@ -180,7 +180,6 @@ def test_crawl_response(
     scrape_html.return_value = scrape_result
     parse_descriptions.side_effect = [
         ["test ingredient"],
-        ["test direction"],
         [
             {"magnitude": 5, "units": "g"},
             {"magnitude": 83.68, "units": "J"},
