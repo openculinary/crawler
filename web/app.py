@@ -21,7 +21,7 @@ from recipe_scrapers import (
     scrape_html,
 )
 
-HEADERS = {
+HEADERS_DEFAULT = {
     "User-Agent": (
         "Mozilla/5.0 ("
         "compatible; "
@@ -32,6 +32,7 @@ HEADERS = {
         ")"
     )
 }
+HEADERS_NOCACHE = {"Cache-Control": "no-store"}
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
@@ -103,10 +104,31 @@ def get_robot_parser(url):
     return domain_robot_parsers.get(domain)
 
 
+def get_domain_configuration(domain):
+    response = microservice_client.get(
+        url=f"http://backend-service/domains/{domain}",
+        proxies={},
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def can_crawl(domain_config):
+    if domain_config.get("crawl_enabled") is False:
+        return False
+    return True
+
+
 def can_fetch(url):
     robot_parser = get_robot_parser(url)
-    user_agent = HEADERS.get("User-Agent", "*")
+    user_agent = HEADERS_DEFAULT.get("User-Agent", "*")
     return robot_parser.is_allowed(user_agent, url)
+
+
+def can_cache(domain_config):
+    if domain_config.get("cache_enabled") is False:
+        return False
+    return True
 
 
 @app.route("/resolve", methods=["POST"])
@@ -126,7 +148,28 @@ def resolve():
             }
         }, 403
 
-    response = proxy_cache_client.get(url, headers=HEADERS, timeout=5)
+    domain = get_domain(url)
+    try:
+        domain_config = get_domain_configuration(domain)
+    except Exception:
+        return {
+            "error": {
+                "message": f"unable to retrieve {url} domain configuration",
+            }
+        }, 500
+
+    if not can_crawl(domain_config):
+        return {
+            "error": {
+                "message": f"url resolution of {url} disallowed by configuration",
+            }
+        }, 403
+
+    cacheable = can_cache(domain_config)
+    domain_http_client = proxy_cache_client if cacheable else web_client
+    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
+
+    response = domain_http_client.get(url, headers=headers, timeout=5)
     if not response.ok:
         return {
             "error": {
@@ -174,6 +217,22 @@ def crawl():
         }, 403
 
     domain = get_domain(url)
+    try:
+        domain_config = get_domain_configuration(domain)
+    except Exception:
+        return {
+            "error": {
+                "message": f"unable to retrieve {url} domain configuration",
+            }
+        }, 500
+
+    if not can_crawl(domain_config):
+        return {
+            "error": {
+                "message": f"crawling {url} disallowed by configuration",
+            }
+        }, 403
+
     if domain in domain_backoffs:
         start = domain_backoffs[domain]["timestamp"]
         duration = domain_backoffs[domain]["duration"]
@@ -187,8 +246,12 @@ def crawl():
                 }
             }, 429
 
+    cacheable = can_cache(domain_config)
+    domain_http_client = proxy_cache_client if cacheable else web_client
+    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
+
     try:
-        response = proxy_cache_client.get(url, headers=HEADERS, timeout=5)
+        response = domain_http_client.get(url, headers=headers, timeout=5)
         response.raise_for_status()
         scrape = scrape_html(response.text, response.url)
     except HTTPError:
