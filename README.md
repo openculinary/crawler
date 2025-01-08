@@ -63,7 +63,7 @@ To reindex `reciperadar` recipes containing products named `tofu`, execute the f
 ```sh
 $ cd reciperadar
 $ make
-$ venv/bin/python recipes.py --reindex --where "exists (select * from recipe_ingredients as ri join ingredient_products as ip on ip.ingredient_id = ri.id where ri.recipe_id = recipes.id and ip.product = 'tofu')"
+$ venv/bin/python recipes.py --reindex --where "exists (select * from recipe_ingredients as ri join product_names as pn on pn.id = ri.product_name_id where ri.recipe_id = recipes.id and pn.singular = 'tofu')"
 ```
 
 NB: Running either of these commands without the `--reindex` / `--recrawl` argument will run in a 'safe mode' and tell you about the entities which match your query, without performing any actions on them.
