@@ -13,15 +13,11 @@ from recipe_scrapers import (
     scrape_html,
 )
 
-from web.domains import get_domain, get_domain_configuration, can_cache, can_crawl
+from web.domains import get_domain
+from web.exceptions import DomainConfigurationUnavailable, DomainCrawlProhibited
 from web.parsing import parse_descriptions
 from web.robots import can_fetch, get_robot_parser  # NoQA
-from web.web_clients import (
-    HEADERS_DEFAULT,
-    HEADERS_NOCACHE,
-    proxy_cache_client,
-    web_client,
-)
+from web.web_clients import select_client
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
@@ -49,18 +45,13 @@ def resolve():
 
     domain = get_domain(url)
     try:
-        domain_config = get_domain_configuration(domain)
-    except Exception:
+        domain_http_client, headers = select_client(domain)
+    except DomainConfigurationUnavailable:
         message = f"unable to retrieve {url} domain configuration"
         return {"error": {"message": message}}, 500
-
-    if not can_crawl(domain_config):
+    except DomainCrawlProhibited:
         message = f"url resolution of {url} disallowed by configuration"
         return {"error": {"message": message}}, 403
-
-    cacheable = can_cache(domain_config)
-    domain_http_client = proxy_cache_client if cacheable else web_client
-    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
 
     response = domain_http_client.get(url, headers=headers, timeout=5)
     if not response.ok:
@@ -102,12 +93,11 @@ def crawl():
 
     domain = get_domain(url)
     try:
-        domain_config = get_domain_configuration(domain)
-    except Exception:
+        domain_http_client, headers = select_client(domain)
+    except DomainConfigurationUnavailable:
         message = f"unable to retrieve {url} domain configuration"
         return {"error": {"message": message}}, 500
-
-    if not can_crawl(domain_config):
+    except DomainCrawlProhibited:
         message = f"crawling {url} disallowed by configuration"
         return {"error": {"message": message}}, 403
 
@@ -120,10 +110,6 @@ def crawl():
             sleep(duration.seconds)
             message = f"backing off for {domain}"
             return {"error": {"message": message}}, 429
-
-    cacheable = can_cache(domain_config)
-    domain_http_client = proxy_cache_client if cacheable else web_client
-    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
 
     try:
         response = domain_http_client.get(url, headers=headers, timeout=5)

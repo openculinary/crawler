@@ -43,3 +43,13 @@ proxy_cache_client.proxies.update(
 )
 proxy_cache_client.mount("https://", ProxyCacheHTTPAdapter())
 web_client = requests.Session()
+
+
+def select_client(domain):
+    from web.domains import can_cache, get_domain_configuration
+
+    domain_config = get_domain_configuration(domain)
+    cacheable = can_cache(domain_config)
+    domain_http_client = proxy_cache_client if cacheable else web_client
+    headers = HEADERS_DEFAULT if cacheable else {**HEADERS_DEFAULT, **HEADERS_NOCACHE}
+    return domain_http_client, headers
