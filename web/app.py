@@ -31,7 +31,6 @@ NUTRITION_SCHEMA_FIELDS = {
     "protein": "proteinContent",
 }
 
-
 app = Flask(__name__)
 domain_backoffs = {}
 image_version = getenv("IMAGE_VERSION")
