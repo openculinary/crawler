@@ -45,35 +45,23 @@ image_version = getenv("IMAGE_VERSION")
 def resolve():
     url = request.form.get("url")
     if not url:
-        return {
-            "error": {
-                "message": "url parameter is required",
-            }
-        }, 400
+        message = "url parameter is required"
+        return {"error": {"message": message}}, 400
 
     if not can_fetch(url):
-        return {
-            "error": {
-                "message": f"crawling {url} disallowed by robots.txt",
-            }
-        }, 403
+        message = f"crawling {url} disallowed by robots.txt"
+        return {"error": {"message": message}}, 403
 
     domain = get_domain(url)
     try:
         domain_config = get_domain_configuration(domain)
     except Exception:
-        return {
-            "error": {
-                "message": f"unable to retrieve {url} domain configuration",
-            }
-        }, 500
+        message = f"unable to retrieve {url} domain configuration"
+        return {"error": {"message": message}}, 500
 
     if not can_crawl(domain_config):
-        return {
-            "error": {
-                "message": f"url resolution of {url} disallowed by configuration",
-            }
-        }, 403
+        message = f"url resolution of {url} disallowed by configuration"
+        return {"error": {"message": message}}, 403
 
     cacheable = can_cache(domain_config)
     domain_http_client = proxy_cache_client if cacheable else web_client
@@ -81,11 +69,8 @@ def resolve():
 
     response = domain_http_client.get(url, headers=headers, timeout=5)
     if not response.ok:
-        return {
-            "error": {
-                "message": f"received non-success status code from {url}",
-            }
-        }, 400
+        message = f"received non-success status code from {url}"
+        return {"error": {"message": message}}, 400
 
     # Attempt to identify a canonical URL from the response
     canonical_url = None
@@ -113,35 +98,23 @@ def resolve():
 def crawl():
     url = request.form.get("url")
     if not url:
-        return {
-            "error": {
-                "message": "url parameter is required",
-            }
-        }, 400
+        message = "url parameter is required"
+        return {"error": {"message": message}}, 400
 
     if not can_fetch(url):
-        return {
-            "error": {
-                "message": f"crawling {url} disallowed by robots.txt",
-            }
-        }, 403
+        message = f"crawling {url} disallowed by robots.txt"
+        return {"error": {"message": message}}, 403
 
     domain = get_domain(url)
     try:
         domain_config = get_domain_configuration(domain)
     except Exception:
-        return {
-            "error": {
-                "message": f"unable to retrieve {url} domain configuration",
-            }
-        }, 500
+        message = f"unable to retrieve {url} domain configuration"
+        return {"error": {"message": message}}, 500
 
     if not can_crawl(domain_config):
-        return {
-            "error": {
-                "message": f"crawling {url} disallowed by configuration",
-            }
-        }, 403
+        message = f"crawling {url} disallowed by configuration"
+        return {"error": {"message": message}}, 403
 
     if domain in domain_backoffs:
         start = domain_backoffs[domain]["timestamp"]
@@ -150,11 +123,8 @@ def crawl():
         if datetime.now(tz=UTC) < (start + duration):
             print(f"* Backing off for {domain}")
             sleep(duration.seconds)
-            return {
-                "error": {
-                    "message": f"backing off for {domain}",
-                }
-            }, 429
+            message = f"backing off for {domain}"
+            return {"error": {"message": message}}, 429
 
     cacheable = can_cache(domain_config)
     domain_http_client = proxy_cache_client if cacheable else web_client
@@ -165,11 +135,8 @@ def crawl():
         response.raise_for_status()
         scrape = scrape_html(response.text, response.url)
     except HTTPError:
-        return {
-            "error": {
-                "message": f"received non-success status code from {url}",
-            }
-        }, response.status_code
+        message = f"received non-success status code from {url}"
+        return {"error": {"message": message}}, response.status_code
     except (ConnectionError, ReadTimeout):
         duration = timedelta(seconds=1)
         if domain in domain_backoffs:
@@ -180,17 +147,11 @@ def crawl():
         }
         print(f"* Setting backoff on {domain} for {duration.seconds} seconds")
         sleep(duration.seconds)
-        return {
-            "error": {
-                "message": f"timeout; adding backoff for {domain}",
-            }
-        }, 429
+        message = f"timeout; adding backoff for {domain}"
+        return {"error": {"message": message}}, 429
     except WebsiteNotImplementedError:
-        return {
-            "error": {
-                "message": "website is not implemented",
-            }
-        }, 501
+        message = "website is not implemented"
+        return {"error": {"message": message}}, 501
 
     try:
         author = scrape.author()
@@ -220,24 +181,17 @@ def crawl():
             descriptions=ingredients,
         )
     except Exception:
-        return {
-            "error": {"message": f"ingredient parsing failed for: {ingredients}"}
-        }, 400
+        message = f"ingredient parsing failed for: {ingredients}"
+        return {"error": {"message": message}}, 400
 
     if not ingredients:
-        return {
-            "error": {
-                "message": "could not find recipe ingredient",
-            }
-        }, 404
+        message = "could not find recipe ingredient"
+        return {"error": {"message": message}}, 404
 
     time = scrape.total_time()
     if not time:
-        return {
-            "error": {
-                "message": "could not find recipe timing info",
-            }
-        }, 404
+        message = "could not find recipe timing info"
+        return {"error": {"message": message}}, 404
 
     servings = 1
     yields = scrape.yields()
@@ -252,11 +206,8 @@ def crawl():
             if servings == 0:
                 raise ValueError
         except Exception:
-            return {
-                "error": {
-                    "message": f"servings parsing failed for: {yields}",
-                }
-            }, 400
+            message = f"servings parsing failed for: {yields}"
+            return {"error": {"message": message}}, 400
 
     try:
         nutrients = scrape.nutrients()
