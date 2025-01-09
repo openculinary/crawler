@@ -14,7 +14,7 @@ def client():
 
 @pytest.fixture(autouse=True)
 def patch_get_tld():
-    with patch("web.app.get_tld") as mock_get_tld:
+    with patch("web.robots.get_tld") as mock_get_tld:
         # Add private/reserved .test TLD
         for local_path, domain_trie in get_tld_names().items():
             domain_trie.add("test", private=True)

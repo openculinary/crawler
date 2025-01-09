@@ -1,17 +1,9 @@
 from datetime import UTC, datetime, timedelta
 from os import getenv
-import ssl
-from time import sleep, time
-from urllib.parse import urljoin
+from time import sleep
 
-from cacheout import Cache
 from flask import Flask, request
-from tld import get_tld
-import requests
-from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError, HTTPError, ReadTimeout
-from requests.utils import default_user_agent as requests_user_agent
-from robotexclusionrulesparser import RobotExclusionRulesParser
 
 from recipe_scrapers.__version__ import __version__ as rs_version
 from recipe_scrapers._utils import get_yields
@@ -21,18 +13,19 @@ from recipe_scrapers import (
     scrape_html,
 )
 
-HEADERS_DEFAULT = {
-    "User-Agent": (
-        "Mozilla/5.0 ("
-        "compatible; "
-        "Linux x86_64; "
-        f"{requests_user_agent()}; "
-        "RecipeRadar/0.1; "
-        "+https://www.reciperadar.com"
-        ")"
-    )
-}
-HEADERS_NOCACHE = {"Cache-Control": "no-store"}
+from web.crawl import (
+    get_domain_configuration,
+    can_cache,
+    can_crawl,
+    parse_descriptions,
+)
+from web.web_clients import (
+    HEADERS_DEFAULT,
+    HEADERS_NOCACHE,
+    proxy_cache_client,
+    web_client,
+)
+from web.robots import can_fetch, get_domain, get_robot_parser  # NoQA
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
@@ -43,92 +36,9 @@ NUTRITION_SCHEMA_FIELDS = {
 }
 
 
-class ProxyCacheHTTPAdapter(HTTPAdapter):
-    def _get_tls_context(self):
-        context = ssl.create_default_context(cafile="/etc/ssl/k8s/proxy-cert/ca.crt")
-        context.verify_flags &= ~ssl.VERIFY_X509_STRICT
-        while True:
-            yield context
-
-    def build_connection_pool_key_attributes(self, *args, **kwargs):
-        params = super().build_connection_pool_key_attributes(*args, **kwargs)
-        _, context_params = params
-        context_params["ssl_context"] = next(self._get_tls_context())
-        return params
-
-
-microservice_client = requests.Session()
-proxy_cache_client = requests.Session()
-proxy_cache_client.proxies.update(
-    {
-        "http": "http://proxy:3128",
-        "https": "http://proxy:3128",
-    }
-)
-proxy_cache_client.mount("https://", ProxyCacheHTTPAdapter())
-web_client = requests.Session()
-
-
 app = Flask(__name__)
-image_version = getenv("IMAGE_VERSION")
-
-
-def parse_descriptions(service, language_code, descriptions):
-    entities = microservice_client.post(
-        url=f"http://{service}",
-        data={
-            "language_code": language_code,
-            "descriptions[]": descriptions,
-        },
-        proxies={},
-    ).json()
-    return [{**{"index": index}, **entity} for index, entity in enumerate(entities)]
-
-
 domain_backoffs = {}
-domain_robot_parsers = Cache(ttl=60 * 60, timer=time)  # 1hr cache expiry
-
-
-def get_domain(url):
-    url_info = get_tld(url, as_object=True, search_private=False)
-    return url_info.fld
-
-
-def get_robot_parser(url):
-    domain = get_domain(url)
-    if domain not in domain_robot_parsers:
-        robot_parser = RobotExclusionRulesParser()
-        robots_txt = web_client.get(urljoin(url, "/robots.txt"))
-        robot_parser.parse(robots_txt.content)
-        domain_robot_parsers.set(domain, robot_parser)
-    return domain_robot_parsers.get(domain)
-
-
-def get_domain_configuration(domain):
-    response = microservice_client.get(
-        url=f"http://backend-service/domains/{domain}",
-        proxies={},
-    )
-    response.raise_for_status()
-    return response.json()
-
-
-def can_crawl(domain_config):
-    if domain_config.get("crawl_enabled") is False:
-        return False
-    return True
-
-
-def can_fetch(url):
-    robot_parser = get_robot_parser(url)
-    user_agent = HEADERS_DEFAULT.get("User-Agent", "*")
-    return robot_parser.is_allowed(user_agent, url)
-
-
-def can_cache(domain_config):
-    if domain_config.get("cache_enabled") is False:
-        return False
-    return True
+image_version = getenv("IMAGE_VERSION")
 
 
 @app.route("/resolve", methods=["POST"])
