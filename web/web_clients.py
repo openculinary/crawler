@@ -33,6 +33,7 @@ class ProxyCacheHTTPAdapter(HTTPAdapter):
         return params
 
 
+microservice_client = requests.Session()
 proxy_cache_client = requests.Session()
 proxy_cache_client.proxies.update(
     {

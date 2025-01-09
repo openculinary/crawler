@@ -18,8 +18,8 @@ from web.domains import (
     get_domain_configuration,
     can_cache,
     can_crawl,
-    parse_descriptions,
 )
+from web.parsing import parse_descriptions
 from web.robots import can_fetch, get_robot_parser  # NoQA
 from web.web_clients import (
     HEADERS_DEFAULT,

@@ -1,24 +1,11 @@
-import requests
 from tld import get_tld
 
-microservice_client = requests.Session()
+from web.web_clients import microservice_client
 
 
 def get_domain(url):
     url_info = get_tld(url, as_object=True, search_private=False)
     return url_info.fld
-
-
-def parse_descriptions(service, language_code, descriptions):
-    entities = microservice_client.post(
-        url=f"http://{service}",
-        data={
-            "language_code": language_code,
-            "descriptions[]": descriptions,
-        },
-        proxies={},
-    ).json()
-    return [{**{"index": index}, **entity} for index, entity in enumerate(entities)]
 
 
 def get_domain_configuration(domain):
