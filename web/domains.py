@@ -1,6 +1,12 @@
 import requests
+from tld import get_tld
 
 microservice_client = requests.Session()
+
+
+def get_domain(url):
+    url_info = get_tld(url, as_object=True, search_private=False)
+    return url_info.fld
 
 
 def parse_descriptions(service, language_code, descriptions):

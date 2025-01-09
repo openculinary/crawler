@@ -2,21 +2,16 @@ from time import time
 from urllib.parse import urljoin
 
 from cacheout import Cache
-from tld import get_tld
 import requests
 from robotexclusionrulesparser import RobotExclusionRulesParser
 
+from web.domains import get_domain
 from web.web_clients import HEADERS_DEFAULT
 
 web_client = requests.Session()
 
 
 domain_robot_parsers = Cache(ttl=60 * 60, timer=time)  # 1hr cache expiry
-
-
-def get_domain(url):
-    url_info = get_tld(url, as_object=True, search_private=False)
-    return url_info.fld
 
 
 def get_robot_parser(url):
