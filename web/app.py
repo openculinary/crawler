@@ -19,13 +19,13 @@ from web.crawl import (
     can_crawl,
     parse_descriptions,
 )
+from web.robots import can_fetch, get_domain, get_robot_parser  # NoQA
 from web.web_clients import (
     HEADERS_DEFAULT,
     HEADERS_NOCACHE,
     proxy_cache_client,
     web_client,
 )
-from web.robots import can_fetch, get_domain, get_robot_parser  # NoQA
 
 NUTRITION_SCHEMA_FIELDS = {
     "carbohydrates": "carbohydrateContent",
