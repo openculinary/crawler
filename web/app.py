@@ -13,7 +13,7 @@ from web.exceptions import (
     DomainCrawlProhibited,
 )
 from web.parsing import parse_retry_duration, scrape_recipe, scrape_canonical_url
-from web.robots import can_fetch
+from web.robots import can_fetch, crawl_delay
 from web.web_clients import select_client
 
 app = Flask(__name__)
@@ -57,6 +57,10 @@ def resolve():
             sleep(duration.seconds)
             message = f"backing off for {domain}"
             return {"error": {"message": message}}, 429
+
+    delay = crawl_delay(url)
+    if delay:
+        sleep(delay)
 
     retry_duration = 0
     try:
@@ -132,6 +136,10 @@ def crawl():
             sleep(duration.seconds)
             message = f"backing off for {domain}"
             return {"error": {"message": message}}, 429
+
+    delay = crawl_delay(url)
+    if delay:
+        sleep(delay)
 
     retry_duration = 0
     try:
