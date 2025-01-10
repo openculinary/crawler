@@ -175,8 +175,8 @@ def scrape_result():
 
 
 @patch("requests.sessions.Session.get")
-@patch("web.app.parse_descriptions")
-@patch("web.app.scrape_html")
+@patch("web.parsing.parse_descriptions")
+@patch("web.parsing.scrape_html")
 @patch("web.app.can_fetch")
 def test_crawl_response(
     can_fetch,
@@ -228,7 +228,7 @@ def test_crawl_response(
     assert language == "en"
 
 
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 @patch("web.app.can_fetch")
 def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client, content_url):
     can_fetch.return_value = False
@@ -262,7 +262,7 @@ def test_get_robot_parser(unproxied_matcher):
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url):
     responses.get(
         "http://backend-service/domains/example.test",
@@ -275,7 +275,7 @@ def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url)
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
     responses.get(
         "http://backend-service/domains/example.test",
@@ -288,7 +288,7 @@ def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_http_cache_disabled_direct_access(
     scrape_html,
     client,
@@ -312,7 +312,7 @@ def test_http_cache_disabled_direct_access(
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_http_error_not_crawled(
     scrape_html,
     client,

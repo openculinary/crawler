@@ -3,33 +3,29 @@ from os import getenv
 from time import sleep
 
 from flask import Flask, request
+from recipe_scrapers.__version__ import __version__ as rs_version
 from requests.exceptions import ConnectionError, HTTPError, ReadTimeout
 
-from recipe_scrapers.__version__ import __version__ as rs_version
-from recipe_scrapers._utils import get_yields
-from recipe_scrapers import (
-    StaticValueException,
-    WebsiteNotImplementedError,
-    scrape_html,
-)
-
 from web.domains import get_domain
-from web.exceptions import DomainConfigurationUnavailable, DomainCrawlProhibited
-from web.parsing import parse_descriptions
+from web.exceptions import (
+    CanonicalURLNotFound,
+    DomainConfigurationUnavailable,
+    DomainCrawlProhibited,
+)
+from web.parsing import scrape_recipe, scrape_canonical_url
 from web.robots import can_fetch, get_robot_parser  # NoQA
 from web.web_clients import select_client
-
-NUTRITION_SCHEMA_FIELDS = {
-    "carbohydrates": "carbohydrateContent",
-    "energy": "calories",
-    "fat": "fatContent",
-    "fibre": "fiberContent",
-    "protein": "proteinContent",
-}
 
 app = Flask(__name__)
 domain_backoffs = {}
 image_version = getenv("IMAGE_VERSION")
+
+
+def _service_metadata():
+    return {
+        "service_version": image_version,
+        "recipe_scrapers_version": rs_version,
+    }
 
 
 @app.route("/resolve", methods=["POST"])
@@ -59,23 +55,13 @@ def resolve():
         return {"error": {"message": message}}, 400
 
     # Attempt to identify a canonical URL from the response
-    canonical_url = None
     try:
-        scrape = scrape_html(
-            html=response.text,
-            org_url=response.url,
-            online=False,
-            supported_only=True,
-        )
-        canonical_url = scrape.canonical_url()
-    except WebsiteNotImplementedError:
-        pass
+        canonical_url = scrape_canonical_url(response)
+    except CanonicalURLNotFound:
+        canonical_url = None
 
     return {
-        "metadata": {
-            "service_version": image_version,
-            "recipe_scrapers_version": rs_version,
-        },
+        "metadata": _service_metadata(),
         "url": {"resolves_to": canonical_url or response.url},
     }
 
@@ -114,12 +100,6 @@ def crawl():
     try:
         response = domain_http_client.get(url, headers=headers, timeout=5)
         response.raise_for_status()
-        scrape = scrape_html(
-            html=response.text,
-            org_url=response.url,
-            online=False,
-            supported_only=True,
-        )
     except HTTPError:
         message = f"received non-success status code from {url}"
         return {"error": {"message": message}}, response.status_code
@@ -135,109 +115,8 @@ def crawl():
         sleep(duration.seconds)
         message = f"timeout; adding backoff for {domain}"
         return {"error": {"message": message}}, 429
-    except WebsiteNotImplementedError:
-        message = "website is not implemented"
-        return {"error": {"message": message}}, 501
-
-    try:
-        author = scrape.author()
-    except StaticValueException as static:
-        author = static.return_value
-    except NotImplementedError:
-        author = None
-    if isinstance(author, list):
-        author = ", ".join(author)
-
-    try:
-        language_code = scrape.language()
-    except StaticValueException as static:
-        language_code = static.return_value
-
-    # Naive filtering for ingredient lines that describe ingredient sub-groups
-    #   Example: 'For the sauce:'
-    ingredients = [
-        ingredient
-        for ingredient in scrape.ingredients()
-        if not (ingredient[:4].lower() == "for " and ingredient.endswith(":"))
-    ]
-    try:
-        ingredients = parse_descriptions(
-            service="ingredient-parser-service",
-            language_code=language_code,
-            descriptions=ingredients,
-        )
-    except Exception:
-        message = f"ingredient parsing failed for: {ingredients}"
-        return {"error": {"message": message}}, 400
-
-    if not ingredients:
-        message = "could not find recipe ingredient"
-        return {"error": {"message": message}}, 404
-
-    time = scrape.total_time()
-    if not time:
-        message = "could not find recipe timing info"
-        return {"error": {"message": message}}, 404
-
-    servings = 1
-    yields = scrape.yields()
-    if yields:
-        if not isinstance(yields, str):
-            yields = str(yields)
-        if not yields[0].isnumeric():
-            yields = get_yields(yields)
-        tokens = yields.split()
-        try:
-            servings = int(tokens[0])
-            if servings == 0:
-                raise ValueError
-        except Exception:
-            message = f"servings parsing failed for: {yields}"
-            return {"error": {"message": message}}, 400
-
-    try:
-        nutrients = scrape.nutrients()
-    except NotImplementedError:
-        nutrients = {}
-    nutrients = {
-        field: nutrients[source]
-        for field, source in NUTRITION_SCHEMA_FIELDS.items()
-        if source in nutrients
-    }
-    quantities = parse_descriptions(
-        service="quantity-parser-service",
-        language_code=language_code,
-        descriptions=nutrients.values(),
-    )
-    nutrition = {}
-    for idx, field in enumerate(nutrients):
-        quantity = quantities[idx]
-        nutrition[f"{field}"] = quantity["magnitude"]
-        nutrition[f"{field}_units"] = quantity["units"]
-    nutrition = nutrition or None
-
-    try:
-        rating = float(scrape.ratings())
-    except Exception:
-        rating = 4.0
-    rating = 3.0 if not 1 <= rating <= 5 else rating
-    rating = 4.75 if rating == 5.0 else rating
 
     return {
-        "metadata": {
-            "service_version": image_version,
-            "recipe_scrapers_version": rs_version,
-        },
-        "recipe": {
-            "title": scrape.title(),
-            "src": url,
-            "domain": domain,
-            "ingredients": ingredients,
-            "author": author,
-            "nutrition": nutrition,
-            "servings": servings,
-            "time": time,
-            "rating": rating,
-            "language_code": language_code,
-        },
+        "metadata": _service_metadata(),
+        "recipe": scrape_recipe(url, domain, response),
     }

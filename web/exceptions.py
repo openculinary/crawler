@@ -4,3 +4,7 @@ class DomainConfigurationUnavailable(Exception):
 
 class DomainCrawlProhibited(Exception):
     pass
+
+
+class CanonicalURLNotFound(Exception):
+    pass
