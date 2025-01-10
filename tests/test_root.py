@@ -134,7 +134,6 @@ def test_fetch_endpoints_timeout_backoff(
     responses.get(
         origin_url,
         body=ReadTimeout(),
-        headers={"Retry-After": "3600"},
     )
 
     response = client.post(f"/{endpoint}", data={"url": origin_url})
