@@ -1,4 +1,3 @@
-import re
 from urllib.parse import urljoin
 from unittest.mock import patch
 
@@ -37,14 +36,6 @@ def permissive_robots_txt(origin_url, content_url):
     }
     for robots_txt in robots_txts:
         responses.get(robots_txt, body="User-agent: *\nAllow: *\n")
-
-
-@pytest.fixture
-def user_agent_matcher():
-    expected_headers = {
-        "User-Agent": re.compile(r".*\bRecipeRadar\b.*"),
-    }
-    return matchers.header_matcher(expected_headers)
 
 
 @pytest.fixture
