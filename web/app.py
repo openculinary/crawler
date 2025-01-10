@@ -12,7 +12,7 @@ from web.exceptions import (
     DomainConfigurationUnavailable,
     DomainCrawlProhibited,
 )
-from web.parsing import scrape_recipe, scrape_canonical_url
+from web.parsing import parse_retry_duration, scrape_recipe, scrape_canonical_url
 from web.robots import can_fetch
 from web.web_clients import select_client
 
@@ -96,8 +96,14 @@ def crawl():
             message = f"backing off for {domain}"
             return {"error": {"message": message}}, 429
 
+    retry_duration = 0
     try:
         response = domain_http_client.get(url, headers=headers, timeout=5)
+        if not response.ok and "Retry-After" in response.headers:
+            retry_duration = parse_retry_duration(
+                from_moment=datetime.now(tz=UTC),
+                retry_after=response.headers["Retry-After"],
+            )
         response.raise_for_status()
     except HTTPError:
         message = f"received non-success status code from {url}"
@@ -114,6 +120,8 @@ def crawl():
         sleep(duration.seconds)
         message = f"timeout; adding backoff for {domain}"
         return {"error": {"message": message}}, 429
+    finally:
+        sleep(retry_duration)
 
     return {
         "metadata": _service_metadata(),

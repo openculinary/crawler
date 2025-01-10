@@ -1,3 +1,8 @@
+from datetime import UTC, datetime
+from email.utils import parsedate_to_datetime
+from math import ceil
+from string import digits
+
 from recipe_scrapers._utils import get_yields
 from recipe_scrapers import (
     StaticValueException,
@@ -15,6 +20,35 @@ NUTRITION_SCHEMA_FIELDS = {
     "fibre": "fiberContent",
     "protein": "proteinContent",
 }
+
+
+def parse_retry_duration(from_moment: datetime, retry_after: str) -> int:
+    retry_after = retry_after.strip()
+    if not retry_after:
+        return 0
+
+    if retry_after.startswith(tuple(digits)):
+        try:
+            return ceil(float(retry_after))
+        except Exception:
+            print(f"* Failed parsing {retry_after!r} as integer; delaying for 1min")
+            return 60
+
+    try:
+        dt = parsedate_to_datetime(retry_after)
+    except ValueError:
+        print(f"* Failed to parse {retry_after!r} as HTTP Date; delaying for 1min")
+        return 60
+
+    if not dt.tzinfo:
+        print(f"* Ambiguous/missing timezone parsed for {retry_after!r}; assuming UTC")
+        dt = dt.replace(tzinfo=UTC)
+
+    if dt < from_moment:
+        print(f"* HTTP Date {retry_after!r} predates the moment; delaying for 1min")
+        return 60
+
+    return ceil((dt - from_moment).total_seconds())
 
 
 def parse_descriptions(service, language_code, descriptions):
