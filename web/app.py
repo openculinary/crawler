@@ -6,7 +6,7 @@ from flask import Flask, request
 from recipe_scrapers.__version__ import __version__ as rs_version
 from requests.exceptions import ConnectionError, HTTPError, ReadTimeout
 
-from web.domains import get_domain
+from web.domains import domain_backoffs, get_domain
 from web.exceptions import (
     CanonicalURLNotFound,
     DomainConfigurationUnavailable,
@@ -17,7 +17,6 @@ from web.robots import can_fetch, get_robot_parser  # NoQA
 from web.web_clients import select_client
 
 app = Flask(__name__)
-domain_backoffs = {}
 image_version = getenv("IMAGE_VERSION")
 
 

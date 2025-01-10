@@ -2,6 +2,8 @@ from tld import get_tld
 
 from web.web_clients import microservice_client
 
+domain_backoffs = {}
+
 
 def get_domain(url):
     url_info = get_tld(url, as_object=True, search_private=False)
