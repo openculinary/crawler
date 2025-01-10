@@ -114,7 +114,12 @@ def crawl():
     try:
         response = domain_http_client.get(url, headers=headers, timeout=5)
         response.raise_for_status()
-        scrape = scrape_html(response.text, response.url)
+        scrape = scrape_html(
+            html=response.text,
+            org_url=response.url,
+            online=False,
+            supported_only=True,
+        )
     except HTTPError:
         message = f"received non-success status code from {url}"
         return {"error": {"message": message}}, response.status_code
