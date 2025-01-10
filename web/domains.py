@@ -1,4 +1,4 @@
-from tld import get_tld
+from urllib.parse import urlparse
 
 from web.web_clients import microservice_client
 
@@ -6,8 +6,7 @@ domain_backoffs = {}
 
 
 def get_domain(url):
-    url_info = get_tld(url, as_object=True, search_private=False)
-    return url_info.fld
+    return urlparse(url).netloc
 
 
 def get_domain_configuration(domain):

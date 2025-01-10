@@ -15,12 +15,12 @@ from web.robots import domain_robot_parsers
 
 @pytest.fixture
 def origin_domain():
-    return "example.test"
+    return "recipe.subdomain.example.test"
 
 
 @pytest.fixture
 def origin_url(origin_domain):
-    return f"https://recipe.subdomain.{origin_domain}/recipe/123"
+    return f"https://{origin_domain}/recipe/123"
 
 
 @pytest.fixture
@@ -56,7 +56,7 @@ def nostore_matcher():
 def test_get_domain(origin_url):
     domain = get_domain(origin_url)
 
-    assert domain == "example.test"
+    assert domain == "recipe.subdomain.example.test"
 
 
 def test_url_resolution_validation(client):
@@ -76,7 +76,7 @@ def test_origin_url_resolution(
 ):
     headers = {"Location": content_url}
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         json={},
     )
     responses.get(
@@ -115,7 +115,7 @@ def test_error_url_resolution(
     content_url,
 ):
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         json={},
     )
     responses.get(
@@ -140,7 +140,7 @@ def test_fetch_endpoints_timeout_backoff(
     endpoint,
 ):
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         json={},
     )
     responses.get(
@@ -169,7 +169,7 @@ def test_fetch_endpoints_respect_server_backoff(
     assert len(domain_backoffs) == 0
 
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         json={},
     )
     responses.get(
@@ -202,7 +202,7 @@ def test_fetch_endpoints_respect_server_redirect_backoff(
     assert len(domain_backoffs) == 0
 
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         json={},
     )
     responses.get(
@@ -286,7 +286,7 @@ def test_crawl_response(
     app._got_first_request = False
 
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.migrated.example.test",
         json={},
     )
     responses.get(
@@ -357,7 +357,7 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
 @patch("web.parsing.scrape_html")
 def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url):
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         status=500,
     )
 
@@ -370,7 +370,7 @@ def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url)
 @patch("web.parsing.scrape_html")
 def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.subdomain.example.test",
         json={"crawl_enabled": False},
     )
 
@@ -389,7 +389,7 @@ def test_http_cache_disabled_direct_access(
     content_url,
 ):
     responses.get(
-        "http://backend-service/domains/example.test",
+        "http://backend-service/domains/recipe.migrated.example.test",
         json={"cache_enabled": False},
     )
     responses.get(
@@ -412,7 +412,10 @@ def test_http_error_not_crawled(
     cache_proxy_matcher,
     content_url,
 ):
-    responses.get("http://backend-service/domains/example.test", json={})
+    responses.get(
+        "http://backend-service/domains/recipe.migrated.example.test",
+        json={},
+    )
     responses.get(
         content_url,
         status=404,
