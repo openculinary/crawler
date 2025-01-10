@@ -40,7 +40,7 @@ class DelayableRedirectSession(requests.Session):
     def resolve_redirects(self, response, *args, **kwargs):
         from web.parsing import parse_retry_duration
 
-        if "Retry-After" in response.headers:
+        if response.is_redirect and "Retry-After" in response.headers:
             duration = parse_retry_duration(
                 from_moment=datetime.now(tz=UTC),
                 retry_after=response.headers["Retry-After"],
