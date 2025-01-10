@@ -181,6 +181,48 @@ def test_fetch_endpoints_respect_server_backoff(
     assert origin_domain in domain_backoffs
 
 
+@responses.activate
+@pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
+@patch.dict(domain_backoffs, clear=True)
+@patch("web.web_clients.sleep")
+@patch("web.app.can_fetch")
+def test_fetch_endpoints_respect_server_redirect_backoff(
+    can_fetch,
+    sleep,
+    client,
+    origin_domain,
+    origin_url,
+    content_url,
+    endpoint,
+):
+    can_fetch.return_value = True
+    assert len(domain_backoffs) == 0
+
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
+    responses.get(
+        origin_url,
+        status=302,
+        headers={
+            "Location": content_url,
+            "Retry-After": "0.1",
+        },
+    )
+    responses.get(
+        content_url,
+        status=200,
+    )
+
+    response = client.post(f"/{endpoint}", data={"url": origin_url})
+    error = response.json.get("error")
+
+    sleep.assert_called_once_with(1)  # 0.1 rounded up to 1
+    assert error is None
+    assert origin_domain not in domain_backoffs
+
+
 @pytest.fixture
 def scrape_result():
     class ScrapeResult:
