@@ -34,10 +34,6 @@ def resolve():
         message = "url parameter is required"
         return {"error": {"message": message}}, 400
 
-    if not can_fetch(url):
-        message = f"crawling {url} disallowed by robots.txt"
-        return {"error": {"message": message}}, 403
-
     domain = get_domain(url)
     try:
         domain_http_client, headers = select_client(domain)
@@ -46,6 +42,10 @@ def resolve():
         return {"error": {"message": message}}, 500
     except DomainCrawlProhibited:
         message = f"url resolution of {url} disallowed by configuration"
+        return {"error": {"message": message}}, 403
+
+    if not can_fetch(url):
+        message = f"crawling {url} disallowed by robots.txt"
         return {"error": {"message": message}}, 403
 
     if domain in domain_backoffs:
@@ -113,10 +113,6 @@ def crawl():
         message = "url parameter is required"
         return {"error": {"message": message}}, 400
 
-    if not can_fetch(url):
-        message = f"crawling {url} disallowed by robots.txt"
-        return {"error": {"message": message}}, 403
-
     domain = get_domain(url)
     try:
         domain_http_client, headers = select_client(domain)
@@ -125,6 +121,10 @@ def crawl():
         return {"error": {"message": message}}, 500
     except DomainCrawlProhibited:
         message = f"crawling {url} disallowed by configuration"
+        return {"error": {"message": message}}, 403
+
+    if not can_fetch(url):
+        message = f"crawling {url} disallowed by robots.txt"
         return {"error": {"message": message}}, 403
 
     if domain in domain_backoffs:
