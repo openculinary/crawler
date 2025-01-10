@@ -29,7 +29,10 @@ def content_url(origin_url):
 
 @pytest.fixture
 def permissive_robots_txt(origin_url, content_url):
-    robots_txts = {urljoin(origin_url, "/robots.txt"), urljoin(content_url, "/robots.txt")}
+    robots_txts = {
+        urljoin(origin_url, "/robots.txt"),
+        urljoin(content_url, "/robots.txt"),
+    }
     for robots_txt in robots_txts:
         responses.get(robots_txt, body="User-agent: *\nAllow: *\n")
 
