@@ -1,4 +1,5 @@
 import re
+from urllib.parse import urljoin
 from unittest.mock import patch
 
 from dulwich import porcelain
@@ -24,6 +25,16 @@ def origin_url(origin_domain):
 @pytest.fixture
 def content_url(origin_url):
     return origin_url.replace("subdomain", "migrated")
+
+
+@pytest.fixture
+def permissive_robots_txt(origin_url, content_url):
+    robots_txts = {
+        urljoin(origin_url, "/robots.txt"),
+        urljoin(content_url, "/robots.txt"),
+    }
+    for robots_txt in robots_txts:
+        responses.get(robots_txt, body="User-agent: *\nAllow: *\n")
 
 
 @pytest.fixture
@@ -53,16 +64,14 @@ def test_url_resolution_validation(client):
 
 
 @responses.activate
-@patch("web.app.can_fetch")
 def test_origin_url_resolution(
-    can_fetch,
     client,
     user_agent_matcher,
     cache_proxy_matcher,
+    permissive_robots_txt,
     origin_url,
     content_url,
 ):
-    can_fetch.return_value = True
     headers = {"Location": content_url}
     responses.get(
         "http://backend-service/domains/example.test",
@@ -95,16 +104,14 @@ def test_origin_url_resolution(
 
 
 @responses.activate
-@patch("web.app.can_fetch")
 def test_error_url_resolution(
-    can_fetch,
     client,
     user_agent_matcher,
     cache_proxy_matcher,
+    permissive_robots_txt,
     origin_url,
     content_url,
 ):
-    can_fetch.return_value = True
     responses.get(
         "http://backend-service/domains/example.test",
         json={},
@@ -124,14 +131,12 @@ def test_error_url_resolution(
 
 @responses.activate
 @pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
-@patch("web.app.can_fetch")
 def test_fetch_endpoints_timeout_backoff(
-    can_fetch,
     client,
+    permissive_robots_txt,
     origin_url,
     endpoint,
 ):
-    can_fetch.return_value = True
     responses.get(
         "http://backend-service/domains/example.test",
         json={},
@@ -152,15 +157,13 @@ def test_fetch_endpoints_timeout_backoff(
 @responses.activate
 @pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
 @patch.dict(domain_backoffs, clear=True)
-@patch("web.app.can_fetch")
 def test_fetch_endpoints_respect_server_backoff(
-    can_fetch,
     client,
     origin_domain,
+    permissive_robots_txt,
     origin_url,
     endpoint,
 ):
-    can_fetch.return_value = True
     assert len(domain_backoffs) == 0
 
     responses.get(
@@ -185,17 +188,15 @@ def test_fetch_endpoints_respect_server_backoff(
 @pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
 @patch.dict(domain_backoffs, clear=True)
 @patch("web.web_clients.sleep")
-@patch("web.app.can_fetch")
 def test_fetch_endpoints_respect_server_redirect_backoff(
-    can_fetch,
     sleep,
     client,
     origin_domain,
+    permissive_robots_txt,
     origin_url,
     content_url,
     endpoint,
 ):
-    can_fetch.return_value = True
     assert len(domain_backoffs) == 0
 
     responses.get(
@@ -271,20 +272,18 @@ def scrape_result():
 @patch("requests.sessions.Session.get")
 @patch("web.parsing.parse_descriptions")
 @patch("web.parsing.scrape_html")
-@patch("web.app.can_fetch")
 def test_crawl_response(
-    can_fetch,
     scrape_html,
     parse_descriptions,
     get,
     client,
+    permissive_robots_txt,
     content_url,
     scrape_result,
 ):
     # HACK: Ensure that app initialization methods (re)run during this test
     app._got_first_request = False
 
-    can_fetch.return_value = True
     scrape_html.return_value = scrape_result
     parse_descriptions.side_effect = [
         ["test ingredient"],
