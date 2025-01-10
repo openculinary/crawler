@@ -13,7 +13,7 @@ from web.exceptions import (
     DomainCrawlProhibited,
 )
 from web.parsing import scrape_recipe, scrape_canonical_url
-from web.robots import can_fetch, get_robot_parser  # NoQA
+from web.robots import can_fetch
 from web.web_clients import select_client
 
 app = Flask(__name__)

@@ -1,6 +1,6 @@
 import responses
 
-from web.app import get_robot_parser
+from web.robots import get_robot_parser
 
 
 @responses.activate
