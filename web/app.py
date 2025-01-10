@@ -121,7 +121,12 @@ def crawl():
         message = f"timeout; adding backoff for {domain}"
         return {"error": {"message": message}}, 429
     finally:
-        sleep(retry_duration)
+        if retry_duration:
+            existing_duration = domain_backoffs.get(domain, {}).get("duration") or 0
+            domain_backoffs[domain] = {
+                "timestamp": datetime.now(tz=UTC),
+                "duration": max(existing_duration, retry_duration),
+            }
 
     return {
         "metadata": _service_metadata(),
