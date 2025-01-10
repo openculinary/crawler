@@ -170,7 +170,7 @@ def test_fetch_endpoints_respect_server_backoff(
     responses.get(
         origin_url,
         status=503,
-        headers={"Retry-After": "3600"},
+        headers={"Retry-After": "0.1"},
     )
 
     response = client.post(f"/{endpoint}", data={"url": origin_url})
