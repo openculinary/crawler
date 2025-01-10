@@ -44,4 +44,4 @@ def can_fetch(url):
 def crawl_delay(url):
     robot_parser = get_robot_parser(url)
     user_agent = HEADERS_DEFAULT.get("User-Agent", "*")
-    return robot_parser.get_crawl_delay(user_agent) or 0
+    return max(1, robot_parser.get_crawl_delay(user_agent) or 0)
