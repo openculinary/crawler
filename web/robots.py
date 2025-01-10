@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 
 from cacheout import Cache
 import requests
-from robotexclusionrulesparser import RobotExclusionRulesParser
+from robotexclusionrulesparser import RobotExclusionRulesParser, _Ruleset
 
 from web.domains import get_domain
 from web.web_clients import HEADERS_DEFAULT
@@ -12,6 +12,17 @@ web_client = requests.Session()
 
 
 domain_robot_parsers = Cache(ttl=60 * 60, timer=time)  # 1hr cache expiry
+
+
+# Workaround: recognize robots.txt rulesets containining solely a crawl-delay.
+class _PatchedRuleset(_Ruleset):
+    _is_not_empty = _Ruleset.is_not_empty
+
+    def is_not_empty(self):
+        return _PatchedRuleset._is_not_empty(self) or self.crawl_delay is not None
+
+_Ruleset.is_not_empty = _PatchedRuleset.is_not_empty
+
 
 
 def get_robot_parser(url):
