@@ -10,6 +10,7 @@ from responses import matchers
 from recipe_scrapers import StaticValueException
 
 from web.app import app, domain_backoffs, get_domain
+from web.robots import domain_robot_parsers
 
 
 @pytest.fixture
@@ -29,6 +30,7 @@ def content_url(origin_url):
 
 @pytest.fixture
 def permissive_robots_txt(origin_url, content_url):
+    domain_robot_parsers.clear()
     robots_txts = {
         urljoin(origin_url, "/robots.txt"),
         urljoin(content_url, "/robots.txt"),
