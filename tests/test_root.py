@@ -4,6 +4,7 @@ from unittest.mock import patch
 from dulwich import porcelain
 import pytest
 import responses
+from requests import ReadTimeout
 from responses import matchers
 from recipe_scrapers import StaticValueException
 
@@ -113,6 +114,34 @@ def test_error_url_resolution(
     error = response.json.get("error")
 
     assert error is not None
+    assert "url" not in response.json
+
+
+@responses.activate
+@pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
+@patch("web.app.can_fetch")
+def test_fetch_endpoints_respect_server_backoff(
+    can_fetch,
+    client,
+    origin_url,
+    endpoint,
+):
+    can_fetch.return_value = True
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
+    responses.get(
+        origin_url,
+        body=ReadTimeout(),
+        headers={"Retry-After": "3600"},
+    )
+
+    response = client.post(f"/{endpoint}", data={"url": origin_url})
+    error = response.json.get("error")
+
+    assert error is not None
+    assert "adding backoff" in error["message"]
     assert "url" not in response.json
 
 
