@@ -4,8 +4,9 @@ from web.robots import get_robot_parser, can_fetch, crawl_delay, domain_robot_pa
 
 
 @responses.activate
-def test_get_robot_parser(unproxied_matcher):
-    responses.get("https://example.test/robots.txt", match=[unproxied_matcher])
+def test_get_robot_parser():
+    responses.get("http://backend-service/domains/example.test", json={})
+    responses.get("https://example.test/robots.txt")
 
     target_url = "https://example.test/foo/bar"
     robot_parser = get_robot_parser(target_url)
@@ -17,6 +18,7 @@ def test_get_robot_parser(unproxied_matcher):
 @responses.activate
 def test_can_fetch():
     domain_robot_parsers.clear()  # TODO: implicit cache teardown
+    responses.get("http://backend-service/domains/example.test", json={})
     responses.get(
         "https://example.test/robots.txt",
         body="\n".join(
@@ -41,6 +43,7 @@ def test_can_fetch():
 @responses.activate
 def test_get_crawl_delay():
     domain_robot_parsers.clear()  # TODO: implicit cache teardown
+    responses.get("http://backend-service/domains/example.test", json={})
     responses.get(
         "https://example.test/robots.txt",
         body="\n".join(
