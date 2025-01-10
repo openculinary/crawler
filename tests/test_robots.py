@@ -1,5 +1,4 @@
 import responses
-from responses import matchers
 
 from web.robots import get_robot_parser, can_fetch, crawl_delay, domain_robot_parsers
 
@@ -9,7 +8,7 @@ def test_get_robot_parser(user_agent_matcher, unproxied_matcher):
     responses.get("http://backend-service/domains/example.test", json={})
     responses.get(
         "https://example.test/robots.txt",
-        match=[user_agent_matcher, unproxied_matcher]
+        match=[user_agent_matcher, unproxied_matcher],
     )
 
     target_url = "https://example.test/foo/bar"
