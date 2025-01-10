@@ -48,7 +48,31 @@ def resolve():
         message = f"url resolution of {url} disallowed by configuration"
         return {"error": {"message": message}}, 403
 
-    response = domain_http_client.get(url, headers=headers, timeout=5)
+    if domain in domain_backoffs:
+        start = domain_backoffs[domain]["timestamp"]
+        duration = domain_backoffs[domain]["duration"]
+
+        if datetime.now(tz=UTC) < (start + duration):
+            print(f"* Backing off for {domain}")
+            sleep(duration.seconds)
+            message = f"backing off for {domain}"
+            return {"error": {"message": message}}, 429
+
+    try:
+        response = domain_http_client.get(url, headers=headers, timeout=5)
+    except (ConnectionError, ReadTimeout):
+        duration = timedelta(seconds=1)
+        if domain in domain_backoffs:
+            duration += domain_backoffs[domain]["duration"]
+        domain_backoffs[domain] = {
+            "timestamp": datetime.now(tz=UTC),
+            "duration": duration,
+        }
+        print(f"* Setting backoff on {domain} for {duration.seconds} seconds")
+        sleep(duration.seconds)
+        message = f"timeout; adding backoff for {domain}"
+        return {"error": {"message": message}}, 429
+
     if not response.ok:
         message = f"received non-success status code from {url}"
         return {"error": {"message": message}}, 400
