@@ -1,11 +1,16 @@
 import responses
+from responses import matchers
 
 from web.robots import get_robot_parser, can_fetch, crawl_delay, domain_robot_parsers
 
 
 @responses.activate
-def test_get_robot_parser(unproxied_matcher):
-    responses.get("https://example.test/robots.txt", match=[unproxied_matcher])
+def test_get_robot_parser(user_agent_matcher, unproxied_matcher):
+    responses.get("http://backend-service/domains/example.test", json={})
+    responses.get(
+        "https://example.test/robots.txt",
+        match=[user_agent_matcher, unproxied_matcher]
+    )
 
     target_url = "https://example.test/foo/bar"
     robot_parser = get_robot_parser(target_url)
@@ -15,8 +20,9 @@ def test_get_robot_parser(unproxied_matcher):
 
 
 @responses.activate
-def test_can_fetch():
+def test_can_fetch(user_agent_matcher):
     domain_robot_parsers.clear()  # TODO: implicit cache teardown
+    responses.get("http://backend-service/domains/example.test", json={})
     responses.get(
         "https://example.test/robots.txt",
         body="\n".join(
@@ -27,6 +33,7 @@ def test_can_fetch():
                 "Disallow: *",
             ]
         ),
+        match=[user_agent_matcher],
     )
 
     statistics_allowed = can_fetch("https://example.test/statistics")
@@ -39,8 +46,9 @@ def test_can_fetch():
 
 
 @responses.activate
-def test_get_crawl_delay():
+def test_get_crawl_delay(user_agent_matcher):
     domain_robot_parsers.clear()  # TODO: implicit cache teardown
+    responses.get("http://backend-service/domains/example.test", json={})
     responses.get(
         "https://example.test/robots.txt",
         body="\n".join(
@@ -49,6 +57,7 @@ def test_get_crawl_delay():
                 "Crawl-delay: 5",
             ]
         ),
+        match=[user_agent_matcher],
     )
 
     target_url = "https://example.test/foo/bar"

@@ -6,7 +6,7 @@ import requests
 from robotexclusionrulesparser import RobotExclusionRulesParser, _Ruleset
 
 from web.domains import get_domain
-from web.web_clients import HEADERS_DEFAULT
+from web.web_clients import HEADERS_DEFAULT, select_client
 
 web_client = requests.Session()
 
@@ -27,9 +27,13 @@ _Ruleset.is_not_empty = _PatchedRuleset.is_not_empty
 
 def get_robot_parser(url):
     domain = get_domain(url)
+    _, headers = select_client(domain)
     if domain not in domain_robot_parsers:
         robot_parser = RobotExclusionRulesParser()
-        robots_txt = web_client.get(urljoin(url, "/robots.txt"))
+        robots_txt = web_client.get(
+            urljoin(url, "/robots.txt"),
+            headers=headers,
+        )
         robot_parser.parse(robots_txt.content)
         domain_robot_parsers.set(domain, robot_parser)
     return domain_robot_parsers.get(domain)

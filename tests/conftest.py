@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import re
 
 import pytest
 
@@ -10,6 +11,14 @@ from web.app import app
 @pytest.fixture
 def client():
     return app.test_client()
+
+
+@pytest.fixture
+def user_agent_matcher():
+    expected_headers = {
+        "User-Agent": re.compile(r".*\bRecipeRadar\b.*"),
+    }
+    return matchers.header_matcher(expected_headers)
 
 
 @pytest.fixture
