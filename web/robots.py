@@ -2,13 +2,10 @@ from time import time
 from urllib.parse import urljoin
 
 from cacheout import Cache
-import requests
 from robotexclusionrulesparser import RobotExclusionRulesParser, _Ruleset
 
 from web.domains import get_domain
 from web.web_clients import HEADERS_DEFAULT, select_client
-
-web_client = requests.Session()
 
 
 domain_robot_parsers = Cache(ttl=60 * 60, timer=time)  # 1hr cache expiry
@@ -27,10 +24,10 @@ _Ruleset.is_not_empty = _PatchedRuleset.is_not_empty
 
 def get_robot_parser(url):
     domain = get_domain(url)
-    _, headers = select_client(domain)
+    domain_http_client, headers = select_client(domain)
     if domain not in domain_robot_parsers:
         robot_parser = RobotExclusionRulesParser()
-        robots_txt = web_client.get(
+        robots_txt = domain_http_client.get(
             urljoin(url, "/robots.txt"),
             headers=headers,
         )

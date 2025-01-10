@@ -322,9 +322,14 @@ def test_crawl_response(
     assert language == "en"
 
 
+@responses.activate(assert_all_requests_are_fired=True)
 @patch("web.parsing.scrape_html")
 @patch("web.app.can_fetch")
 def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client, content_url):
+    responses.get(
+        "http://backend-service/domains/recipe.migrated.example.test",
+        json={},
+    )
     can_fetch.return_value = False
 
     response = client.post("/crawl", data={"url": content_url})
@@ -333,15 +338,18 @@ def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client, content_url)
     assert not scrape_html.called
 
 
-@patch("requests.sessions.Session.get")
+@responses.activate(assert_all_requests_are_fired=True)
 @patch("web.app.can_fetch")
-def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
+def test_robots_txt_resolution_filtering(can_fetch, client, content_url):
+    responses.get(
+        "http://backend-service/domains/recipe.migrated.example.test",
+        json={},
+    )
     can_fetch.return_value = False
 
     response = client.post("/resolve", data={"url": content_url})
 
     assert response.status_code == 403
-    assert not get.called
 
 
 @responses.activate
