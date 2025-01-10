@@ -120,7 +120,7 @@ def test_error_url_resolution(
 @responses.activate
 @pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
 @patch("web.app.can_fetch")
-def test_fetch_endpoints_respect_server_backoff(
+def test_fetch_endpoints_timeout_backoff(
     can_fetch,
     client,
     origin_url,
