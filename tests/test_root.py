@@ -1,14 +1,13 @@
-from collections import OrderedDict
 import re
+from unittest.mock import patch
 
 from dulwich import porcelain
 import pytest
 import responses
-from recipe_scrapers import StaticValueException
 from responses import matchers
-from unittest.mock import patch
+from recipe_scrapers import StaticValueException
 
-from web.app import app, get_domain, get_robot_parser
+from web.app import app, get_domain
 
 
 @pytest.fixture
@@ -33,18 +32,6 @@ def user_agent_matcher():
 def nostore_matcher():
     expected_headers = {"Cache-Control": "no-store"}
     return matchers.header_matcher(expected_headers)
-
-
-@pytest.fixture
-def unproxied_matcher():
-    return matchers.request_kwargs_matcher({"proxies": OrderedDict()})
-
-
-@pytest.fixture
-def cache_proxy_matcher():
-    protocols = ("http", "https")
-    proxies = OrderedDict([(protocol, "http://proxy:3128") for protocol in protocols])
-    return matchers.request_kwargs_matcher({"proxies": proxies})
 
 
 def test_get_domain(origin_url):
@@ -175,8 +162,8 @@ def scrape_result():
 
 
 @patch("requests.sessions.Session.get")
-@patch("web.app.parse_descriptions")
-@patch("web.app.scrape_html")
+@patch("web.parsing.parse_descriptions")
+@patch("web.parsing.scrape_html")
 @patch("web.app.can_fetch")
 def test_crawl_response(
     can_fetch,
@@ -228,7 +215,7 @@ def test_crawl_response(
     assert language == "en"
 
 
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 @patch("web.app.can_fetch")
 def test_robots_txt_crawl_filtering(can_fetch, scrape_html, client, content_url):
     can_fetch.return_value = False
@@ -251,18 +238,7 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
 
 
 @responses.activate
-def test_get_robot_parser(unproxied_matcher):
-    responses.get("https://example.test/robots.txt", match=[unproxied_matcher])
-
-    target_url = "https://example.test/foo/bar"
-    robot_parser = get_robot_parser(target_url)
-
-    assert robot_parser is not None
-    assert robot_parser.is_allowed("*", target_url)
-
-
-@responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url):
     responses.get(
         "http://backend-service/domains/example.test",
@@ -275,7 +251,7 @@ def test_domain_config_unavailable_not_crawled(scrape_html, client, content_url)
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
     responses.get(
         "http://backend-service/domains/example.test",
@@ -288,7 +264,7 @@ def test_http_crawl_disabled_not_crawled(scrape_html, client, content_url):
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_http_cache_disabled_direct_access(
     scrape_html,
     client,
@@ -312,7 +288,7 @@ def test_http_cache_disabled_direct_access(
 
 
 @responses.activate
-@patch("web.app.scrape_html")
+@patch("web.parsing.scrape_html")
 def test_http_error_not_crawled(
     scrape_html,
     client,
