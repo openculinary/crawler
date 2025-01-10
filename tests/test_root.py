@@ -8,12 +8,17 @@ from requests import ReadTimeout
 from responses import matchers
 from recipe_scrapers import StaticValueException
 
-from web.app import app, get_domain
+from web.app import app, domain_backoffs, get_domain
 
 
 @pytest.fixture
-def origin_url():
-    return "https://recipe.subdomain.example.test/recipe/123"
+def origin_domain():
+    return "example.test"
+
+
+@pytest.fixture
+def origin_url(origin_domain):
+    return f"https://recipe.subdomain.{origin_domain}/recipe/123"
 
 
 @pytest.fixture
@@ -142,6 +147,80 @@ def test_fetch_endpoints_timeout_backoff(
     assert error is not None
     assert "adding backoff" in error["message"]
     assert "url" not in response.json
+
+
+@responses.activate
+@pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
+@patch.dict(domain_backoffs, clear=True)
+@patch("web.app.can_fetch")
+def test_fetch_endpoints_respect_server_backoff(
+    can_fetch,
+    client,
+    origin_domain,
+    origin_url,
+    endpoint,
+):
+    can_fetch.return_value = True
+    assert len(domain_backoffs) == 0
+
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
+    responses.get(
+        origin_url,
+        status=503,
+        headers={"Retry-After": "3600"},
+    )
+
+    response = client.post(f"/{endpoint}", data={"url": origin_url})
+    error = response.json.get("error")
+
+    assert error is not None
+    assert "url" not in response.json
+    assert origin_domain in domain_backoffs
+
+
+@responses.activate
+@pytest.mark.parametrize("endpoint", ["resolve", "crawl"])
+@patch.dict(domain_backoffs, clear=True)
+@patch("web.web_clients.sleep")
+@patch("web.app.can_fetch")
+def test_fetch_endpoints_respect_server_redirect_backoff(
+    can_fetch,
+    sleep,
+    client,
+    origin_domain,
+    origin_url,
+    content_url,
+    endpoint,
+):
+    can_fetch.return_value = True
+    assert len(domain_backoffs) == 0
+
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
+    responses.get(
+        origin_url,
+        status=302,
+        headers={
+            "Location": content_url,
+            "Retry-After": "0.1",
+        },
+    )
+    responses.get(
+        content_url,
+        status=200,
+    )
+
+    response = client.post(f"/{endpoint}", data={"url": origin_url})
+    error = response.json.get("error")
+
+    sleep.assert_called_once_with(1)  # 0.1 rounded up to 1
+    assert error is None
+    assert origin_domain not in domain_backoffs
 
 
 @pytest.fixture

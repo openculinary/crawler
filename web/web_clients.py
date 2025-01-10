@@ -1,4 +1,6 @@
+from datetime import UTC, datetime
 import ssl
+from time import sleep
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -33,8 +35,22 @@ class ProxyCacheHTTPAdapter(HTTPAdapter):
         return params
 
 
+class DelayableRedirectSession(requests.Session):
+
+    def resolve_redirects(self, response, *args, **kwargs):
+        from web.parsing import parse_retry_duration
+
+        if response.is_redirect and "Retry-After" in response.headers:
+            duration = parse_retry_duration(
+                from_moment=datetime.now(tz=UTC),
+                retry_after=response.headers["Retry-After"],
+            )
+            sleep(duration)
+        yield from super().resolve_redirects(response, *args, **kwargs)
+
+
 microservice_client = requests.Session()
-proxy_cache_client = requests.Session()
+proxy_cache_client = DelayableRedirectSession()
 proxy_cache_client.proxies.update(
     {
         "http": "http://proxy:3128",
@@ -42,7 +58,7 @@ proxy_cache_client.proxies.update(
     }
 )
 proxy_cache_client.mount("https://", ProxyCacheHTTPAdapter())
-web_client = requests.Session()
+web_client = DelayableRedirectSession()
 
 
 def select_client(domain):
