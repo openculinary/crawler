@@ -1,7 +1,9 @@
+from collections import OrderedDict
 from unittest.mock import patch
 
 import pytest
 
+from responses import matchers
 from tld import get_tld, get_tld_names, update_tld_names
 
 from web.app import app
@@ -28,3 +30,15 @@ def patch_get_tld():
         # Return the passthrough get_tld
         mock_get_tld.side_effect = get_tld_private_enabled
         yield mock_get_tld
+
+
+@pytest.fixture
+def unproxied_matcher():
+    return matchers.request_kwargs_matcher({"proxies": OrderedDict()})
+
+
+@pytest.fixture
+def cache_proxy_matcher():
+    protocols = ("http", "https")
+    proxies = OrderedDict([(protocol, "http://proxy:3128") for protocol in protocols])
+    return matchers.request_kwargs_matcher({"proxies": proxies})

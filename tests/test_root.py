@@ -1,14 +1,13 @@
-from collections import OrderedDict
 import re
+from unittest.mock import patch
 
 from dulwich import porcelain
 import pytest
 import responses
-from recipe_scrapers import StaticValueException
 from responses import matchers
-from unittest.mock import patch
+from recipe_scrapers import StaticValueException
 
-from web.app import app, get_domain, get_robot_parser
+from web.app import app, get_domain
 
 
 @pytest.fixture
@@ -33,18 +32,6 @@ def user_agent_matcher():
 def nostore_matcher():
     expected_headers = {"Cache-Control": "no-store"}
     return matchers.header_matcher(expected_headers)
-
-
-@pytest.fixture
-def unproxied_matcher():
-    return matchers.request_kwargs_matcher({"proxies": OrderedDict()})
-
-
-@pytest.fixture
-def cache_proxy_matcher():
-    protocols = ("http", "https")
-    proxies = OrderedDict([(protocol, "http://proxy:3128") for protocol in protocols])
-    return matchers.request_kwargs_matcher({"proxies": proxies})
 
 
 def test_get_domain(origin_url):
@@ -248,17 +235,6 @@ def test_robots_txt_resolution_filtering(can_fetch, get, client, content_url):
 
     assert response.status_code == 403
     assert not get.called
-
-
-@responses.activate
-def test_get_robot_parser(unproxied_matcher):
-    responses.get("https://example.test/robots.txt", match=[unproxied_matcher])
-
-    target_url = "https://example.test/foo/bar"
-    robot_parser = get_robot_parser(target_url)
-
-    assert robot_parser is not None
-    assert robot_parser.is_allowed("*", target_url)
 
 
 @responses.activate
