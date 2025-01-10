@@ -21,8 +21,8 @@ class _PatchedRuleset(_Ruleset):
     def is_not_empty(self):
         return _PatchedRuleset._is_not_empty(self) or self.crawl_delay is not None
 
-_Ruleset.is_not_empty = _PatchedRuleset.is_not_empty
 
+_Ruleset.is_not_empty = _PatchedRuleset.is_not_empty
 
 
 def get_robot_parser(url):
