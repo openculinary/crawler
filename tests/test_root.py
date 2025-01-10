@@ -271,13 +271,12 @@ def scrape_result():
     return ScrapeResult()
 
 
-@patch("requests.sessions.Session.get")
+@responses.activate
 @patch("web.parsing.parse_descriptions")
 @patch("web.parsing.scrape_html")
 def test_crawl_response(
     scrape_html,
     parse_descriptions,
-    get,
     client,
     permissive_robots_txt,
     content_url,
@@ -285,6 +284,15 @@ def test_crawl_response(
 ):
     # HACK: Ensure that app initialization methods (re)run during this test
     app._got_first_request = False
+
+    responses.get(
+        "http://backend-service/domains/example.test",
+        json={},
+    )
+    responses.get(
+        content_url,
+        status=200,
+    )
 
     scrape_html.return_value = scrape_result
     parse_descriptions.side_effect = [
