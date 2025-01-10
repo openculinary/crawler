@@ -4,4 +4,3 @@ gunicorn==23.0.0
 recipe-scrapers==15.3.3
 requests[use_chardet_on_py3]==2.32.3
 robotexclusionrulesparser==1.7.1
-tld==0.13.0
