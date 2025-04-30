@@ -175,6 +175,7 @@ def scrape_recipe(src, domain, response):
     return {
         "title": scrape.title(),
         "src": src,
+        "dst": response.url,
         "domain": domain,
         "ingredients": ingredients,
         "author": author,
