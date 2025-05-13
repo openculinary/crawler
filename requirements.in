@@ -1,5 +1,5 @@
 cacheout==0.16.0
-flask==3.1.0
+flask==3.1.1
 gunicorn==23.0.0
 recipe-scrapers==15.7.1
 requests[use_chardet_on_py3]==2.32.3
